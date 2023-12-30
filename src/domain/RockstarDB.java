@@ -1,11 +1,9 @@
 package domain;
 
-import data.Cliente;
-import data.Musico;
-import data.RockstarModel;
-import data.User;
+import data.*;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RockstarDB {
@@ -162,5 +160,113 @@ public class RockstarDB {
 
         return RockStarDBStatus.DB_USER_LOGIN_FAILED;
     }
+
+
+    public boolean addMusica(Music music) {
+        if (currentUser instanceof Musico) {
+            ArrayList<Music> musicianMusic = ((Musico) currentUser).getMusicas();
+            if (musicianMusic != null) {
+                validSongName(music.getTitle());
+            }
+        }
+        dados.getMusics().add(music);
+        return true;
+    }
+    public boolean addAlbum(Album album){
+        if(currentUser instanceof Musico) {
+            ArrayList<Album> albunsDomusico = ((Musico) currentUser).getAlbuns();
+            if (albunsDomusico != null) {
+                for (Album a : albunsDomusico) {
+                    if (a.getTitle().equalsIgnoreCase(album.getTitle())) {
+                        return false;
+                    }
+                }
+            }
+            dados.getAlbums().add(album);
+        }
+        return true;
+    }
+
+
+
+    //devolve vetor com os generos das musicas
+    public int getTotalUsers(){
+        if(dados.getUsers()!=null){
+            return dados.getUsers().size();
+        }
+        return -1;
+    }
+    public int getTotalMusician() {
+        int totalMusicos=0;
+        if(dados.getUsers()!=null){
+            for(User u: dados.getUsers()){
+                if(u instanceof Musico){
+                    totalMusicos++;
+                }
+            }
+            return totalMusicos;
+        }
+        return -1;
+    }
+    public double getTotalValueSongs() {
+        double valorTotalMusicas = 0;
+        if(dados.getMusics() != null){
+            for(Music m : dados.getMusics()){
+                valorTotalMusicas += m.getPreco();
+            }
+            return valorTotalMusicas;
+        }
+        return -1;
+    }
+    public String[] getMusicianAlbums(Musico musico){
+        int aux = musico.getAlbuns().size()+1;
+        String[] dropDown = new String[aux];
+        dropDown[0] = "Sem Album";
+        int i=1;
+        for(Album a : musico.getAlbuns()){
+            dropDown[i] = a.getTitle();
+            i++;
+        }
+        return dropDown;
+    }
+
+
+
+    //devolve vetor com a quantidade de albuns de X genero
+    public int albumByGenre(String genero){
+        int albumPorGenero = 0;
+        for(Album a: dados.getAlbums()){
+            if(a.getGenre().equalsIgnoreCase(genero)){
+                albumPorGenero++;
+            }
+        }
+        return albumPorGenero;
+    }
+    //lê os generos de musicas que há disponiveis
+    public String[] getMusicGenrs() {
+        Gender[] generos = Gender.values();
+        String[] generosMusicais = new String[generos.length];
+
+        for (int i = 0; i < generos.length; i++) {
+            generosMusicais[i] = generos[i].toString();
+        }
+        return generosMusicais;
+    }
+
+
+
+    //verifica se existe um nome igual na lista de músicas
+    public boolean validSongName(String nome){
+        if(currentUser instanceof Musico) {
+            for (Music m : ((Musico) currentUser).getMusicas()) {
+                if (m.getTitle().equalsIgnoreCase(nome)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    //falta método para calcular o valor total de músicas vendidas.
 }
 

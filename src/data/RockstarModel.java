@@ -11,12 +11,17 @@ public class RockstarModel implements Serializable {
     private static final long serialVersionUID = 12565672347L;
 
     private final List<User> users;
-
+    private final List<Music> musics;
+    private final List<Album> albums;
     public RockstarModel() {
         this.users = new ArrayList<>();
+        this.musics = new ArrayList<>();
+        this.albums = new ArrayList<>();
     }
-    public RockstarModel(List<User> users) {
+    public RockstarModel(List<User> users, List<Music> musics, List<Album> albums) {
         this.users = users;
+        this.musics = musics;
+        this.albums = albums;
     }
 
     public List<User> getUsers() {
@@ -36,42 +41,11 @@ public class RockstarModel implements Serializable {
         }
     }
 
-    //Métodos para a estatistica
-    public int getTotalUsers(){
-        if(getUsers()!=null){
-            return getUsers().size();
-        }
-        return -1;
+    public List<Music> getMusics() {
+        return musics;
     }
-    public int getTotalMusicos() {
-        int totalMusicos=0;
-        if(getUsers()!=null){
-            for(User u: getUsers()){
-                if(u instanceof Musico){
-                    totalMusicos++;
-                }
-            }
-            return totalMusicos;
-        }
-        return -1;
+
+    public List<Album> getAlbums() {
+        return albums;
     }
-//    public int albumPorGenero(String genero){
-//        int albumPorGenero = 0;
-//        for(Album a: baseDadosAlbuns){
-//            if(a.getGenre().toLowerCase().equals(genero.toLowerCase())){
-//                albumPorGenero++;
-//            }
-//        }
-//        return albumPorGenero;
-//    }
-//    public double getValortotalMusicas() {
-//        double valorTotalMusicas = 0;
-//        if(baseDadosMusicas != null){
-//            for(Musica m : baseDadosMusicas){
-//                valorTotalMusicas += m.getPreco();
-//            }
-//            return valorTotalMusicas;
-//        }
-//        return -1;
-//    }
 }
