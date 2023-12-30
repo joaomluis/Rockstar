@@ -130,4 +130,7 @@ public class RockstarGUI {
     public void updateBalance() {
         clientFrame.updateBalanceLabel();
     }
+    public void updateAlbums(){
+        musicianFrame.updateAlbumTable();
+    }
 }

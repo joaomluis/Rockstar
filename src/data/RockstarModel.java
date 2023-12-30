@@ -48,4 +48,9 @@ public class RockstarModel implements Serializable {
     public List<Album> getAlbums() {
         return albums;
     }
+
+//Não sei se há necessidade deste método.
+//    public boolean addAlbum(Album album){
+//        return albums.add(album);
+//    }
 }

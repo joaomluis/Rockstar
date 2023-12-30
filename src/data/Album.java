@@ -38,4 +38,13 @@ public class Album implements Serializable {
     public Musico getArtist() {
         return artist;
     }
+
+    @Override
+    public String toString() {
+        return "Album{" +
+                "title='" + title + '\'' +
+                ", artist=" + artist +
+                ", genre='" + genre + '\'' +
+                '}';
+    }
 }

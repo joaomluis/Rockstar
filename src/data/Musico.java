@@ -24,12 +24,16 @@ public class Musico extends User implements Serializable {
         return music;
     }
     public ArrayList<Album> getAlbuns() {
+        //caso os albuns sejam null, cria um novo array
+        if(albuns == null){
+            albuns = new ArrayList<>();
+        }
         return albuns;
     }
     public String getPin() {
         return pin;
     }
-    public void addMusica(Music music) {
+    public void addMusic(Music music) {
         if(this.music == null) {
             this.music = new ArrayList<>();
             System.out.println("add (Musico) Musicas do musico");
@@ -40,9 +44,6 @@ public class Musico extends User implements Serializable {
         }
     }
     public void addAlbum(Album album){
-        if(albuns == null) {
-            albuns = new ArrayList<>();//para evitar o erro de null exception
-        }
         albuns.add(album);
         System.out.println("add album ao musicoAlbuns");
     }

@@ -102,7 +102,7 @@ public class MusicoMenuInicial extends JPanel implements ActionListener {
             gui.showMusicianStats();
         }
         if (e.getSource() == pesquisa) {
-                gui.showMusicianSearch();
+            gui.showMusicianSearch();
         }
     }
 }

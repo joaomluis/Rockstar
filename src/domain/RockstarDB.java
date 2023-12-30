@@ -172,19 +172,23 @@ public class RockstarDB {
         dados.getMusics().add(music);
         return true;
     }
-    public boolean addAlbum(Album album){
-        if(currentUser instanceof Musico) {
-            ArrayList<Album> albunsDomusico = ((Musico) currentUser).getAlbuns();
-            if (albunsDomusico != null) {
-                for (Album a : albunsDomusico) {
-                    if (a.getTitle().equalsIgnoreCase(album.getTitle())) {
-                        return false;
-                    }
-                }
+    public boolean addAlbum(Album album) {
+        if (currentUser instanceof Musico && dados != null) {
+            Musico musico = (Musico) currentUser;
+            if (musico.getAlbuns().stream().anyMatch(a -> a.getTitle().equalsIgnoreCase(album.getTitle()))) {
+                return false; // já existe um album c/ o mesmo titulo na lista de álbuns do músico
             }
-            dados.getAlbums().add(album);
+            System.out.println("adicionado");
+            musico.addAlbum(album);
+            //dados.addAlbum(album);
+            saveDB();
+            //
+            for(Album a: musico.getAlbuns()){
+                System.out.println(a);
+            }
+            return true;
         }
-        return true;
+        return false; // O usuário atual não é um músico ou a lista de dados é nula
     }
 
 
@@ -207,6 +211,22 @@ public class RockstarDB {
             return totalMusicos;
         }
         return -1;
+    }
+    public int getTotalSongs() {
+        List<Music> musics = dados.getMusics();
+        if (musics != null) {
+            return musics.size();
+        } else {
+            return -1;
+        }
+    }
+    public int getTotaAlbums() {
+        List<Album> albums = dados.getAlbums();
+        if (albums != null) {
+            return albums.size();
+        } else {
+            return -1;
+        }
     }
     public double getTotalValueSongs() {
         double valorTotalMusicas = 0;
@@ -234,13 +254,16 @@ public class RockstarDB {
 
     //devolve vetor com a quantidade de albuns de X genero
     public int albumByGenre(String genero){
-        int albumPorGenero = 0;
-        for(Album a: dados.getAlbums()){
-            if(a.getGenre().equalsIgnoreCase(genero)){
-                albumPorGenero++;
+        int albumByGenre = 0;
+        //verifica se dados é null ou os albums são null antes de percorrer os albums
+        if (dados != null && dados.getAlbums() != null) {
+            for(Album a: dados.getAlbums()){
+                if(a.getGenre().equalsIgnoreCase(genero)){
+                    albumByGenre++;
+                }
             }
         }
-        return albumPorGenero;
+        return albumByGenre;
     }
     //lê os generos de musicas que há disponiveis
     public String[] getMusicGenrs() {
