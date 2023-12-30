@@ -10,5 +10,6 @@ public class Main {
 
         RockstarGUI ui = new RockstarGUI(db);
         ui.start();
+        System.out.println("bora!");
     }
 }
