@@ -39,6 +39,9 @@ public class ClientRootFrame extends JFrame implements ActionListener {
         client = (Cliente) gui.getDb().getCurrentUser();
     }
 
+    public MyPlaylists getMyPlaylists() {
+        return myPlaylists;
+    }
 
     public void start() {
         RockstarDB db = gui.getDb();
@@ -116,7 +119,7 @@ public class ClientRootFrame extends JFrame implements ActionListener {
         //Label saldo
         balance = new JLabel();
         balance.setBounds(570, 5, 60, 25);
-        balance.setText(String.format("%1$,.2f€", db.getCurrentUser().getSaldo()));
+        balance.setText(String.format("%1$,.2f€", db.getCurrentUserAsClient().getSaldo()));
         balance.setFont(new Font("Arial", Font.BOLD, 12));
         balance.setForeground(new Color(198, 107, 61));
 
@@ -159,6 +162,7 @@ public class ClientRootFrame extends JFrame implements ActionListener {
     }
 
     public void updateBalanceLabel() {
-        balance.setText(String.format("%1$,.2f€", gui.getDb().getCurrentUser().getSaldo()));
+        Cliente cliente = (Cliente) gui.getDb().getCurrentUser();
+        balance.setText(String.format("%1$,.2f€", cliente.getSaldo()));
     }
 }

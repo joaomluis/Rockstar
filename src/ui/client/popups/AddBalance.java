@@ -1,5 +1,6 @@
 package ui.client.popups;
 
+import data.Cliente;
 import ui.RockstarGUI;
 
 import javax.swing.*;
@@ -55,8 +56,9 @@ public class AddBalance extends JDialog {
                     if (!input.isEmpty()) {
                         try {
                             double valor = Double.parseDouble(input);
+                            Cliente cliente = gui.getDb().getCurrentUserAsClient(); // vai buscar a GUI que vai buscar a DB que tem acesso aos dados
 
-                            gui.getDb().getCurrentUser().adicionaSaldo(valor); // vai buscar a GUI que vai buscar a DB que tem acesso aos dados e modifica-os
+                            cliente.adicionaSaldo(valor);
                             gui.getDb().saveCurrentUser(); // outra vez ir buscar GUI para a DB e guarda a operação
                             gui.updateBalance(); // só atualiza a label
 

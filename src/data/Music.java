@@ -20,6 +20,9 @@ public class Music implements Serializable {
         this.preco = preco;
         this.visibilidade = true;
     }
+    public Music() {
+    }
+
     public String getTitle() {
         return title;
     }

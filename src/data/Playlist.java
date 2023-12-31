@@ -21,6 +21,9 @@ public class Playlist implements Serializable {
         this.autor = cliente;
     }
 
+    public Playlist() {
+    }
+
     /**
      * Contrutor que contem todos os parametros na criação de uma nova Playlist.
      * @param nome
@@ -31,6 +34,14 @@ public class Playlist implements Serializable {
         this.music = music;
         this.visibilidade = true; //Por defeito, as playlists sao visíveis.
         this.autor = cliente;
+    }
+
+    public boolean isVisibilidade() {
+        return visibilidade;
+    }
+
+    public ArrayList<Music> getMusic() {
+        return music;
     }
 
     /**

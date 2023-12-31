@@ -15,6 +15,7 @@ public abstract class User implements Serializable {
         this.password = password;
     }
 
+
     public User() {
         this.username = "";
         this.password = "";
@@ -35,13 +36,9 @@ public abstract class User implements Serializable {
     public void listarMusicas(){
 
     }
-    public boolean adicionaSaldo(double valor){
 
+
+    public boolean criaPlaylist() {
         return false;
-    }
-
-
-    public double getSaldo() {
-        return 0;
     }
 }

@@ -130,7 +130,8 @@ public class RegistarMusico extends JPanel implements ActionListener {
             JOptionPane.showMessageDialog(this, "Introduza um user, password ou pin válidos");
             return;
         }
-        if (contemDigitos(inputPin)) {
+        try {
+            int pinNumber = Integer.parseInt(inputPin); // Tenta converter o PIN para um número
             RockstarDB db = gui.getDb();
             RockStarDBStatus status = db.registarMusico(inputUsername, inputPassword, inputPin);
 
@@ -141,23 +142,10 @@ public class RegistarMusico extends JPanel implements ActionListener {
             } else {
                 JOptionPane.showMessageDialog(this, "Erro desconhecido");
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "O pin só pode conter digitos de 0 a 9.");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "O pin só pode conter dígitos de 0 a 9.");
         }
 
     }
-    /**
-     * Método chamado no registo de conta de um Músico que verifica se o campo do pin
-     * só contém digitos de 0 a 9.
-     * @param input
-     * @return
-     */
-    private boolean contemDigitos(String input) {
-        for (char c : input.toCharArray()) {
-            if(!Character.isDigit(c)) {
-                return false;
-            }
-        }
-        return true;
-    }
+
 }

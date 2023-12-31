@@ -1,5 +1,7 @@
 package ui.client.popups;
 
+import data.Cliente;
+import data.Playlist;
 import ui.RockstarGUI;
 
 import javax.swing.*;
@@ -51,7 +53,35 @@ public class MakePlaylist extends JDialog implements ActionListener {
         okButton = new JButton();
         okButton.setText("Ok");
         okButton.setFocusable(false);
-        okButton.addActionListener(this);
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String input = nameField.getText();
+                if (!input.isEmpty()) {
+
+                    Cliente cliente = (Cliente) gui.getDb().getCurrentUser(); // vai buscar a GUI que vai buscar a DB que tem acesso aos dados
+                    Playlist novaPlaylist = new Playlist(input, cliente);
+
+                    if (!gui.getDb().addPlaylist(novaPlaylist)) {
+                        JOptionPane.showMessageDialog(null, "Playlist com esse nome já existe na sua lista.");
+                    } else {
+                        cliente.addPlaylistToClient(novaPlaylist);
+                        gui.getDb().addPlaylist(novaPlaylist);
+                        gui.getDb().saveCurrentUser(); // outra vez ir buscar GUI para a DB e guarda a operação
+                        System.out.println("Playlist criada");
+                        if(gui.getMyPlaylists() != null) {
+                            gui.getMyPlaylists().atualizarTabelaPlaylists();
+                        }
+
+                    }
+
+                    dispose();
+
+                } else {
+                    JOptionPane.showMessageDialog(parent, "O campo está vazio, insira um valor.");
+                }
+            }
+        });
 
         cancelButton = new JButton();
         cancelButton.setText("Cancelar");
@@ -71,7 +101,7 @@ public class MakePlaylist extends JDialog implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == cancelButton){
+        if (e.getSource() == cancelButton) {
             dispose();
         }
     }

@@ -14,6 +14,10 @@ public class Price implements Serializable {
         this.preco = preco;
         this.data = LocalDate.now();
     }
+
+    public Price() {
+    }
+
     public double getPreco(){
         return preco;
     }

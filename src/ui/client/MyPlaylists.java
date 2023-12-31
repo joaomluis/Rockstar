@@ -2,6 +2,7 @@ package ui.client;
 
 
 import data.Cliente;
+import data.Playlist;
 import ui.RockstarGUI;
 import ui.client.popups.MakePlaylist;
 
@@ -13,6 +14,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 
 public class MyPlaylists extends JPanel implements ActionListener {
@@ -68,20 +70,22 @@ public class MyPlaylists extends JPanel implements ActionListener {
         };
 
         tableModel.addColumn("Nome");
-        tableModel.addColumn("Artista");
-        tableModel.addColumn("Género");
+        tableModel.addColumn("Visibilidade");
+        //tableModel.addColumn("Género");
 
 
         playlistTable = new JTable(tableModel);
         playlistTable.getColumnModel().getColumn(0).setPreferredWidth(200);
         playlistTable.getColumnModel().getColumn(1).setPreferredWidth(200);
-        playlistTable.getColumnModel().getColumn(2).setPreferredWidth(200);
+        //playlistTable.getColumnModel().getColumn(2).setPreferredWidth(200);
         // Impede a movimentação das colunas.
         playlistTable.getTableHeader().setReorderingAllowed(false);
 
         // Adicionando TableRowSorter à JTable - ordena a tabela
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
         playlistTable.setRowSorter(sorter);
+
+        gui.getDb().adicionarElementosTabela(playlistTable);
 
         playlistTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -135,6 +139,11 @@ public class MyPlaylists extends JPanel implements ActionListener {
         add(eastPanel, BorderLayout.EAST);
     }
 
+    public void atualizarTabelaPlaylists() {
+        tableModel.setRowCount(0); // Limpa a tabela
+        gui.getDb().adicionarElementosTabela(playlistTable); // Atualiza a tabela com as playlists atualizadas
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -144,8 +153,8 @@ public class MyPlaylists extends JPanel implements ActionListener {
             if (selectedRow != -1) {
                 // Obtenha os detalhes da música selecionada
                 String title = (String) tableModel.getValueAt(selectedRow, 0);
-                String artist = (String) tableModel.getValueAt(selectedRow, 1);
-                String genre = (String) tableModel.getValueAt(selectedRow, 2);
+                boolean visibilidade = (boolean) tableModel.getValueAt(selectedRow, 1);
+                //String genre = (String) tableModel.getValueAt(selectedRow, 2);
                 gui.showCurrentPlaylist();
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma playlist para abrir.");

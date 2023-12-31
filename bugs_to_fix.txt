@@ -1,0 +1,2 @@
+- Corrigir interface depois do log out, fica tudo desconfigurado
+- colocar uma condição para impedir que se faça log in de cliente com dados de user do tipo músico
