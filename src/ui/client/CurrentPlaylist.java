@@ -3,6 +3,7 @@ package ui.client;
 
 
 import data.Cliente;
+import data.Playlist;
 import ui.RockstarGUI;
 import ui.client.popups.RateSong;
 
@@ -30,6 +31,7 @@ public class CurrentPlaylist extends JPanel implements ActionListener {
     private JButton rateMusic;
     private JCheckBox visibilidadePlaylist;
     private JLabel panelTitle;
+    private Playlist playlist;
 
     public CurrentPlaylist(RockstarGUI gui) {
 

@@ -1,6 +1,8 @@
 package ui.client;
 
 import data.Cliente;
+import data.Music;
+import data.Purchase;
 import ui.RockstarGUI;
 import ui.client.popups.AddBalance;
 
@@ -60,6 +62,7 @@ public class Store extends JPanel implements ActionListener {
 
         tableModel.addColumn("Titulo");
         tableModel.addColumn("Artista");
+        tableModel.addColumn("Género");
         tableModel.addColumn("Preço");
 
         //adiciona as musicas da array list à table, tem que ser trocado por um método mais tarde
@@ -69,6 +72,7 @@ public class Store extends JPanel implements ActionListener {
         storeTable.getColumnModel().getColumn(0).setPreferredWidth(200);
         storeTable.getColumnModel().getColumn(1).setPreferredWidth(200);
         storeTable.getColumnModel().getColumn(2).setPreferredWidth(200);
+        storeTable.getColumnModel().getColumn(3).setPreferredWidth(200);
         // Impede a movimentação das colunas.
         storeTable.getTableHeader().setReorderingAllowed(false);
 
@@ -104,6 +108,8 @@ public class Store extends JPanel implements ActionListener {
         eastPanel.add(addBalance);
 
         add(eastPanel, BorderLayout.EAST);
+
+        gui.getDb().addAllRockstarSongsToTable(storeTable);
     }
 
     @Override
@@ -112,10 +118,20 @@ public class Store extends JPanel implements ActionListener {
             int selectedRow = storeTable.getSelectedRow();
             if (selectedRow != -1) {
                 // Obtenha os detalhes da música selecionada
-                String title = (String) tableModel.getValueAt(selectedRow, 0);
-                String artist = (String) tableModel.getValueAt(selectedRow, 1);
-                Double preco = (double) tableModel.getValueAt(selectedRow, 2);
+//                String title = (String) tableModel.getValueAt(selectedRow, 0);
+//                Musico artist = (Musico) tableModel.getValueAt(selectedRow, 1);
+//                String genero = (String) tableModel.getValueAt(selectedRow, 2);
+//                String preco = (String) tableModel.getValueAt(selectedRow, 3);
+                int modelRow = storeTable.convertRowIndexToModel(selectedRow);
+                Music musicaSelecionada = gui.getDb().getDados().getMusics().get(modelRow);
+                gui.getDb().addSongToCart(musicaSelecionada);
+                gui.getDb().saveCurrentUser();
 
+                gui.getShoppingCart().atualizarTabelaMusicasCarrinho();
+
+                System.out.println(gui.getDb().getCurrentUserAsClient().getSongsInCart().size());
+
+                //Purchase novaCompra = new Purchase(gui.getDb().getCurrentUserAsClient(), musicaSelecionada, musicaSelecionada.getPreco());
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma música para comprar.");
             }

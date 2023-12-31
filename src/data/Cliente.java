@@ -8,11 +8,13 @@ public class Cliente extends User implements Serializable {
     private static final long serialVersionUID = 1325672347L;
     private double saldo;
     private List<Playlist> playlists = new ArrayList<>();
+    private List<Music> songsInCart = new ArrayList<>();
 
     public Cliente(String username, String password) {
         super(username, password);
         saldo = 0.00;
         this.playlists = new ArrayList<>();
+        this.songsInCart = new ArrayList<>();
     }
 
     public Cliente() {
@@ -21,6 +23,13 @@ public class Cliente extends User implements Serializable {
 
     public double getSaldo() {
         return saldo;
+    }
+
+    public List<Music> getSongsInCart() {
+        if (songsInCart == null) {
+            songsInCart = new ArrayList<>();
+        }
+        return songsInCart;
     }
 
     public List<Playlist> getPlaylists() {

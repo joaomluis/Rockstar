@@ -40,6 +40,10 @@ public class Playlist implements Serializable {
         return visibilidade;
     }
 
+    public void setVisibilidade(boolean visibilidade) {
+        this.visibilidade = visibilidade;
+    }
+
     public ArrayList<Music> getMusic() {
         return music;
     }

@@ -94,6 +94,19 @@ public class ShoppingCart extends JPanel implements ActionListener {
         eastPanel.add(confirmPurchase);
 
         add(eastPanel, BorderLayout.EAST);
+
+        gui.getDb().addAllSongsInCartToTable(purchaseTable);
+
+        System.out.println(gui.getDb().getCurrentUserAsClient().getSongsInCart().size());
+        atualizarTabelaMusicasCarrinho();
+    }
+
+    /**
+     * Atualiza a tabela para aparecem todas as musicas que foram adicionadas ao carrinho
+     */
+    public void atualizarTabelaMusicasCarrinho() {
+        tableModel.setRowCount(0); // Limpa a tabela
+        gui.getDb().addAllSongsInCartToTable(purchaseTable); // Atualiza a tabela com as songs atualizadas
     }
 
     @Override

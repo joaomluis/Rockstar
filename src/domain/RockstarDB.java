@@ -19,6 +19,10 @@ public class RockstarDB {
         this.dados = dados;
     }
 
+    public RockstarModel getDados() {
+        return dados;
+    }
+
     public void init() {
         if (checkIfDBExists()) {
             System.out.println("DB exists");
@@ -334,7 +338,14 @@ public class RockstarDB {
 
         try {
             for (Playlist playlist : playlistCliente) {
-                Object[] row = {playlist.getNome(), playlist.isVisibilidade()};
+                String visibilidade = "";
+                if(playlist.isVisibilidade()) {
+                    visibilidade = "Pública";
+                } else {
+                    visibilidade = "Privada";
+                }
+
+                Object[] row = {playlist.getNome(), visibilidade};
                 if (!existePlaylistNaTabela(model, playlist)) {
                     model.addRow(row);
                 }
@@ -354,7 +365,48 @@ public class RockstarDB {
         }
         return false; // Playlist não encontrada na tabela
     }
+    ///////////////////////////LOJA\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    public void addAllRockstarSongsToTable(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        List<Music> musicasPlataforma = dados.getMusics();
 
+        for (Music song : musicasPlataforma) {
+            Object[] row = {song.getTitle(), song.getArtist(), song.getGenre(),String.format("%1$,.2f€", song.getPreco())};
+            if(!existeMusicaNaTabela(model, song)) {
+                model.addRow(row);
+            }
+        }
+    }
+
+    private boolean existeMusicaNaTabela(DefaultTableModel model, Music song) {
+        for (int row = 0; row < model.getRowCount(); row++) {
+            if (model.getValueAt(row, 0).equals(song.getTitle())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //////////////////////////////////CARRINHO\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    public void addSongToCart(Music song) {
+        getCurrentUserAsClient().getSongsInCart().add(song);
+    }
+
+    public void addAllSongsInCartToTable(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        List<Music> songsInCart = getCurrentUserAsClient().getSongsInCart();
+
+        for (Music song : songsInCart) {
+            Object[] row = {song.getTitle(), song.getArtist(),String.format("%1$,.2f€", song.getPreco())};
+            if(!existeMusicaNaTabela(model, song)) {
+                model.addRow(row);
+            }
+        }
+    }
+
+
+    ////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     public Musico getCurrentUserAsMusician() {
         return (Musico) currentUser;
     }

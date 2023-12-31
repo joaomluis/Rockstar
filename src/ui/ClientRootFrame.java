@@ -1,6 +1,7 @@
 package ui;
 
 import data.Cliente;
+import data.Playlist;
 import domain.RockstarDB;
 import ui.client.*;
 
@@ -41,6 +42,10 @@ public class ClientRootFrame extends JFrame implements ActionListener {
 
     public MyPlaylists getMyPlaylists() {
         return myPlaylists;
+    }
+
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
     }
 
     public void start() {

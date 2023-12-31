@@ -28,6 +28,7 @@ public class RockstarModel implements Serializable {
         return users;
     }
 
+
     public boolean addUser(User user) {
         return users.add(user);
     }

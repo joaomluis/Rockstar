@@ -1,6 +1,7 @@
 package ui;
 
 import data.Album;
+import data.Playlist;
 import domain.RockstarDB;
 import ui.auth.*;
 import ui.client.*;
@@ -38,6 +39,10 @@ public class RockstarGUI {
 
     public MyPlaylists getMyPlaylists() {
         return clientFrame.getMyPlaylists();
+    }
+
+    public ShoppingCart getShoppingCart() {
+        return clientFrame.getShoppingCart();
     }
 
     /////////////////////METODOS PARA ABRIR PAINEIS AUTENTICAÇÃO\\\\\\\\\\\\\\\\\\\\\

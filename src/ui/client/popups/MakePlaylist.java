@@ -62,10 +62,13 @@ public class MakePlaylist extends JDialog implements ActionListener {
                     Cliente cliente = (Cliente) gui.getDb().getCurrentUser(); // vai buscar a GUI que vai buscar a DB que tem acesso aos dados
                     Playlist novaPlaylist = new Playlist(input, cliente);
 
+                    if (visibilidadePlaylist.isSelected()) {
+                        novaPlaylist.setVisibilidade(false);
+                    }
+
                     if (!gui.getDb().addPlaylist(novaPlaylist)) {
                         JOptionPane.showMessageDialog(null, "Playlist com esse nome já existe na sua lista.");
                     } else {
-                        cliente.addPlaylistToClient(novaPlaylist);
                         gui.getDb().addPlaylist(novaPlaylist);
                         gui.getDb().saveCurrentUser(); // outra vez ir buscar GUI para a DB e guarda a operação
                         System.out.println("Playlist criada");
