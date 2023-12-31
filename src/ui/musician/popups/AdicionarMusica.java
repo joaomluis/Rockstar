@@ -1,5 +1,8 @@
 package ui.musician.popups;
 
+import data.Music;
+import data.Musico;
+import domain.RockStarDBStatus;
 import ui.RockstarGUI;
 
 import javax.swing.*;
@@ -8,6 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AdicionarMusica extends JDialog implements ActionListener{
+    private JComboBox albumDropdown;
+    private JLabel album;
+    private RockstarGUI gui;
     private JLabel preco;
     private JTextField precoText;
     private JPanel panelCenter;
@@ -19,10 +25,11 @@ public class AdicionarMusica extends JDialog implements ActionListener{
     private JButton okButton;
     private JButton cancelButton;
     private int width = 400;
-    private int height = 170;
+    private int height = 200;
 
     public AdicionarMusica(RockstarGUI gui, JFrame parent) {
         super(parent, "Adicionar Música", true);
+        this.gui = gui;
 //SETTINGS DA JANELA////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         setSize(width,height);
@@ -30,7 +37,7 @@ public class AdicionarMusica extends JDialog implements ActionListener{
         setResizable(false);
 //CRIAR BOTÕES//////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        dropdown = new JComboBox<>(new String[]{" ", "Rock", "Hip-Hop", "Jazz"});
+        dropdown = new JComboBox<>(gui.getDb().getMusicGenrs()); //vetor de generos existentes
         nomeText = new JTextField();
         precoText = new JTextField();
         okButton = new JButton("OK");
@@ -38,6 +45,8 @@ public class AdicionarMusica extends JDialog implements ActionListener{
         nome = new JLabel("Nome:");
         genero = new JLabel("Genero:");
         preco = new JLabel("Preço:");
+        album = new JLabel("Album:");
+        albumDropdown = new JComboBox<>(gui.getDb().getMusicianAlbums(gui.getDb().getCurrentUserAsMusician()));//vetor com os albuns criados pelo musico
 
 //(PANEL CENTER) CAMPOS LABEL/DROPDOWN/TEXT/////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,6 +58,8 @@ public class AdicionarMusica extends JDialog implements ActionListener{
         panelCenter.add(dropdown).setBounds(nomeText.getX(),nome.getY()+nome.getHeight()+5,190,25);
         panelCenter.add(preco).setBounds(nome.getX(), genero.getY()+ genero.getHeight()+5,50,25);;
         panelCenter.add(precoText).setBounds(nomeText.getX(), genero.getY()+ genero.getHeight()+5,190,25);
+        panelCenter.add(album).setBounds(nome.getX(),preco.getY()+preco.getHeight()+5,190,25);
+        panelCenter.add(albumDropdown).setBounds(nomeText.getX(),preco.getY()+preco.getHeight()+5,190,25);
 
 //(PANEL SOUTH) BOTÕES OK E CANCELAR////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -72,11 +83,23 @@ public class AdicionarMusica extends JDialog implements ActionListener{
             dispose();// Fecha o pop-up.
         }
         else if(e.getSource() == okButton){
-         String escolhaGenero = (String) dropdown.getSelectedItem();
-         String escolhaNome = nomeText.getText();
-         //
-         dispose(); // Fecha o pop-up.
-        }
+            String escolhaGenero = (String) dropdown.getSelectedItem();
+            String escolhaNome = nomeText.getText();
+            String escolhaPreco = precoText.getText();
 
+            //Verificar se há erros e distinguir.
+            RockStarDBStatus db = gui.getDb().adicionarMusica(escolhaGenero,escolhaNome,escolhaPreco);
+
+            if(db==RockStarDBStatus.DB_MUSIC_NAME_EMPTY){
+                JOptionPane.showMessageDialog(null, "A sua música tem de ter um nome. Por exemplo: Música.");
+            }else if(db==RockStarDBStatus.DB_INCORRET_FORMAT_NUMBER) {
+                JOptionPane.showMessageDialog(null, "A sua música tem de ter um preço. Por exemplo: 0.00 .");
+            }else if(db==RockStarDBStatus.DB_MUSIC_NAME_FAILED){
+                JOptionPane.showMessageDialog(null, "O nome da música já existe.");
+            }else if(db==RockStarDBStatus.DB_MUSIC_ADDED){
+                JOptionPane.showMessageDialog(null, "A sua música "+escolhaNome+" foi adicionada com sucesso.");
+            }
+            dispose();
+        }
     }
 }

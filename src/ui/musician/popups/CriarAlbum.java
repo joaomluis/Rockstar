@@ -3,6 +3,7 @@ package ui.musician.popups;
 
 import data.Album;
 import data.Musico;
+import domain.RockStarDBStatus;
 import ui.RockstarGUI;
 
 import javax.swing.*;
@@ -70,21 +71,17 @@ public class CriarAlbum extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == cancelButton) {
             dispose();// Fecha o pop-up.
-        } else if (e.getSource() == okButton) {
+        }
+        else if (e.getSource() == okButton) {
             String escolhaGenero = (String) dropdown.getSelectedItem();
             String escolhaNome = textField.getText();
-            Musico musico = (Musico) gui.getDb().getCurrentUser();
 
-            Album novaAlbum = new Album(escolhaNome, musico, escolhaGenero);
+            RockStarDBStatus db = gui.getDb().criarAlbum(escolhaNome,escolhaGenero);
 
-            if (!gui.getDb().addAlbum(novaAlbum)) {
-                JOptionPane.showMessageDialog(null, "O nome do Album já existe na sua lista.");
-            } else {
+            if(db == RockStarDBStatus.DB_ALBUM_NAME_FAILED) JOptionPane.showMessageDialog(null, "Não foi possivel alterar o nome da Album. Já existe uma Album com esse nome. Por favor, escolha outro nome.");
+            else if(db == RockStarDBStatus.DB_ALBUM_NAME_HAS_CHANGED) JOptionPane.showMessageDialog(null, "O nome do album foi atualizado para "+escolhaNome);
 
-                gui.getDb().addAlbum(novaAlbum); //chama o metodo do DB que por sua vez adiciona o album no musico e na DB.
-
-                dispose(); // Fecha o pop-up.
-            }
+            dispose(); // Fecha o pop-up.
         }
     }
 }

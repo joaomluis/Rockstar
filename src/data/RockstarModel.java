@@ -20,7 +20,7 @@ public class RockstarModel implements Serializable {
     }
     public RockstarModel(List<User> users, List<Music> musics, List<Album> albums) {
         this.users = users;
-        this.musics = musics;
+        this.musics = musics != null ? musics : new ArrayList<>();
         this.albums = albums;
     }
 
@@ -49,8 +49,4 @@ public class RockstarModel implements Serializable {
         return albums;
     }
 
-//Não sei se há necessidade deste método.
-//    public boolean addAlbum(Album album){
-//        return albums.add(album);
-//    }
 }

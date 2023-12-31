@@ -5,7 +5,6 @@ import data.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RockstarDB {
@@ -169,25 +168,29 @@ public class RockstarDB {
 
 
     public boolean addMusica(Music music) {
-        if (currentUser instanceof Musico) {
-            ArrayList<Music> musicianMusic = ((Musico) currentUser).getMusicas();
-            if (musicianMusic != null) {
-                validSongName(music.getTitle());
-            }
+        //Este if é irrelevante
+        if (!validSongName(music.getTitle())) {
+            return false;
         }
+        getCurrentUserAsMusician().addMusic(music);
         dados.getMusics().add(music);
+        System.out.println("adicionada nova musica");
+        saveDB();
+        System.out.println("gravado");
         return true;
     }
     public boolean addAlbum(Album album) {
-        if (currentUser instanceof Musico && dados != null) {
-            Musico musico = (Musico) currentUser;
-            if (musico.getAlbuns().stream().anyMatch(a -> a.getTitle().equalsIgnoreCase(album.getTitle()))) {
+        if (currentUser instanceof Musico) {
+            Musico musico = getCurrentUserAsMusician();
+            if (!validAlbumName(album.getTitle())) {
                 return false; // já existe um album c/ o mesmo titulo na lista de álbuns do músico
             }
-            System.out.println("adicionado");
             musico.addAlbum(album);
             dados.getAlbums().add(album);
+            System.out.println("adicionado novo album");
             saveDB();
+            System.out.println("gravado");
+
             return true;
         }
         return false; // O usuário atual não é um músico ou a lista de dados é nula
@@ -196,6 +199,8 @@ public class RockstarDB {
 
 
     //devolve vetor com os generos das musicas
+    ////////////////////////////ESTATISTICAS\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
     public int getTotalUsers(){
         if(dados.getUsers()!=null){
             return dados.getUsers().size();
@@ -282,7 +287,7 @@ public class RockstarDB {
 
     //verifica se existe um nome igual na lista de músicas
     public boolean validSongName(String nome){
-        if(currentUser instanceof Musico) {
+        if(currentUser instanceof Musico && getCurrentUserAsMusician().getMusicas() != null && nome != null && !nome.isEmpty()) {
             for (Music m : ((Musico) currentUser).getMusicas()) {
                 if (m.getTitle().equalsIgnoreCase(nome)) {
                     return false;
@@ -291,6 +296,18 @@ public class RockstarDB {
         }
         return true;
     }
+    public boolean validAlbumName(String nome){
+        if(currentUser instanceof Musico && getCurrentUserAsMusician().getMusicas() != null && nome != null && !nome.isEmpty()) {
+            for (Album a : ((Musico) currentUser).getAlbuns()) {
+                if (a.getTitle().equalsIgnoreCase(nome)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    //!= null para não dar null exception quando é um musico s/ musicas na sua lista.
+
 
     //falta método para calcular o valor total de músicas vendidas.
 
@@ -336,6 +353,62 @@ public class RockstarDB {
             }
         }
         return false; // Playlist não encontrada na tabela
+    }
+
+    public Musico getCurrentUserAsMusician() {
+        return (Musico) currentUser;
+    }
+
+    public RockStarDBStatus alterarPreco(String novoPreco, Music music) {
+        try{
+            double preco = Double.parseDouble(novoPreco);
+            music.alterarPreco(preco,music.getArtist());
+            saveDB();
+            return RockStarDBStatus.DB_MUSIC_PRICE_HAS_CHANGED;
+        } catch (NumberFormatException e){
+            return RockStarDBStatus.DB_INCORRET_FORMAT_NUMBER;
+        }
+    }
+
+    public RockStarDBStatus adicionarMusica(String escolhaGenero, String escolhaNome, String escolhaPreco) {
+        double valor = 0;
+        if(escolhaNome.isEmpty()){
+            return RockStarDBStatus.DB_MUSIC_NAME_EMPTY;
+        }else if(validSongName(escolhaNome)){
+            try{
+                valor = Double.parseDouble(escolhaPreco);
+            }
+            catch (NumberFormatException e){
+                return RockStarDBStatus.DB_INCORRET_FORMAT_NUMBER;
+            }
+        }
+        else if(!validSongName(escolhaNome)) return RockStarDBStatus.DB_MUSIC_NAME_FAILED;
+
+        Music newMusic = new Music(escolhaNome,getCurrentUserAsMusician(),escolhaGenero,valor);
+        addMusica(newMusic);
+        return RockStarDBStatus.DB_MUSIC_ADDED;
+    }
+
+    public RockStarDBStatus alterarNome(String escolhaNome, Music music) {
+        if(!validSongName(escolhaNome)){
+            return RockStarDBStatus.DB_MUSIC_NAME_FAILED;
+        }
+        else{
+            music.alterarTitulo(escolhaNome);
+            saveDB();
+            return RockStarDBStatus.DB_MUSIC_NAME_HAS_CHANGED;
+        }
+    }
+
+    public RockStarDBStatus criarAlbum(String escolhaNome, String escolhaGenero) {
+        Musico musico = getCurrentUserAsMusician();
+        if(!validAlbumName(escolhaNome)){
+            return RockStarDBStatus.DB_ALBUM_NAME_FAILED;
+        }
+        Album novoAlbum = new Album(escolhaNome,getCurrentUserAsMusician(),escolhaGenero);
+        addAlbum(novoAlbum);
+
+        return RockStarDBStatus.DB_ALBUM_NAME_HAS_CHANGED;
     }
 
     ////////////////////////////   \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\

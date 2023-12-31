@@ -1,5 +1,7 @@
 package ui.musician.popups;
 
+import data.Music;
+import domain.RockStarDBStatus;
 import ui.RockstarGUI;
 
 import javax.swing.*;
@@ -16,8 +18,12 @@ public class AlterarNome extends JDialog implements ActionListener{
     private JButton cancelButton;
     private int width = 300;
     private int height = 100;
-    public AlterarNome(RockstarGUI gui, JFrame parent) {
+    private Music music;
+    private RockstarGUI gui;
+    public AlterarNome(RockstarGUI gui, JFrame parent, Music music) {
         super(parent, "Alterar Nome", true);
+        this.music = music;
+        this.gui = gui;
 //SETTINGS DA JANELA////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         setSize(width,height);
@@ -54,13 +60,21 @@ public class AlterarNome extends JDialog implements ActionListener{
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == cancelButton){
+        if (e.getSource() == cancelButton) {
             dispose();// Fecha o pop-up.
+        } else if (e.getSource() == okButton) {
+            String escolhaNome = textField.getText();
+
+            RockStarDBStatus db = gui.getDb().alterarNome(escolhaNome,music);
+
+
+            if (db == RockStarDBStatus.DB_MUSIC_NAME_FAILED) {
+                JOptionPane.showMessageDialog(null, "Não foi possivel alterar o nome da música. Já existe uma música com esse nome. Por favor, escolha outro nome.");
+            } else if (db == RockStarDBStatus.DB_MUSIC_NAME_HAS_CHANGED) {
+                JOptionPane.showMessageDialog(null, "O nome foi atualizado para "+escolhaNome+ " com sucesso.");
+            }
         }
-        else if(e.getSource() == okButton){
-         String escolhaNome = textField.getText();
-         //
-         dispose(); // Fecha o pop-up.
-        }
+        dispose(); // Fecha o pop-up.
+
     }
 }

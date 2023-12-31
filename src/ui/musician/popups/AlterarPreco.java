@@ -1,11 +1,15 @@
 package ui.musician.popups;
 
+import data.Music;
+import domain.RockStarDBStatus;
 import ui.RockstarGUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import static domain.RockStarDBStatus.DB_MUSIC_PRICE_HAS_CHANGED;
 
 public class AlterarPreco extends JDialog implements ActionListener{
     private JPanel panelCenter;
@@ -16,8 +20,12 @@ public class AlterarPreco extends JDialog implements ActionListener{
     private JButton cancelButton;
     private int width = 300;
     private int height = 100;
-    public AlterarPreco(RockstarGUI gui, JFrame parent) {
+    private Music music;
+    RockstarGUI gui;
+    public AlterarPreco(RockstarGUI gui, JFrame parent, Music music) {
         super(parent, "Alterar Preço", true);
+        this.music = music;
+        this.gui = gui;
 //SETTINGS DA JANELA////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         setSize(width,height);
@@ -54,13 +62,19 @@ public class AlterarPreco extends JDialog implements ActionListener{
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == cancelButton){
+        if (e.getSource() == cancelButton) {
             dispose();// Fecha o pop-up.
+        } else if (e.getSource() == okButton) {
+            String escolhaPreco = textField.getText();
+            if (music != null) {
+                RockStarDBStatus test = gui.getDb().alterarPreco(escolhaPreco, music);
+                if (test == DB_MUSIC_PRICE_HAS_CHANGED) { // O preço da música foi atualizado com sucesso
+                    JOptionPane.showMessageDialog(null, "O nome da música foi atualizado para: " + escolhaPreco);
+                } else {// A alteração do preço falhou
+                    JOptionPane.showMessageDialog(null, "Operação incálida. Deverá inserir apenas o novo valor da Música.");
+                }
+            }
         }
-        else if(e.getSource() == okButton){
-         String escolhaPreco = textField.getText();
-         //
-         dispose(); // Fecha o pop-up.
-        }
+        dispose(); // Fecha o pop-up.
     }
 }

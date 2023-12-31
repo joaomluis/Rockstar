@@ -62,7 +62,6 @@ public class Music implements Serializable {
     public boolean alterarPreco(Double preco, User artista) {
         if (artista.equals(artist) && preco >= 0) {
             historicoPrice.add(new Price(preco));
-//            this.preco = preco;
             return true;
         }
         return false;

@@ -10,7 +10,7 @@ public class Musico extends User implements Serializable {
     private static final long serialVersionUID = 1325672347L;
 
     private String pin;
-    private ArrayList<Music> music = new ArrayList<>();
+    private ArrayList<Music> musics = new ArrayList<>();
     private ArrayList<Album> albuns = new ArrayList<>();
     public Musico(String username, String password, String pin) {
         super(username, password);
@@ -23,27 +23,17 @@ public class Musico extends User implements Serializable {
 
 
     public ArrayList<Music> getMusicas() {
-        return music;
+        return musics;
     }
     public ArrayList<Album> getAlbuns() {
-        //caso os albuns sejam null, cria um novo array
-        if(albuns == null){
-            albuns = new ArrayList<>();
-        }
         return albuns;
     }
     public String getPin() {
         return pin;
     }
     public void addMusic(Music music) {
-        if(this.music == null) {
-            this.music = new ArrayList<>();
-            System.out.println("add (Musico) Musicas do musico");
-        }
-        this.music.add(music);
-        for(Music m: this.music){
-            System.out.println(m);
-        }
+        musics.add(music);
+        System.out.println("add musica ao musicoMusicas");
     }
     public void addAlbum(Album album){
         albuns.add(album);
@@ -54,7 +44,4 @@ public class Musico extends User implements Serializable {
         return super.getUsername();
     }
 
-//    public void setAlbuns() {
-//        this.albuns = new ArrayList<>();
-//    }
 }

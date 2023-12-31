@@ -1,9 +1,14 @@
 package ui;
 
+import data.Album;
 import domain.RockstarDB;
 import ui.auth.*;
 import ui.client.*;
 import ui.musician.*;
+
+import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RockstarGUI {
 
@@ -134,10 +139,8 @@ public class RockstarGUI {
     public void updateBalance() {
         clientFrame.updateBalanceLabel();
     }
-    public void updateAlbums(){
-        musicianFrame.updateAlbumTable();
+
+    public FrameMusico getMusicianFrame() {
+        return musicianFrame;
     }
-
-
-
 }
