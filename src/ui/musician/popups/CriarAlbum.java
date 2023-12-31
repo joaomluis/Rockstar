@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 
 public class CriarAlbum extends JDialog implements ActionListener {
     private JPanel panelCenter;
@@ -79,8 +80,9 @@ public class CriarAlbum extends JDialog implements ActionListener {
             if (!gui.getDb().addAlbum(novaAlbum)) {
                 JOptionPane.showMessageDialog(null, "O nome do Album já existe na sua lista.");
             } else {
-                musico.addAlbum(novaAlbum);
-                gui.getDb().addAlbum(novaAlbum);
+
+                gui.getDb().addAlbum(novaAlbum); //chama o metodo do DB que por sua vez adiciona o album no musico e na DB.
+
                 dispose(); // Fecha o pop-up.
             }
         }

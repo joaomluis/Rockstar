@@ -18,7 +18,7 @@ public class MusicoMeusAlbuns extends JPanel implements ActionListener {
     public static final String TITLE = "MusicianAlbuns";
 
     private RockstarGUI gui;
-    private final Musico musician;
+    private Musico musician;
     private JPanel painelEast;
     private JScrollPane scrollPane;
     private JLabel titulo;
@@ -26,12 +26,13 @@ public class MusicoMeusAlbuns extends JPanel implements ActionListener {
     private DefaultTableModel tabelaDefault;
     private JTable tabela;
     private JButton criar;
+    private ArrayList<Album> albuns;
 
     public MusicoMeusAlbuns(RockstarGUI gui) {
         this.gui = gui;
         musician = (Musico) gui.getDb().getCurrentUser();
         setLayout(new BorderLayout());
-
+        this.albuns = new ArrayList<>();
 
 //        ////////////////////////////////////////PAINEL SUPERIOR////////////////////////////////////////////////////////
         painelSuperior = new JPanel(); // Inicializa o painel superior
@@ -59,12 +60,6 @@ public class MusicoMeusAlbuns extends JPanel implements ActionListener {
         tabelaDefault.addColumn("Nome");
         tabelaDefault.addColumn("Gênero");
         tabelaDefault.addColumn("Produtor");
-
-//        // Adiciona as músicas ao modelo de tabela
-//        for (Album album : albuns) {
-//            Object[] musicaObjeto = {album.getNome(), album.getGenero(), album.getProdutor()};
-//            tabelaDefault.addRow(musicaObjeto);
-//        }
 
         // Cria a tabela com o modelo
         tabela = new JTable(tabelaDefault);
@@ -99,55 +94,41 @@ public class MusicoMeusAlbuns extends JPanel implements ActionListener {
         add(scrollPane, BorderLayout.CENTER);
 
         setVisible(true);
+
+        carregarAlbunsDoMusico();
     }
 
     private void atualizarTabelaAlbuns() {
         // Limpar os dados existentes na tabela
         tabelaDefault.setRowCount(0);
-
         // Adicionar as músicas do músico à tabela
-        if (gui.getDb().getCurrentUser() instanceof Musico) {
-
-            ArrayList<Album> albuns = ((Musico) gui.getDb().getCurrentUser()).getAlbuns();
-
-            for (Album album : albuns) {
-                Object[] rowData = {album.getTitle(), album.getGenre()};
-                tabelaDefault.addRow(rowData);
-            }
+        for (Album album : albuns) {
+            Object[] rowData = {album.getTitle(), album.getGenre()};
+            tabelaDefault.addRow(rowData);
         }
-
         // Atualizar a exibição da tabela
         tabela.repaint();
     }
 
     public void carregarAlbunsDoMusico() {
-        // Limpar a lista de músicas
-        if (gui.getDb().getCurrentUser() instanceof Musico) {
-            ArrayList<Album> albuns = ((Musico) gui.getDb().getCurrentUser()).getAlbuns();
-
-            albuns.clear();
-
-            // Obter a lista de músicas do músico a partir do objeto RockStar
-            Musico musico = (Musico) gui.getDb().getCurrentUser();
-            ArrayList<Album> albunsDoMusico = musico.getAlbuns();
-
-            // Adicionar as músicas do músico à lista de músicas do MusicoMusicas
-            if (albunsDoMusico != null) {
-                albuns.addAll(albunsDoMusico);
-            }
-            // Atualizar a exibição da tabela de músicas
-            atualizarTabelaAlbuns();
+        // Limpar a lista de álbuns
+        albuns.clear();
+        // Obter a lista de álbuns do músico a partir do objeto RockStar
+        ArrayList<Album> albunsDoMusico = musician.getAlbuns();
+        // Adicionar os álbuns do músico à lista de álbuns do MusicoMusicas
+        if (albunsDoMusico != null) {
+            albuns.addAll(albunsDoMusico);
         }
+        // Atualizar a exibição da tabela de álbuns
+        atualizarTabelaAlbuns();
     }
 
     @Override
     public void actionPerformed (ActionEvent e){
-
         JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
         if (e.getSource() == criar) {
             new CriarAlbum(gui, parent);
             carregarAlbunsDoMusico();
-            atualizarTabelaAlbuns();
         }
     }
 }

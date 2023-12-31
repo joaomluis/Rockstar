@@ -47,7 +47,7 @@ public class MusicoEstatistica extends JPanel implements ActionListener {
         titulo.setForeground(new Color(255,255,255));
         add(titulo).setBounds(290, 5, 250, 30);
 
-    ////TOTAL DE UTILIZZADORES//////////////////////////////////////////////////////////////////////////////////////////
+        ////TOTAL DE UTILIZZADORES//////////////////////////////////////////////////////////////////////////////////////////
         totalUserInt = gui.getDb().getTotalUsers(); //igualar ao numero total de users
         numeroUserString = String.valueOf(totalUserInt);
         totalUser = new JLabel("Total de utilizadores: "+numeroUserString);
@@ -55,7 +55,7 @@ public class MusicoEstatistica extends JPanel implements ActionListener {
         totalUser.setFont(new Font("Arial", Font.BOLD, 15));
         add(totalUser).setBounds(150,100,200,35);
 
-    ////TOTAL DE MUSICOS////////////////////////////////////////////////////////////////////////////////////////////////
+        ////TOTAL DE MUSICOS////////////////////////////////////////////////////////////////////////////////////////////////
         totalMusicosInt = gui.getDb().getTotalMusician(); //igualar ao numero total de musicos
         numeroMusicosString = String.valueOf(totalMusicosInt);
         totalMusicos = new JLabel("Total de músicos: "+numeroMusicosString);
@@ -63,7 +63,7 @@ public class MusicoEstatistica extends JPanel implements ActionListener {
         totalMusicos.setFont(new Font("Arial", Font.BOLD, 15));
         add(totalMusicos).setBounds(totalUser.getX(),totalUser.getY()+20,500,35);
 
-    ////TOTAL DE MUSICAS////////////////////////////////////////////////////////////////////////////////////////////////
+        ////TOTAL DE MUSICAS////////////////////////////////////////////////////////////////////////////////////////////////
         totalMusicasInt = gui.getDb().getTotalSongs(); //igualar ao numero total de musicas
         numeroMusicasString = String.valueOf(totalMusicasInt);
         totalMusicas = new JLabel("Total de músicas: "+numeroMusicasString);
@@ -71,7 +71,7 @@ public class MusicoEstatistica extends JPanel implements ActionListener {
         totalMusicas.setFont(new Font("Arial", Font.BOLD, 15));
         add(totalMusicas).setBounds(totalUser.getX(),totalMusicos.getY()+20,500,35);
 
-    ////TOTAL DE ALBUNS/////////////////////////////////////////////////////////////////////////////////////////////////
+        ////TOTAL DE ALBUNS/////////////////////////////////////////////////////////////////////////////////////////////////
         totalAlbunsInt = gui.getDb().getTotaAlbums(); //igualar ao numero total de albuns
         numeroAlbunsString = String.valueOf(totalAlbunsInt);
         totalAlbuns = new JLabel("Total de albuns: "+numeroAlbunsString);
@@ -79,7 +79,7 @@ public class MusicoEstatistica extends JPanel implements ActionListener {
         totalAlbuns.setFont(new Font("Arial", Font.BOLD, 15));
         add(totalAlbuns).setBounds(totalUser.getX(),totalMusicas.getY()+20,500,35);
 
-    ////TOTAL DE ALBUNS POR GENERO//////////////////////////////////////////////////////////////////////////////////////
+        ////TOTAL DE ALBUNS POR GENERO//////////////////////////////////////////////////////////////////////////////////////
         totalAlbunsGenero = new JLabel("Total de albuns genero:");
         totalAlbunsGenero.setForeground(new Color(255,255,255));
         totalAlbunsGenero.setFont(new Font("Arial", Font.BOLD, 15));
@@ -93,7 +93,7 @@ public class MusicoEstatistica extends JPanel implements ActionListener {
         totalAlbunsGeneroCont.setBounds(totalUser.getX()+totalAlbunsGenero.getWidth()+genero.getWidth()+5,totalAlbunsGenero.getY(),100,35);
         add(totalAlbunsGeneroCont);
 
-    ////VALOR TOTAL DE MÚSICAS//////////////////////////////////////////////////////////////////////////////////////////
+        ////VALOR TOTAL DE MÚSICAS//////////////////////////////////////////////////////////////////////////////////////////
         valorTotalMusicasInt = 10; //igualar ao valor total de musicas
         valorTotalMusicasString = String.valueOf(valorTotalMusicasInt);
         valorTotalMusicas = new JLabel("Valor total de músicas: "+valorTotalMusicasString);
@@ -101,7 +101,7 @@ public class MusicoEstatistica extends JPanel implements ActionListener {
         valorTotalMusicas.setFont(new Font("Arial", Font.BOLD, 15));
         add(valorTotalMusicas).setBounds(totalUser.getX(),totalAlbunsGenero.getY()+20,500,35);
 
-    ////VALOR TOTAL DE MÚSICAS VENDIDAS/////////////////////////////////////////////////////////////////////////////////
+        ////VALOR TOTAL DE MÚSICAS VENDIDAS/////////////////////////////////////////////////////////////////////////////////
         valorTotalMusicasVendidasInt = gui.getDb().getTotalValueSongs(); //igualar ao valor total de musicas vendidas
         valorTotalMusicasVendidasString = String.valueOf(valorTotalMusicasVendidasInt);
         valorTotalMusicasVendidas = new JLabel("Valor total de músicas vendidas: "+valorTotalMusicasVendidasString);
@@ -109,7 +109,7 @@ public class MusicoEstatistica extends JPanel implements ActionListener {
         valorTotalMusicasVendidas.setFont(new Font("Arial", Font.BOLD, 15));
         add(valorTotalMusicasVendidas).setBounds(totalUser.getX(),valorTotalMusicas.getY()+20,500,35);
 
-    ////JANELA//////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////JANELA//////////////////////////////////////////////////////////////////////////////////////////////////////////
         setBackground(new Color(77, 24, 28));
         setVisible(true);
     }

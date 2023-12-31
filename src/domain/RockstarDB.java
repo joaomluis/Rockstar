@@ -180,12 +180,8 @@ public class RockstarDB {
             }
             System.out.println("adicionado");
             musico.addAlbum(album);
-            //dados.addAlbum(album);
+            dados.getAlbums().add(album);
             saveDB();
-            //
-            for(Album a: musico.getAlbuns()){
-                System.out.println(a);
-            }
             return true;
         }
         return false; // O usuário atual não é um músico ou a lista de dados é nula

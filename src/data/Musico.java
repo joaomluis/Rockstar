@@ -51,4 +51,8 @@ public class Musico extends User implements Serializable {
     public String toString() {
         return super.getUsername();
     }
+
+//    public void setAlbuns() {
+//        this.albuns = new ArrayList<>();
+//    }
 }

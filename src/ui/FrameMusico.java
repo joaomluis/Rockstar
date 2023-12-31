@@ -21,7 +21,7 @@ public class FrameMusico extends JFrame implements ActionListener {
     public static String TITLE = "Musico";
 
     private RockstarGUI gui;
-    private final Musico musician;
+    private Musico musician;
     private JPanel northPanel;
     private JLabel username;
     private JButton back;
