@@ -73,13 +73,14 @@ public class CriarAlbum extends JDialog implements ActionListener {
             dispose();// Fecha o pop-up.
         }
         else if (e.getSource() == okButton) {
+
             String escolhaGenero = (String) dropdown.getSelectedItem();
             String escolhaNome = textField.getText();
 
             RockStarDBStatus db = gui.getDb().criarAlbum(escolhaNome,escolhaGenero);
 
             if(db == RockStarDBStatus.DB_ALBUM_NAME_FAILED) JOptionPane.showMessageDialog(null, "Não foi possivel alterar o nome da Album. Já existe uma Album com esse nome. Por favor, escolha outro nome.");
-            else if(db == RockStarDBStatus.DB_ALBUM_NAME_HAS_CHANGED) JOptionPane.showMessageDialog(null, "O nome do album foi atualizado para "+escolhaNome);
+            else if(db == RockStarDBStatus.DB_ALBUM_NAME_HAS_CHANGED) JOptionPane.showMessageDialog(null, "O album "+escolhaNome+ " foi criado com sucesso.");
 
             dispose(); // Fecha o pop-up.
         }
