@@ -1,10 +1,12 @@
 package data;
 
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Musico extends User implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1325672347L;
 
     private String pin;
@@ -17,8 +19,8 @@ public class Musico extends User implements Serializable {
 
     public Musico() {
         super();
-        this.pin = "";
     }
+
 
     public ArrayList<Music> getMusicas() {
         return music;

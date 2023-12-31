@@ -14,6 +14,10 @@ public class Rating implements Serializable {
         this.cliente = cliente;
         this.data = LocalDate.now();
     }
+
+    public Rating() {
+    }
+
     //** Getters ***/
     /**
      * Geter para avaliação

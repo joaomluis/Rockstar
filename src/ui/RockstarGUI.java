@@ -31,6 +31,10 @@ public class RockstarGUI {
         return db;
     }
 
+    public MyPlaylists getMyPlaylists() {
+        return clientFrame.getMyPlaylists();
+    }
+
     /////////////////////METODOS PARA ABRIR PAINEIS AUTENTICAÇÃO\\\\\\\\\\\\\\\\\\\\\
     public void showMainMenu() {
         authenticationFrame.showPanel(MenuInicial.TITLE);
@@ -133,4 +137,7 @@ public class RockstarGUI {
     public void updateAlbums(){
         musicianFrame.updateAlbumTable();
     }
+
+
+
 }

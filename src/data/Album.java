@@ -17,6 +17,10 @@ public class Album implements Serializable {
         this.genre = genre;
         this.music = new ArrayList<>();
     }
+
+    public Album() {
+    }
+
     public ArrayList<Music> getMusicas(){
         return music;
     }

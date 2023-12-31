@@ -79,7 +79,7 @@ public class CriarAlbum extends JDialog implements ActionListener {
             if (!gui.getDb().addAlbum(novaAlbum)) {
                 JOptionPane.showMessageDialog(null, "O nome do Album já existe na sua lista.");
             } else {
-                musico.addAlbum(novaAlbum);
+                musico.addAlbum(novaAlbum); // isto não está redundante ? já faz parte do metodo em baixo
                 gui.getDb().addAlbum(novaAlbum);
                 dispose(); // Fecha o pop-up.
             }

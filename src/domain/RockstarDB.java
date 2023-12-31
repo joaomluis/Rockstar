@@ -2,6 +2,8 @@ package domain;
 
 import data.*;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +77,10 @@ public class RockstarDB {
 
     public User getCurrentUser() {
         return currentUser;
+    }
+
+    public Cliente getCurrentUserAsClient() {
+        return (Cliente) getCurrentUser();
     }
 
     public void updateUser(User user) {
@@ -291,5 +297,52 @@ public class RockstarDB {
     }
 
     //falta método para calcular o valor total de músicas vendidas.
+
+
+    ///////////////////////////PLAYLISTS\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    public boolean addPlaylist (Playlist playlist) {
+        if (currentUser instanceof Cliente){
+            Cliente cliente = getCurrentUserAsClient();
+
+            if (cliente.getPlaylists().stream().anyMatch(p -> p.getNome().equalsIgnoreCase(playlist.getNome()))) {
+                return false;
+            }
+            cliente.addPlaylistToClient(playlist);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean adicionarElementosTabela(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        Cliente cliente = getCurrentUserAsClient();
+        List<Playlist> playlistCliente = cliente.getPlaylists();
+
+        try {
+            for (Playlist playlist : playlistCliente) {
+                Object[] row = {playlist.getNome(), playlist.isVisibilidade()};
+                if (!existePlaylistNaTabela(model, playlist)) {
+                    model.addRow(row);
+                }
+            }
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    private boolean existePlaylistNaTabela(DefaultTableModel model, Playlist playlist) {
+        for (int row = 0; row < model.getRowCount(); row++) {
+            if (model.getValueAt(row, 0).equals(playlist.getNome())) {
+                return true; // Playlist já existe na tabela
+            }
+        }
+        return false; // Playlist não encontrada na tabela
+    }
+
+    ////////////////////////////   \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 }
 
