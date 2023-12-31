@@ -1,11 +1,8 @@
 package ui.musician;
 
 
-import data.Album;
-import data.Cliente;
 import data.Music;
 import data.Musico;
-import ui.FrameMusico;
 import ui.RockstarGUI;
 import ui.musician.popups.AdicionarMusica;
 import ui.musician.popups.AlterarDisponibilidade;
@@ -20,6 +17,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MusicoMusicas extends JPanel implements ActionListener, MouseListener {
 
@@ -154,22 +153,42 @@ public class MusicoMusicas extends JPanel implements ActionListener, MouseListen
         // Atualizar a exibição da tabela de álbuns
         atualizarTabelaMusicas();
     }
-    private ArrayList<Music> ordenarMusicasPorNome() {
-        ArrayList<Music> musicasOrdenadas = new ArrayList<>();
+    private ArrayList<Music> ordenarMusicas(MusicoOrdenadores mo) {
+        if (musics.isEmpty()) {
+            return new ArrayList<>(); // Não há nada para ordenar ou exibir na tabela
+        }
 
-        // Algoritmo de ordenação (bubble sort) para ordenar as músicas pelo título
+        ArrayList<Music> musicasOrdenadas = new ArrayList<>(musics); //O array será do mesmo tamanho do original (musicas)
+
         for (int i = 0; i < musicasOrdenadas.size() - 1; i++) {
             for (int j = 0; j < musicasOrdenadas.size() - i - 1; j++) {
-                // Comparar os títulos das músicas e trocar se estiverem fora de ordem
-                if (musicasOrdenadas.get(j).getTitle().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getTitle()) > 0) {
-                    Music temp = musicasOrdenadas.get(j);
-                    musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
-                    musicasOrdenadas.set(j + 1, temp);
+                if(mo == MusicoOrdenadores.NAME) {
+                    // Comparar os títulos das músicas e trocar se estiverem fora de ordem
+                    if (musicasOrdenadas.get(j).getTitle().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getTitle()) > 0) {
+                        Music temp = musicasOrdenadas.get(j);
+                        musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
+                        musicasOrdenadas.set(j + 1, temp);
+                    }
+                }
+                else if(mo == MusicoOrdenadores.GENRE){
+                    // Comparar os títulos das músicas e trocar se estiverem fora de ordem
+                    if (musicasOrdenadas.get(j).getGenre().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getGenre()) > 0) {
+                        Music temp = musicasOrdenadas.get(j);
+                        musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
+                        musicasOrdenadas.set(j + 1, temp);
+                    }
+                }
+                else if(mo == MusicoOrdenadores.VISIBILITY){
+                    musics.sort(Comparator.comparing(Music::isVisibilidade).reversed());
+                }
+                else if(mo == MusicoOrdenadores.PRICE){
+                    Collections.sort(musics, Comparator.comparingDouble(Music::getPreco));
                 }
             }
         }
         return musicasOrdenadas;
     }
+
 
 
     @Override
@@ -215,7 +234,7 @@ public class MusicoMusicas extends JPanel implements ActionListener, MouseListen
                 // Obter a música correta com base no índice selecionado na tabela ordenada
                 int modelRow = tabela.convertRowIndexToModel(selectedRow);
                 Music musicaSelecionada = musics.get(modelRow);
-                new AlterarDisponibilidade(gui.getMusicianFrame(), musicaSelecionada);
+                new AlterarDisponibilidade(gui, gui.getMusicianFrame(), musicaSelecionada);
             }
             else JOptionPane.showMessageDialog(MusicoMusicas.this, "Nenhuma música selecionada.");
             carregarMusicasDoMusico();
@@ -226,13 +245,27 @@ public class MusicoMusicas extends JPanel implements ActionListener, MouseListen
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() == tabela.getTableHeader()) {
-            int columnIndex = tabela.getColumnModel().getColumnIndexAtX(e.getX());
-            if (columnIndex == 0) {
-                musics = ordenarMusicasPorNome();
-                atualizarTabelaMusicas();
+            int columnIndex = tabela.columnAtPoint(e.getPoint()); // Obtém o índice da coluna clicada
+            if (columnIndex == 0) { // Verifica se o clique foi na primeira coluna (Título)
+                musics = ordenarMusicas(MusicoOrdenadores.NAME); // Ordena as músicas pelo título
+                atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
+            }
+            else if (columnIndex == 1) { // Verifica se o clique foi na primeira coluna (Genero)
+                musics = ordenarMusicas(MusicoOrdenadores.GENRE); // Ordena as músicas pelo título
+                atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
+            }
+            else if (columnIndex == 2) { // Verifica se o clique foi na primeira coluna (Genero)
+                musics = ordenarMusicas(MusicoOrdenadores.PRICE); // Ordena as músicas pelo título
+                atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
+            }
+            else if (columnIndex == 3) { // Verifica se o clique foi na primeira coluna (Genero)
+                musics = ordenarMusicas(MusicoOrdenadores.VISIBILITY); // Ordena as músicas pelo título
+                atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
             }
         }
     }
+
+
 
     @Override
     public void mousePressed(MouseEvent e) {

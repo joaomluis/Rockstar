@@ -411,6 +411,18 @@ public class RockstarDB {
         return RockStarDBStatus.DB_ALBUM_NAME_HAS_CHANGED;
     }
 
+    public RockStarDBStatus alterarDisponibilidade(Music music, boolean visibilidade) {
+        //Verificação do nome de Musico é o mesmo que o do artista da música.
+        if(music.getArtist().getUsername().equals(getCurrentUserAsMusician().getUsername())){
+            music.setVisibilidade(visibilidade);
+            saveDB();
+            return RockStarDBStatus.DB_MUSIC_VISIBILITY_CHANGED;
+        }else{
+            return RockStarDBStatus.DB_MUSIC_VISIBILITY_FAIL;
+        }
+    }
+
+
     ////////////////////////////   \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 }

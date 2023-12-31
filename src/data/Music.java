@@ -85,9 +85,7 @@ public class Music implements Serializable {
     public boolean isVisibilidade() {
         return visibilidade;
     }
-    public void alterarVisibilidade() {
-        this.visibilidade = !visibilidade;
-    }
+
     public void setVisibilidade(boolean visibilidade) {
         this.visibilidade = visibilidade;
     }

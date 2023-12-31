@@ -2,6 +2,8 @@ package ui.musician.popups;
 
 
 import data.Music;
+import domain.RockStarDBStatus;
+import domain.RockstarDB;
 import ui.RockstarGUI;
 
 import javax.swing.*;
@@ -19,10 +21,12 @@ public class AlterarDisponibilidade extends JDialog implements ActionListener{
     private int width = 300;
     private int height = 100;
     private Music music;
-    public AlterarDisponibilidade(JFrame parent, Music music) {
+    private RockstarGUI gui;
+    public AlterarDisponibilidade(RockstarGUI gui, JFrame parent, Music music) {
         super(parent, "Alterar Disponibilidade", true);
         this.music = music;
-        //this.musica = musica;
+        this.gui = gui;
+
 //SETTINGS DA JANELA////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         setSize(width,height);
@@ -67,7 +71,13 @@ public class AlterarDisponibilidade extends JDialog implements ActionListener{
 
             if(escolhaEstado.equals("Disponivel"))  visibilidade= true;
             else if(escolhaEstado.equals("Indisponível")) visibilidade = false;
-            music.setVisibilidade(visibilidade);
+
+
+            RockStarDBStatus db = gui.getDb().alterarDisponibilidade(music,visibilidade);
+
+            if(db == RockStarDBStatus.DB_MUSIC_VISIBILITY_CHANGED) JOptionPane.showMessageDialog(null,"Alterou a visibilidade da sua música com sucesso.");
+            else if(db == RockStarDBStatus.DB_MUSIC_VISIBILITY_FAIL) JOptionPane.showMessageDialog(null, "Não foi possivel fazer a alteração de visibilidade.");
+            else JOptionPane.showMessageDialog(null, "Algo correu mal.");
             dispose(); // Fecha o pop-up.
         }
     }
