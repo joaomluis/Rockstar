@@ -1,15 +1,9 @@
 package ui;
 
-import data.Album;
-import data.Playlist;
 import domain.RockstarDB;
 import ui.auth.*;
 import ui.client.*;
 import ui.musician.*;
-
-import javax.swing.table.DefaultTableModel;
-import java.util.ArrayList;
-import java.util.List;
 
 public class RockstarGUI {
 
@@ -119,20 +113,27 @@ public class RockstarGUI {
 
     public void showMusicianSongs() {
         musicianFrame.showPanelMusician(MusicoMusicas.TITLE);
+        musicianFrame.setCurrentPanel(musicianFrame.getMusicoMusicas());
+
     }
     public void showMusicianAlbuns() {
         musicianFrame.showPanelMusician(MusicoMeusAlbuns.TITLE);
+        musicianFrame.setCurrentPanel(musicianFrame.getMusicoMeusAlbuns());
+
     }
     public void showMusicianStats() {
         musicianFrame.showPanelMusician(MusicoEstatistica.TITLE);
+        musicianFrame.setCurrentPanel(musicianFrame.getMusicoEstatistica());
     }
 
     public void showMusicianSearch() {
         musicianFrame.showPanelMusician(MusicoPesquisa.TITLE);
+        musicianFrame.setCurrentPanel(musicianFrame.getMusicoPesquisa());
     }
 
     public void showMusicianMainMenu() {
         musicianFrame.showPanelMusician(MusicoMenuInicial.TITLE);
+        musicianFrame.setCurrentPanel(musicianFrame.getMusicoMenuInicial());
     }
 
     /**

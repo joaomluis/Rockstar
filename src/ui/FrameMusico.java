@@ -33,10 +33,12 @@ public class FrameMusico extends JFrame implements ActionListener {
     private MusicoMeusAlbuns musicoMeusAlbuns;
     private MusicoEstatistica musicoEstatistica;
     private MusicoPesquisa musicoPesquisa;
+    private JPanel currentPanel;
 
     public FrameMusico(RockstarGUI gui){
         this.gui = gui;
         musician = (Musico) gui.getDb().getCurrentUser();
+        currentPanel = new JPanel();
     }
 
     public void start() {
@@ -109,11 +111,48 @@ public class FrameMusico extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    public void setCurrentPanel(JPanel currentPanel) {
+        this.currentPanel = currentPanel;
+    }
+
+    public static String getTITLE() {
+        return TITLE;
+    }
+
+    public MusicoMenuInicial getMusicoMenuInicial() {
+        return musicoMenuInicial;
+    }
+
+    public MusicoMusicas getMusicoMusicas() {
+        return musicoMusicas;
+    }
+
+    public MusicoMeusAlbuns getMusicoMeusAlbuns() {
+        return musicoMeusAlbuns;
+    }
+
+    public MusicoEstatistica getMusicoEstatistica() {
+        return musicoEstatistica;
+    }
+
+    public MusicoPesquisa getMusicoPesquisa() {
+        return musicoPesquisa;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==home){
             gui.showMusicianMainMenu();
+        }
+        else if(e.getSource()==back){
+            if(
+                    currentPanel == musicoMeusAlbuns    ||
+                    currentPanel == musicoMusicas       ||
+                    currentPanel == musicoPesquisa      ||
+                    currentPanel == musicoEstatistica
+            ){
+                    gui.showMusicianMainMenu();
+            }
         }
     }
 
