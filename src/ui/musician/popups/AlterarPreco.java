@@ -19,7 +19,7 @@ public class AlterarPreco extends JDialog implements ActionListener{
     private JButton okButton;
     private JButton cancelButton;
     private int width = 300;
-    private int height = 100;
+    private int height = 150;
     private Music music;
     RockstarGUI gui;
     public AlterarPreco(RockstarGUI gui, JFrame parent, Music music) {
@@ -63,6 +63,7 @@ public class AlterarPreco extends JDialog implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == cancelButton) {
+
             dispose();// Fecha o pop-up.
         } else if (e.getSource() == okButton) {
             String escolhaPreco = textField.getText();

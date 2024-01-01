@@ -16,7 +16,6 @@ public class MainMenu extends JPanel implements ActionListener {
     RockstarGUI gui;
     private final Cliente client;
 
-    private JButton searchMusic;
     private JButton myMusic;
     private JButton myPlaylists;
     private JButton createPlaylist;
@@ -37,21 +36,11 @@ public class MainMenu extends JPanel implements ActionListener {
         title.setText("Welcome to RockStar");
         title.setForeground(new Color(198,107,61));
         title.setFont(new Font("Arial", Font.BOLD, 33));
-        title.setBounds(180, 15, 400, 40);
-
-        //botão para pesquisar músicas
-        searchMusic = new JButton();
-        searchMusic.setBounds(213, title.getY() + 65, 280, 35);
-        searchMusic.setForeground(Color.black);
-        searchMusic.setFont(new Font("Arial", Font.BOLD, 15));
-        searchMusic.setText("Pesquisar");
-        searchMusic.setFocusable(false);
-        searchMusic.addActionListener(this);
-
+        title.setBounds(180, 35, 400, 40);
 
         //botão para aceder ao menu das músicas do cliente
         myMusic = new JButton();
-        myMusic.setBounds(213, title.getY() + 115, 280, 35);
+        myMusic.setBounds(213, title.getY() + 90, 280, 35);
         myMusic.setForeground(Color.black);
         myMusic.setFont(new Font("Arial", Font.BOLD, 15));
         myMusic.setText("Minhas músicas");
@@ -103,7 +92,6 @@ public class MainMenu extends JPanel implements ActionListener {
         logOut.setFocusable(false);
         logOut.addActionListener(this);
 
-        add(searchMusic);
         add(title);
         add(store);
         add(myMusic);
@@ -132,9 +120,6 @@ public class MainMenu extends JPanel implements ActionListener {
         }
         if (e.getSource() == purchaseHistory) {
             gui.showPurchaseHistory();
-        }
-        if (e.getSource() == searchMusic) {
-            gui.showClientSearch();
         }
         if (e.getSource() == logOut) {
             gui.getDb().logOut();

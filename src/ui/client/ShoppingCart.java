@@ -21,6 +21,7 @@ public class ShoppingCart extends JPanel implements ActionListener {
     private JTable purchaseTable;
     private DefaultTableModel tableModel;
     private JButton confirmPurchase;
+    private JButton removePurchase;
     private JLabel panelTitle;
 
 
@@ -84,20 +85,27 @@ public class ShoppingCart extends JPanel implements ActionListener {
         eastPanel.setPreferredSize(new Dimension(150, 0));
         eastPanel.setLayout(null);
 
-        //botão de remover músicas das adquiridas
+        //botão para confirmar a compra
         confirmPurchase = new JButton();
         confirmPurchase.setText("Comprar"); //colocar um pop up a dizer o preço total e confirmar compra?
         confirmPurchase.setBounds(0, 150, 120, 35);
         confirmPurchase.setFocusable(false);
         confirmPurchase.addActionListener(this);
 
+        //botão para remover musica da lista
+        removePurchase = new JButton();
+        removePurchase.setText("Remover");
+        removePurchase.setBounds(0, confirmPurchase.getY() + 50, 120, 35);
+        removePurchase.setFocusable(false);
+        removePurchase.addActionListener(this);
+
         eastPanel.add(confirmPurchase);
+        eastPanel.add(removePurchase);
 
         add(eastPanel, BorderLayout.EAST);
 
         gui.getDb().addAllSongsInCartToTable(purchaseTable);
 
-        System.out.println(gui.getDb().getCurrentUserAsClient().getSongsInCart().size());
         atualizarTabelaMusicasCarrinho();
     }
 
@@ -114,6 +122,17 @@ public class ShoppingCart extends JPanel implements ActionListener {
         JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
         if (e.getSource() == confirmPurchase) {
             new ConfirmPurchase(gui, parent);
+        } else if (e.getSource() == removePurchase) {
+            int selectedRow = purchaseTable.getSelectedRow();
+            if (selectedRow != -1) {
+                // Remove da tabela
+                tableModel.removeRow(selectedRow);
+                gui.getDb().getCurrentUserAsClient().getSongsInCart().remove(selectedRow);
+                gui.getDb().saveCurrentUser();
+                confirmPurchase.setEnabled(true); // faz com que o botão de avaliar não fique disabled após remover uma música
+            } else {
+                JOptionPane.showMessageDialog(this, "Selecione uma música para remover do carrinho.");
+            }
         }
     }
 }

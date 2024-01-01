@@ -7,14 +7,16 @@ import java.util.List;
 public class Cliente extends User implements Serializable {
     private static final long serialVersionUID = 1325672347L;
     private double saldo;
-    private List<Playlist> playlists = new ArrayList<>();
-    private List<Music> songsInCart = new ArrayList<>();
+    private List<Playlist> playlists;
+    private List<Music> songsInCart;
+    private List<Music> songsOwned;
 
     public Cliente(String username, String password) {
         super(username, password);
         saldo = 0.00;
         this.playlists = new ArrayList<>();
         this.songsInCart = new ArrayList<>();
+        this.songsOwned = new ArrayList<>();
     }
 
     public Cliente() {
@@ -26,17 +28,15 @@ public class Cliente extends User implements Serializable {
     }
 
     public List<Music> getSongsInCart() {
-        if (songsInCart == null) {
-            songsInCart = new ArrayList<>();
-        }
         return songsInCart;
     }
 
     public List<Playlist> getPlaylists() {
-        if (playlists == null){
-            playlists = new ArrayList<>();
-        }
         return playlists;
+    }
+
+    public List<Music> getSongsOwned() {
+        return songsOwned;
     }
 
     public boolean adicionaSaldo(double valor){

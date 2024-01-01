@@ -17,7 +17,7 @@ public class AlterarDisponibilidade extends JDialog implements ActionListener{
     private JButton okButton;
     private JButton cancelButton;
     private int width = 300;
-    private int height = 100;
+    private int height = 150;
     private Music music;
     public AlterarDisponibilidade(JFrame parent, Music music) {
         super(parent, "Alterar Disponibilidade", true);
@@ -31,6 +31,7 @@ public class AlterarDisponibilidade extends JDialog implements ActionListener{
 //CRIAR BOTÕES//////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         okButton = new JButton("OK");
+        okButton.addActionListener(this);
         cancelButton = new JButton("Cancelar");
         estado = new JLabel("Disponibilidade:");
         disponibilidade = new JComboBox<>(new String[]{"Disponivel","Indisponível"});

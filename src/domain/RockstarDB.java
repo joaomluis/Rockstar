@@ -177,7 +177,7 @@ public class RockstarDB {
             return false;
         }
         getCurrentUserAsMusician().addMusic(music);
-        dados.getMusics().add(music);
+        dados.getSongs().add(music);
         System.out.println("adicionada nova musica");
         saveDB();
         System.out.println("gravado");
@@ -224,7 +224,7 @@ public class RockstarDB {
         return -1;
     }
     public int getTotalSongs() {
-        List<Music> musics = dados.getMusics();
+        List<Music> musics = dados.getSongs();
         if (musics != null) {
             return musics.size();
         } else {
@@ -241,8 +241,8 @@ public class RockstarDB {
     }
     public double getTotalValueSongs() {
         double valorTotalMusicas = 0;
-        if(dados.getMusics() != null){
-            for(Music m : dados.getMusics()){
+        if(dados.getSongs() != null){
+            for(Music m : dados.getSongs()){
                 valorTotalMusicas += m.getPreco();
             }
             return valorTotalMusicas;
@@ -368,12 +368,16 @@ public class RockstarDB {
     ///////////////////////////LOJA\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     public void addAllRockstarSongsToTable(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        List<Music> musicasPlataforma = dados.getMusics();
+        List<Music> musicasPlataforma = dados.getSongs();
 
         for (Music song : musicasPlataforma) {
-            Object[] row = {song.getTitle(), song.getArtist(), song.getGenre(),String.format("%1$,.2f€", song.getPreco())};
-            if(!existeMusicaNaTabela(model, song)) {
-                model.addRow(row);
+            System.out.println(song);
+            if(song.isVisibilidade()) {
+
+                Object[] row = {song.getTitle(), song.getArtist(), song.getGenre(),String.format("%1$,.2f€", song.getPreco())};
+                if(!existeMusicaNaTabela(model, song)) {
+                    model.addRow(row);
+                }
             }
         }
     }
@@ -389,9 +393,51 @@ public class RockstarDB {
 
     //////////////////////////////////CARRINHO\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-    public void addSongToCart(Music song) {
-        getCurrentUserAsClient().getSongsInCart().add(song);
+    public RockStarDBStatus addSongToCart(Music song) {
+        List<Music> songsInCart = getCurrentUserAsClient().getSongsInCart();
+
+        for (Music music : songsInCart) {
+            if (isSongOnCart(song)) {
+                return RockStarDBStatus.DB_SONG_ALREADY_IN_CART;
+            } else if (isSongAlreadyOwned(song)) {
+                return RockStarDBStatus.DB_SONG_ALREADY_BOUGHT;
+            }
+        }
+        return RockStarDBStatus.DB_SONG_ADDED_TO_CART;
     }
+
+    /**
+     * Compara o nome e autor da música que se quer adicionar ao carrinho com as musicas que
+     * já estão na ArrayList do carrinho do cliente
+     * @param song
+     * @return true se a música verificada já se encontra na ArrayList do carrinho, false se não.
+     */
+    private boolean isSongOnCart (Music song) {
+        List<Music> songsInCart = getCurrentUserAsClient().getSongsInCart();
+        for (Music music : songsInCart) {
+            if (music.getTitle().equals(song.getTitle()) && music.getArtist().equals(song.getArtist())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Compara o nome e autor da música que se quer adicionar ao carrinho com as músicas que
+     * já estão na ArrayList das músicas que já pertencem ao cliente
+     * @param song
+     * @return true se a música verificada já se encontra na ArrayList de músicas ja compradas, false se não.
+     */
+    private boolean isSongAlreadyOwned(Music song) {
+        List<Music> songsOwned = getCurrentUserAsClient().getSongsOwned();
+        for (Music music : songsOwned) {
+            if (music.getTitle().equals(song.getTitle()) && music.getArtist().equals(song.getArtist())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public void addAllSongsInCartToTable(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();

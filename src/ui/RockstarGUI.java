@@ -114,9 +114,6 @@ public class RockstarGUI {
         clientFrame.showPanelClient(MainMenu.TITLE);
     }
 
-    public void showClientSearch() {
-        clientFrame.showPanelClient(Search.TITLE);
-    }
 
     /////////////////////METODOS PARA ABRIR PAINEIS MUSICO\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 

@@ -2,7 +2,7 @@ package ui.client;
 
 import data.Cliente;
 import data.Music;
-import data.Purchase;
+import domain.RockStarDBStatus;
 import ui.RockstarGUI;
 import ui.client.popups.AddBalance;
 
@@ -25,6 +25,9 @@ public class Store extends JPanel implements ActionListener {
     private JButton buySong;
     private JButton addBalance;
     private JLabel panelTitle;
+    private JTextField barraPesquisa;
+    private JComboBox<String> dropdown;
+    private JButton pesquisar;
 
     public Store(RockstarGUI gui) {
         this.gui = gui;
@@ -37,7 +40,7 @@ public class Store extends JPanel implements ActionListener {
         ///////////Painel Superior\\\\\\\\\\\\\\\\\\\\\\\\\\\
         topPanel = new JPanel();
         topPanel.setBackground(new Color(20, 64, 88));
-        topPanel.setPreferredSize(new Dimension(0, 40));
+        topPanel.setPreferredSize(new Dimension(0, 95));
         topPanel.setLayout(null);
 
         //Titulo do Painel
@@ -45,9 +48,26 @@ public class Store extends JPanel implements ActionListener {
         panelTitle.setText("Loja");
         panelTitle.setFont(new Font("Arial", Font.BOLD, 22));
         panelTitle.setForeground(new Color(198, 107, 61));
-        panelTitle.setBounds(250, 5, 250, 30);
+        panelTitle.setBounds(275, 5, 250, 30);
+
+        //Dropdown
+        dropdown = new JComboBox<>(new String[]{"Nome", "Género"});
+        dropdown.setBounds(30, panelTitle.getY() + 45, 200, 35);
+
+        // Barra pesquisa
+        barraPesquisa = new JTextField();
+        barraPesquisa.setBounds(dropdown.getX()+ 225,dropdown.getY(),240,35);
+        // botão pesquisar
+        pesquisar = new JButton();
+        pesquisar.setText("Pesquisar");
+        pesquisar.setFocusable(false);
+        pesquisar.setBounds(barraPesquisa.getX() + 280, barraPesquisa.getY(), 120, 35);
+
 
         topPanel.add(panelTitle);
+        topPanel.add(dropdown);
+        topPanel.add(barraPesquisa);
+        topPanel.add(pesquisar);
 
         add(topPanel, BorderLayout.NORTH);
 
@@ -92,14 +112,14 @@ public class Store extends JPanel implements ActionListener {
 
         //botão para comprar músicas
         buySong = new JButton();
-        buySong.setText("Comprar");
+        buySong.setText("Add Carrinho");
         buySong.setBounds(0, 150, 120, 35);
         buySong.setFocusable(false);
         buySong.addActionListener(this);
 
         //botão para adicionar saldo
         addBalance = new JButton();
-        addBalance.setText("Adicionar Saldo");
+        addBalance.setText("Add Saldo");
         addBalance.setBounds(0, buySong.getY() + 50, 120, 35);
         addBalance.setFocusable(false);
         addBalance.addActionListener(this);
@@ -117,21 +137,23 @@ public class Store extends JPanel implements ActionListener {
         if (e.getSource() == buySong) {
             int selectedRow = storeTable.getSelectedRow();
             if (selectedRow != -1) {
-                // Obtenha os detalhes da música selecionada
-//                String title = (String) tableModel.getValueAt(selectedRow, 0);
-//                Musico artist = (Musico) tableModel.getValueAt(selectedRow, 1);
-//                String genero = (String) tableModel.getValueAt(selectedRow, 2);
-//                String preco = (String) tableModel.getValueAt(selectedRow, 3);
+
                 int modelRow = storeTable.convertRowIndexToModel(selectedRow);
-                Music musicaSelecionada = gui.getDb().getDados().getMusics().get(modelRow);
-                gui.getDb().addSongToCart(musicaSelecionada);
-                gui.getDb().saveCurrentUser();
+                Music musicaSelecionada = gui.getDb().getDados().getSongs().get(modelRow);
+
+                RockStarDBStatus status = gui.getDb().addSongToCart(musicaSelecionada);
+                if (status == RockStarDBStatus.DB_SONG_ALREADY_IN_CART) {
+                    JOptionPane.showMessageDialog(null, "Já adicionou essa música ao carrinho");
+                } else if (status == RockStarDBStatus.DB_SONG_ADDED_TO_CART) {
+                    gui.getDb().getCurrentUserAsClient().getSongsInCart().add(musicaSelecionada);
+                    gui.getDb().saveCurrentUser();
+                    JOptionPane.showMessageDialog(null, "Música adicionada ao carrinho com sucesso");
+                } else if (status == RockStarDBStatus.DB_SONG_ALREADY_BOUGHT){
+                    JOptionPane.showMessageDialog(null, "Música já foi comprada");
+                }
 
                 gui.getShoppingCart().atualizarTabelaMusicasCarrinho();
 
-                System.out.println(gui.getDb().getCurrentUserAsClient().getSongsInCart().size());
-
-                //Purchase novaCompra = new Purchase(gui.getDb().getCurrentUserAsClient(), musicaSelecionada, musicaSelecionada.getPreco());
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma música para comprar.");
             }

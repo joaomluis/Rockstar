@@ -11,16 +11,16 @@ public class RockstarModel implements Serializable {
     private static final long serialVersionUID = 12565672347L;
 
     private final List<User> users;
-    private final List<Music> musics;
+    private final List<Music> songs;
     private final List<Album> albums;
     public RockstarModel() {
         this.users = new ArrayList<>();
-        this.musics = new ArrayList<>();
+        this.songs = new ArrayList<>();
         this.albums = new ArrayList<>();
     }
     public RockstarModel(List<User> users, List<Music> musics, List<Album> albums) {
         this.users = users;
-        this.musics = musics != null ? musics : new ArrayList<>();
+        this.songs = musics != null ? musics : new ArrayList<>();
         this.albums = albums;
     }
 
@@ -42,8 +42,8 @@ public class RockstarModel implements Serializable {
         }
     }
 
-    public List<Music> getMusics() {
-        return musics;
+    public List<Music> getSongs() {
+        return songs;
     }
 
     public List<Album> getAlbums() {
