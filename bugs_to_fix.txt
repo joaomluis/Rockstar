@@ -1,2 +1,17 @@
 - Corrigir interface depois do log out, fica tudo desconfigurado
 - colocar uma condição para impedir que se faça log in de cliente com dados de user do tipo músico
+
+
+com as musicas no carrinho de compras ao confirmar a compra elas são convertidas em Objeto compra, passam para a array list de musicas do cliente
+e limpa-se a array list do carrinho
+
+fazer um loop com musica e conv
+
+for musica musica : carrinho
+novaCompra = new Compra(getUser, musica, preço)
+
+getArrayCompras.add(novaCompra);
+
+getArrayMusicasCliente.add(novaCompra.getSong)
+
+carrinho.remove(musica);

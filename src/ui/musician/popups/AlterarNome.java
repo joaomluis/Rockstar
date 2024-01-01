@@ -17,7 +17,7 @@ public class AlterarNome extends JDialog implements ActionListener{
     private JButton okButton;
     private JButton cancelButton;
     private int width = 300;
-    private int height = 100;
+    private int height = 150;
     private Music music;
     private RockstarGUI gui;
     public AlterarNome(RockstarGUI gui, JFrame parent, Music music) {

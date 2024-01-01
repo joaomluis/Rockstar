@@ -2,7 +2,9 @@ package ui.client;
 
 
 import data.Cliente;
+import data.Music;
 import data.Playlist;
+import ui.ClientRootFrame;
 import ui.RockstarGUI;
 import ui.client.popups.MakePlaylist;
 
@@ -14,7 +16,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+
 
 
 public class MyPlaylists extends JPanel implements ActionListener {
@@ -152,9 +154,11 @@ public class MyPlaylists extends JPanel implements ActionListener {
             int selectedRow = playlistTable.getSelectedRow();
             if (selectedRow != -1) {
                 // Obtenha os detalhes da música selecionada
-                String title = (String) tableModel.getValueAt(selectedRow, 0);
-                boolean visibilidade = (boolean) tableModel.getValueAt(selectedRow, 1);
-                //String genre = (String) tableModel.getValueAt(selectedRow, 2);
+//                String title = (String) tableModel.getValueAt(selectedRow, 0);
+//                String visibilidade = (String) tableModel.getValueAt(selectedRow, 1);
+                int modelRow = playlistTable.convertRowIndexToModel(selectedRow);
+                Playlist playlistSelecionada = gui.getDb().getCurrentUserAsClient().getPlaylists().get(modelRow);
+
                 gui.showCurrentPlaylist();
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma playlist para abrir.");
@@ -166,6 +170,8 @@ public class MyPlaylists extends JPanel implements ActionListener {
             if (selectedRow != -1) {
                 // Remove da tabela
                 tableModel.removeRow(selectedRow);
+                gui.getDb().getCurrentUserAsClient().getPlaylists().remove(selectedRow);
+                gui.getDb().saveCurrentUser();
                 createPlaylist.setEnabled(true); // faz com que o botão de avaliar não fique disabled após remover uma música
                 deletePlaylist.setEnabled(true);
             } else {

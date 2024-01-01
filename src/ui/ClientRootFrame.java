@@ -1,6 +1,7 @@
 package ui;
 
 import data.Cliente;
+import data.Playlist;
 import domain.RockstarDB;
 import ui.client.*;
 
@@ -31,7 +32,6 @@ public class ClientRootFrame extends JFrame implements ActionListener {
     private CurrentPlaylist currentPlaylist;
     private PurchaseHistory purchaseHistory;
     private ShoppingCart shoppingCart;
-    private Search search;
 
 
     public ClientRootFrame(RockstarGUI rockstarGUI) {
@@ -41,6 +41,10 @@ public class ClientRootFrame extends JFrame implements ActionListener {
 
     public MyPlaylists getMyPlaylists() {
         return myPlaylists;
+    }
+
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
     }
 
     public void start() {
@@ -73,7 +77,6 @@ public class ClientRootFrame extends JFrame implements ActionListener {
         purchaseHistory = new PurchaseHistory(gui);
         shoppingCart = new ShoppingCart(gui);
         currentPlaylist = new CurrentPlaylist(gui);
-        search = new Search(gui);
 
 
         //Junção dos paines ao card layout
@@ -84,7 +87,6 @@ public class ClientRootFrame extends JFrame implements ActionListener {
         panelContainer.add(purchaseHistory, PurchaseHistory.TITLE);
         panelContainer.add(shoppingCart, ShoppingCart.TITLE);
         panelContainer.add(currentPlaylist, CurrentPlaylist.TITLE);
-        panelContainer.add(search, Search.TITLE);
 
 
         //Painel que fica no topo com os botões

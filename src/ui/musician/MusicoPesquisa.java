@@ -1,6 +1,7 @@
 package ui.musician;
 
 
+import data.Music;
 import data.Musico;
 import ui.RockstarGUI;
 
@@ -16,9 +17,9 @@ public class MusicoPesquisa extends JPanel implements ActionListener {
     public static final String TITLE = "MusicianSearch";
 
     private RockstarGUI gui;
-    private final Musico musician;
+    private Musico musician;
     private JTextField barraPesquisa;
-    private JComboBox<String> dropdown;
+    private JComboBox<CriteriosMusica> dropdown;
     private JPanel painelCentralSuperior;
     private JPanel painelCentral;
     private JPanel painelEast;
@@ -53,7 +54,12 @@ public class MusicoPesquisa extends JPanel implements ActionListener {
         painelCentralSuperior = new JPanel(null);
         painelCentralSuperior.setPreferredSize(new Dimension(0, 50));
         painelCentralSuperior.setBackground(new Color(77, 24, 28));
-        dropdown = new JComboBox<>(new String[]{"Nome", "Genero"});
+
+        //1º criar um vetor com os valores possiveis no dropdown.
+        CriteriosMusica[] itemsToShow = {CriteriosMusica.NAME, CriteriosMusica.GENRE};
+        //criar o dropdown com os escolhidos.
+        dropdown = new JComboBox<>(itemsToShow);
+
         dropdown.addActionListener(this);
         barraPesquisa = new JTextField();
         dropdown.addActionListener(this);
@@ -109,11 +115,28 @@ public class MusicoPesquisa extends JPanel implements ActionListener {
 
         setVisible(true);
     }
+
+    private void atualizarTabelaMusicas(ArrayList<Music> musics) {
+        // Limpar os dados existentes na tabela
+        tabelaDefault.setRowCount(0);
+
+        // Adicionar as músicas do músico à tabela
+        for (Music musica : musics) {
+            Object[] rowData = {musica.getTitle(), musica.getGenre(), musica.getPreco(), musica.isVisibilidade()};
+            tabelaDefault.addRow(rowData);
+        }
+
+        // Atualizar a exibição da tabela
+        tabela.repaint();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == pesquisar) {
-            String catgoriaAPesquisar = (String) dropdown.getSelectedItem();
-            String strAPesquisar = barraPesquisa.getText();
+            CriteriosMusica mo = (CriteriosMusica) dropdown.getSelectedItem();
+            String pesquisa = barraPesquisa.getText();
+            //Atuializa a tabela com o array de músicas encontradas
+            atualizarTabelaMusicas(gui.getDb().procurarMusicas(pesquisa, mo));
         }
     }
 }

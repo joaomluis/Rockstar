@@ -1,5 +1,6 @@
 package ui.client.popups;
 
+import data.Gender;
 import ui.RockstarGUI;
 
 import javax.swing.*;
@@ -52,11 +53,7 @@ public class GeneratePlaylist extends JDialog implements ActionListener {
         playlistGenre.setFont(new Font("Arial", Font.BOLD, 18));
         playlistGenre.setBounds(playlistSize.getX(), playlistSize.getY() + 35, 90, 25);
 
-        dropdown = new JComboBox<>();
-        dropdown.addItem("Rock");
-        dropdown.addItem("Pop");
-        dropdown.addItem("Folk");
-        dropdown.addItem("Indie");
+        dropdown = new JComboBox<>(gui.getDb().getMusicGenrs());
         dropdown.setBounds(playlistGenre.getX() + 90, playlistGenre.getY(), 120, 25);
 
         panelCenter.add(playlistName);
@@ -94,8 +91,22 @@ public class GeneratePlaylist extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String escolhaGenero = (String) dropdown.getSelectedItem();
+        String escolhaNome = nameField.getText();
+        String quantidade = sizeField.getText();
         if(e.getSource() == cancelButton){
             dispose();
+        } else if (e.getSource() == okButton) {
+            if (!escolhaNome.isEmpty() && !quantidade.isEmpty()) {
+                try {
+                    int tamanho = Integer.parseInt(quantidade);
+
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Por favor, insira um valor numérico válido.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Deixou um campo vazio.");
+            }
         }
     }
 }

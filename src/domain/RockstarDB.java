@@ -1,10 +1,13 @@
 package domain;
 
 import data.*;
+import ui.musician.CriteriosMusica;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RockstarDB {
@@ -17,6 +20,10 @@ public class RockstarDB {
 
     public RockstarDB(RockstarModel dados) {
         this.dados = dados;
+    }
+
+    public RockstarModel getDados() {
+        return dados;
     }
 
     public void init() {
@@ -173,7 +180,7 @@ public class RockstarDB {
             return false;
         }
         getCurrentUserAsMusician().addMusic(music);
-        dados.getMusics().add(music);
+        dados.getSongs().add(music);
         System.out.println("adicionada nova musica");
         saveDB();
         System.out.println("gravado");
@@ -220,7 +227,7 @@ public class RockstarDB {
         return -1;
     }
     public int getTotalSongs() {
-        List<Music> musics = dados.getMusics();
+        List<Music> musics = dados.getSongs();
         if (musics != null) {
             return musics.size();
         } else {
@@ -237,8 +244,8 @@ public class RockstarDB {
     }
     public double getTotalValueSongs() {
         double valorTotalMusicas = 0;
-        if(dados.getMusics() != null){
-            for(Music m : dados.getMusics()){
+        if(dados.getSongs() != null){
+            for(Music m : dados.getSongs()){
                 valorTotalMusicas += m.getPreco();
             }
             return valorTotalMusicas;
@@ -334,7 +341,14 @@ public class RockstarDB {
 
         try {
             for (Playlist playlist : playlistCliente) {
-                Object[] row = {playlist.getNome(), playlist.isVisibilidade()};
+                String visibilidade = "";
+                if(playlist.isVisibilidade()) {
+                    visibilidade = "Pública";
+                } else {
+                    visibilidade = "Privada";
+                }
+
+                Object[] row = {playlist.getNome(), visibilidade};
                 if (!existePlaylistNaTabela(model, playlist)) {
                     model.addRow(row);
                 }
@@ -354,7 +368,94 @@ public class RockstarDB {
         }
         return false; // Playlist não encontrada na tabela
     }
+    ///////////////////////////LOJA\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    public void addAllRockstarSongsToTable(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        List<Music> musicasPlataforma = dados.getSongs();
 
+        for (Music song : musicasPlataforma) {
+            System.out.println(song);
+            if(song.isVisibilidade()) {
+
+                Object[] row = {song.getTitle(), song.getArtist(), song.getGenre(),String.format("%1$,.2f€", song.getPreco())};
+                if(!existeMusicaNaTabela(model, song)) {
+                    model.addRow(row);
+                }
+            }
+        }
+    }
+
+    private boolean existeMusicaNaTabela(DefaultTableModel model, Music song) {
+        for (int row = 0; row < model.getRowCount(); row++) {
+            if (model.getValueAt(row, 0).equals(song.getTitle())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //////////////////////////////////CARRINHO\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    public RockStarDBStatus addSongToCart(Music song) {
+        List<Music> songsInCart = getCurrentUserAsClient().getSongsInCart();
+
+        for (Music music : songsInCart) {
+            if (isSongOnCart(song)) {
+                return RockStarDBStatus.DB_SONG_ALREADY_IN_CART;
+            } else if (isSongAlreadyOwned(song)) {
+                return RockStarDBStatus.DB_SONG_ALREADY_BOUGHT;
+            }
+        }
+        return RockStarDBStatus.DB_SONG_ADDED_TO_CART;
+    }
+
+    /**
+     * Compara o nome e autor da música que se quer adicionar ao carrinho com as musicas que
+     * já estão na ArrayList do carrinho do cliente
+     * @param song
+     * @return true se a música verificada já se encontra na ArrayList do carrinho, false se não.
+     */
+    private boolean isSongOnCart (Music song) {
+        List<Music> songsInCart = getCurrentUserAsClient().getSongsInCart();
+        for (Music music : songsInCart) {
+            if (music.getTitle().equals(song.getTitle()) && music.getArtist().equals(song.getArtist())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Compara o nome e autor da música que se quer adicionar ao carrinho com as músicas que
+     * já estão na ArrayList das músicas que já pertencem ao cliente
+     * @param song
+     * @return true se a música verificada já se encontra na ArrayList de músicas ja compradas, false se não.
+     */
+    private boolean isSongAlreadyOwned(Music song) {
+        List<Music> songsOwned = getCurrentUserAsClient().getSongsOwned();
+        for (Music music : songsOwned) {
+            if (music.getTitle().equals(song.getTitle()) && music.getArtist().equals(song.getArtist())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public void addAllSongsInCartToTable(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        List<Music> songsInCart = getCurrentUserAsClient().getSongsInCart();
+
+        for (Music song : songsInCart) {
+            Object[] row = {song.getTitle(), song.getArtist(),String.format("%1$,.2f€", song.getPreco())};
+            if(!existeMusicaNaTabela(model, song)) {
+                model.addRow(row);
+            }
+        }
+    }
+
+
+    ////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     public Musico getCurrentUserAsMusician() {
         return (Musico) currentUser;
     }
@@ -425,5 +526,30 @@ public class RockstarDB {
 
     ////////////////////////////   \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+    public ArrayList<Music> procurarMusicas(String nome, CriteriosMusica cm){
+        ArrayList<Music> musics = new ArrayList<>();
+        ArrayList<Music> songs = new ArrayList<>();
+        if(currentUser instanceof Musico) {
+            songs = getCurrentUserAsMusician().getMusicas();
+        }
+        else if(currentUser instanceof Cliente){
+            songs = (ArrayList<Music>) getDados().getSongs();
+        }
+
+        for(Music m : songs){
+            if(cm == CriteriosMusica.NAME){
+                if(m.getTitle().toLowerCase().contains(nome.toLowerCase())){
+                    musics.add(m);
+                }
+            }else if(cm == CriteriosMusica.GENRE){
+                if(m.getGenre().toLowerCase().contains(nome.toLowerCase())){
+                    musics.add(m);
+                }
+            }
+        }
+        return musics;
+    }
+
+    
 }
 

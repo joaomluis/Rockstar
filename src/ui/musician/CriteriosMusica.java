@@ -1,5 +1,5 @@
 package ui.musician;
 
-public enum MusicoOrdenadores {
+public enum CriteriosMusica {
     NAME, GENRE, VISIBILITY, PRICE;
 }

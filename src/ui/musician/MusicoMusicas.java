@@ -153,7 +153,7 @@ public class MusicoMusicas extends JPanel implements ActionListener, MouseListen
         // Atualizar a exibição da tabela de álbuns
         atualizarTabelaMusicas();
     }
-    private ArrayList<Music> ordenarMusicas(MusicoOrdenadores mo) {
+    private ArrayList<Music> ordenarMusicas(CriteriosMusica mo) {
         if (musics.isEmpty()) {
             return new ArrayList<>(); // Não há nada para ordenar ou exibir na tabela
         }
@@ -162,7 +162,7 @@ public class MusicoMusicas extends JPanel implements ActionListener, MouseListen
 
         for (int i = 0; i < musicasOrdenadas.size() - 1; i++) {
             for (int j = 0; j < musicasOrdenadas.size() - i - 1; j++) {
-                if(mo == MusicoOrdenadores.NAME) {
+                if(mo == CriteriosMusica.NAME) {
                     // Comparar os títulos das músicas e trocar se estiverem fora de ordem
                     if (musicasOrdenadas.get(j).getTitle().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getTitle()) > 0) {
                         Music temp = musicasOrdenadas.get(j);
@@ -170,7 +170,7 @@ public class MusicoMusicas extends JPanel implements ActionListener, MouseListen
                         musicasOrdenadas.set(j + 1, temp);
                     }
                 }
-                else if(mo == MusicoOrdenadores.GENRE){
+                else if(mo == CriteriosMusica.GENRE){
                     // Comparar os títulos das músicas e trocar se estiverem fora de ordem
                     if (musicasOrdenadas.get(j).getGenre().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getGenre()) > 0) {
                         Music temp = musicasOrdenadas.get(j);
@@ -178,10 +178,10 @@ public class MusicoMusicas extends JPanel implements ActionListener, MouseListen
                         musicasOrdenadas.set(j + 1, temp);
                     }
                 }
-                else if(mo == MusicoOrdenadores.VISIBILITY){
+                else if(mo == CriteriosMusica.VISIBILITY){
                     musics.sort(Comparator.comparing(Music::isVisibilidade).reversed());
                 }
-                else if(mo == MusicoOrdenadores.PRICE){
+                else if(mo == CriteriosMusica.PRICE){
                     Collections.sort(musics, Comparator.comparingDouble(Music::getPreco));
                 }
             }
@@ -247,19 +247,19 @@ public class MusicoMusicas extends JPanel implements ActionListener, MouseListen
         if (e.getSource() == tabela.getTableHeader()) {
             int columnIndex = tabela.columnAtPoint(e.getPoint()); // Obtém o índice da coluna clicada
             if (columnIndex == 0) { // Verifica se o clique foi na primeira coluna (Título)
-                musics = ordenarMusicas(MusicoOrdenadores.NAME); // Ordena as músicas pelo título
+                musics = ordenarMusicas(CriteriosMusica.NAME); // Ordena as músicas pelo título
                 atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
             }
             else if (columnIndex == 1) { // Verifica se o clique foi na primeira coluna (Genero)
-                musics = ordenarMusicas(MusicoOrdenadores.GENRE); // Ordena as músicas pelo título
+                musics = ordenarMusicas(CriteriosMusica.GENRE); // Ordena as músicas pelo título
                 atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
             }
             else if (columnIndex == 2) { // Verifica se o clique foi na primeira coluna (Genero)
-                musics = ordenarMusicas(MusicoOrdenadores.PRICE); // Ordena as músicas pelo título
+                musics = ordenarMusicas(CriteriosMusica.PRICE); // Ordena as músicas pelo título
                 atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
             }
             else if (columnIndex == 3) { // Verifica se o clique foi na primeira coluna (Genero)
-                musics = ordenarMusicas(MusicoOrdenadores.VISIBILITY); // Ordena as músicas pelo título
+                musics = ordenarMusicas(CriteriosMusica.VISIBILITY); // Ordena as músicas pelo título
                 atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
             }
         }

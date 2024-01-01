@@ -2,6 +2,7 @@ package data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Music implements Serializable {
     private static final long serialVersionUID = 1325672347L;
@@ -9,7 +10,7 @@ public class Music implements Serializable {
     private Musico artist;
     private String genre;
     private double preco;
-    private ArrayList<Price> historicoPrice = new ArrayList<>();
+    private List<Price> priceHistory;
     private ArrayList<Rating> avaliacoes = new ArrayList<>(); //<User, Avaliação>
     private boolean visibilidade;
 
@@ -17,10 +18,27 @@ public class Music implements Serializable {
         this.title = tittle;
         this.artist = artist;
         this.genre = genre;
-        this.preco = preco;
         this.visibilidade = true;
+        this.priceHistory = new ArrayList<>();
+
+        Price initialPrice = new Price(preco);
+        priceHistory.add(initialPrice);
+
+        this.preco = setCurrentPriceFromHistory();
+        System.out.println("construtor com atributos usado");
     }
     public Music() {
+    }
+
+    public double setCurrentPriceFromHistory() {
+        double value = 0;
+        if (priceHistory != null && !priceHistory.isEmpty()) {
+            // Get the last price from the priceHistory list
+            Price lastPrice = priceHistory.get(priceHistory.size() - 1);
+            // Set the currentPrice attribute to the last price's double value
+            value = lastPrice.getPreco();
+        }
+        return value;
     }
 
     public String getTitle() {
@@ -39,8 +57,8 @@ public class Music implements Serializable {
      */
     public double getPreco() {
         //return preco;
-        if (!historicoPrice.isEmpty()) {
-            return historicoPrice.get(historicoPrice.size() - 1).getPreco();
+        if (!priceHistory.isEmpty()) {
+            return priceHistory.get(priceHistory.size() - 1).getPreco();
         } else return preco;
     }
     /**
@@ -48,8 +66,8 @@ public class Music implements Serializable {
      *
      * @return ArrayList com todos os preços anteriores e data de modificação
      */
-    public ArrayList<Price> getHistoricoPreco() {
-        return historicoPrice;
+    public List<Price> getHistoricoPreco() {
+        return priceHistory;
     }
     /**
      * Caso a alteração de preço seja feita pelo artista da música,
@@ -61,7 +79,7 @@ public class Music implements Serializable {
      */
     public boolean alterarPreco(Double preco, User artista) {
         if (artista.equals(artist) && preco >= 0) {
-            historicoPrice.add(new Price(preco));
+            priceHistory.add(new Price(preco));
             return true;
         }
         return false;
