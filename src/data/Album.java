@@ -29,7 +29,11 @@ public class Album implements Serializable {
      * @return o nome do album
      */
     public String getTitle() {
-        return title;
+        if(title==null){
+            return "Sem album";
+        }else {
+            return title;
+        }
     }
     /**
      * Para obter o genero do album
@@ -45,10 +49,6 @@ public class Album implements Serializable {
 
     @Override
     public String toString() {
-        return "Album{" +
-                "title='" + title + '\'' +
-                ", artist=" + artist +
-                ", genre='" + genre + '\'' +
-                '}';
+        return title;
     }
 }

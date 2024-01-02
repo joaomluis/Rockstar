@@ -1,5 +1,6 @@
 package ui.musician.popups;
 
+import data.Album;
 import data.Music;
 import data.Musico;
 import domain.RockStarDBStatus;
@@ -86,9 +87,10 @@ public class AdicionarMusica extends JDialog implements ActionListener{
             String escolhaGenero = (String) dropdown.getSelectedItem();
             String escolhaNome = nomeText.getText();
             String escolhaPreco = precoText.getText();
+            Album album = (Album) albumDropdown.getSelectedItem();
 
             //Verificar se há erros e distinguir.
-            RockStarDBStatus db = gui.getDb().adicionarMusica(escolhaGenero,escolhaNome,escolhaPreco);
+            RockStarDBStatus db = gui.getDb().adicionarMusica(escolhaGenero,escolhaNome,escolhaPreco,album);
 
             if(db==RockStarDBStatus.DB_MUSIC_NAME_EMPTY){
                 JOptionPane.showMessageDialog(null, "A sua música tem de ter um nome. Por exemplo: Música.");

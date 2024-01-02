@@ -255,13 +255,13 @@ public class RockstarDB {
         return -1;
     }
 
-    public String[] getMusicianAlbums(Musico musico) {
+    public Album[] getMusicianAlbums(Musico musico) {
         int aux = musico.getAlbuns().size() + 1;
-        String[] dropDown = new String[aux];
-        dropDown[0] = "Sem Album";
+        Album[] dropDown = new Album[aux];
+        dropDown[0] = null;
         int i = 1;
         for (Album a : musico.getAlbuns()) {
-            dropDown[i] = a.getTitle();
+            dropDown[i] = a;
             i++;
         }
         return dropDown;
@@ -575,7 +575,7 @@ public class RockstarDB {
         }
     }
 
-    public RockStarDBStatus adicionarMusica(String escolhaGenero, String escolhaNome, String escolhaPreco) {
+    public RockStarDBStatus adicionarMusica(String escolhaGenero, String escolhaNome, String escolhaPreco, Album album) {
         double valor = 0;
         if(escolhaNome.isEmpty()){
             return RockStarDBStatus.DB_MUSIC_NAME_EMPTY;
@@ -589,7 +589,7 @@ public class RockstarDB {
         }
         else if(!validSongName(escolhaNome)) return RockStarDBStatus.DB_MUSIC_NAME_FAILED;
 
-        Music newMusic = new Music(escolhaNome,getCurrentUserAsMusician(),escolhaGenero,valor);
+        Music newMusic = new Music(escolhaNome,getCurrentUserAsMusician(),escolhaGenero,valor,album);
         addMusica(newMusic);
         return RockStarDBStatus.DB_MUSIC_ADDED;
     }

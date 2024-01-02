@@ -74,12 +74,15 @@ public class MusicoMusicas extends JPanel implements ActionListener, MouseListen
         tabelaDefault.addColumn("Genero");
         tabelaDefault.addColumn("Preço");
         tabelaDefault.addColumn("Disponibilidade");
+        tabelaDefault.addColumn("Album");
 
         tabela = new JTable(tabelaDefault);
         tabela.getColumnModel().getColumn(0).setPreferredWidth(200);
         tabela.getColumnModel().getColumn(1).setPreferredWidth(200);
         tabela.getColumnModel().getColumn(2).setPreferredWidth(200);
         tabela.getColumnModel().getColumn(3).setPreferredWidth(200);
+        tabela.getColumnModel().getColumn(4).setPreferredWidth(200);
+
 
         // Impede a movimentação das colunas.
         tabela.getTableHeader().setReorderingAllowed(false);
@@ -134,7 +137,8 @@ public class MusicoMusicas extends JPanel implements ActionListener, MouseListen
             } else{
                 visibilidade = "Indisponivel";
             }
-            Object[] rowData = {musica.getTitle(), musica.getGenre(), musica.getPreco(), visibilidade};
+            String albumTitle = musica.getAlbum() != null ? musica.getAlbum().getTitle() : "Sem álbum";
+            Object[] rowData = {musica.getTitle(), musica.getGenre(), musica.getPreco(), visibilidade, albumTitle};
             tabelaDefault.addRow(rowData);
         }
         // Atualizar a exibição da tabela

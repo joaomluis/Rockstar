@@ -13,6 +13,7 @@ public class Music implements Serializable {
     private List<Price> priceHistory;
     private ArrayList<Rating> avaliacoes = new ArrayList<>(); //<User, Avaliação>
     private boolean visibilidade;
+    private Album album;
 
     public Music(String tittle, Musico artist, String genre, double preco) {
         this.title = tittle;
@@ -20,6 +21,20 @@ public class Music implements Serializable {
         this.genre = genre;
         this.visibilidade = true;
         this.priceHistory = new ArrayList<>();
+        this.album = null;
+
+        Price initialPrice = new Price(preco);
+        priceHistory.add(initialPrice);
+
+        this.preco = setCurrentPriceFromHistory();
+    }
+    public Music(String tittle, Musico artist, String genre, double preco, Album album) {
+        this.title = tittle;
+        this.artist = artist;
+        this.genre = genre;
+        this.visibilidade = true;
+        this.priceHistory = new ArrayList<>();
+        this.album = album;
 
         Price initialPrice = new Price(preco);
         priceHistory.add(initialPrice);
@@ -27,6 +42,10 @@ public class Music implements Serializable {
         this.preco = setCurrentPriceFromHistory();
     }
     public Music() {
+    }
+
+    public Album getAlbum() {
+        return album;
     }
 
     public double setCurrentPriceFromHistory() {
