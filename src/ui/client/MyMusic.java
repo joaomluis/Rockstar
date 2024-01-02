@@ -155,8 +155,11 @@ public class MyMusic extends JPanel implements ActionListener {
         int selectedRow = musicTable.getSelectedRow();
         if (e.getSource() == rateMusic) {
             if (selectedRow != -1) {
-                Music music = new Music();
-                new RateSong(gui, parent, music);
+//                Music music = new Music();
+                int modelRow = musicTable.convertRowIndexToModel(selectedRow);
+                Music musica = gui.getDb().getCurrentUserAsClient().getSongsOwned().get(modelRow);
+
+                new RateSong(gui, parent, musica);
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma música para avaliar.");
             }

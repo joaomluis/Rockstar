@@ -153,6 +153,9 @@ public class Music implements Serializable {
         }
         return soma / avaliacoes.size();
     }
+    public void addAvaliacao(Rating rating){
+        avaliacoes.add(rating);
+    }
     @Override
     public String toString() {
         return "Musica{" +

@@ -18,9 +18,11 @@ public class RateSong extends JDialog implements ActionListener {
     private JButton okButton;
     private JButton cancelButton;
     private Music music;
+    private RockstarGUI gui;
 
     public RateSong(RockstarGUI gui, JFrame parent, Music music) {
         super(parent, "Avaliar música", true);
+        this.gui = gui;
         this.music = music;
         ////Especificações da janela\\\\\
         setSize(400, 150);
@@ -74,6 +76,18 @@ public class RateSong extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == cancelButton){
             dispose();
+        }
+        else if(e.getSource() == okButton){
+            String ratingS = (String) (dropdown).getSelectedItem();
+            assert ratingS != null; //teste
+            double rating = Double.parseDouble(ratingS);
+            boolean sucess = gui.getDb().rateSong(music,rating);
+
+            if(!sucess){
+                JOptionPane.showMessageDialog(null, "Não foi possivel avaliar a música, pois já possui uma avaliaçao.");
+            }else{
+                JOptionPane.showMessageDialog(null, "Foi adicionada a sua avaliação com sucesso. Obrigado.");
+            }
         }
     }
 }

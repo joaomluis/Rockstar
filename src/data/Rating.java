@@ -43,4 +43,13 @@ public class Rating implements Serializable {
     public Cliente getCliente() {
         return cliente;
     }
+
+    @Override
+    public String toString() {
+        return "Rating{" +
+                "avaliacao=" + avaliacao +
+                ", data=" + data +
+                ", cliente=" + cliente +
+                '}';
+    }
 }

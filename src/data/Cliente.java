@@ -58,4 +58,12 @@ public class Cliente extends User implements Serializable {
         playlists.add(playlist);
     }
 
+    public boolean hasRatedMusic(Music music) {
+        for (Rating avaliacao : music.getAvaliacoes()) {
+            if (avaliacao.getCliente() == this) {
+                return true; //se já avaliou a musica
+            }
+        }
+        return false;
+    }
 }

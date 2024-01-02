@@ -655,5 +655,19 @@ public class RockstarDB {
     }
 
 
+    public boolean rateSong(Music music, double rating) {
+        if(getCurrentUserAsClient().hasRatedMusic(music)){ //verifica se já foi avaliada a música
+           return false;
+        }
+        Rating rate = new Rating(rating,getCurrentUserAsClient());
+
+        music.getAvaliacoes().add(rate);
+
+        System.out.println("adicionada nova avaliação musica");
+        saveDB();
+        System.out.println("gravado");
+        System.out.println(music.avaliacaoMedia());
+        return true;
+    }
 }
 
