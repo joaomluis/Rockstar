@@ -1,6 +1,6 @@
 package data;
 
-public enum Gender {
+public enum Genre {
     Pop,
     Rock,
     Hip_hop,

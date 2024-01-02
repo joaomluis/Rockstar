@@ -2,6 +2,7 @@ package ui.client;
 
 import data.Cliente;
 import data.Music;
+import data.Playlist;
 import ui.RockstarGUI;
 import ui.client.popups.GeneratePlaylist;
 
@@ -119,6 +120,9 @@ public class MainMenu extends JPanel implements ActionListener {
         }
         if (e.getSource() == myPlaylists) {
             gui.showMyPlaylists();
+            for (Playlist playlist : gui.getDb().getCurrentUserAsClient().getPlaylists()) {
+                System.out.println(playlist);
+            }
         }
         if(e.getSource() == createPlaylist) {
             new GeneratePlaylist(gui, parent);
