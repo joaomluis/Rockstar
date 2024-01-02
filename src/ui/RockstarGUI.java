@@ -223,5 +223,7 @@ public class RockstarGUI {
         return musicianFrame;
     }
 
-
+    public ClientRootFrame getClientFrame() {
+        return clientFrame;
+    }
 }

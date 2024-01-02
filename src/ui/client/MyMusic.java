@@ -1,6 +1,7 @@
 package ui.client;
 
 import data.Cliente;
+import data.Music;
 import ui.RockstarGUI;
 import ui.client.popups.AddToPlaylist;
 import ui.client.popups.RateSong;
@@ -154,8 +155,8 @@ public class MyMusic extends JPanel implements ActionListener {
         int selectedRow = musicTable.getSelectedRow();
         if (e.getSource() == rateMusic) {
             if (selectedRow != -1) {
-
-                new RateSong(gui, parent);
+                Music music = new Music();
+                new RateSong(gui, parent, music);
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma música para avaliar.");
             }

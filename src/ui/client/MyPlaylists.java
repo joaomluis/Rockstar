@@ -159,7 +159,9 @@ public class MyPlaylists extends JPanel implements ActionListener {
                 int modelRow = playlistTable.convertRowIndexToModel(selectedRow);
                 Playlist playlistSelecionada = gui.getDb().getCurrentUserAsClient().getPlaylists().get(modelRow);
 
-                gui.showCurrentPlaylist();
+                gui.getClientFrame().getCurrentPlaylist().setPlaylist(playlistSelecionada);     //selecionar a playlist para a CurrentPlaylist
+                gui.getClientFrame().showPanelClient("CurrentPlaylist");             //abrir o painel
+
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma playlist para abrir.");
             }

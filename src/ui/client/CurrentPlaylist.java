@@ -3,6 +3,7 @@ package ui.client;
 
 
 import data.Cliente;
+import data.Music;
 import data.Playlist;
 import ui.RockstarGUI;
 import ui.client.popups.RateSong;
@@ -149,10 +150,11 @@ public class CurrentPlaylist extends JPanel implements ActionListener {
             int selectedRow = musicTable.getSelectedRow();
             if (selectedRow != -1) {
                 // Obtenha os detalhes da música selecionada
-                String title = (String) tableModel.getValueAt(selectedRow, 0);
-                String artist = (String) tableModel.getValueAt(selectedRow, 1);
-                String genre = (String) tableModel.getValueAt(selectedRow, 2);
-                new RateSong(gui, parent);
+//                String title = (String) tableModel.getValueAt(selectedRow, 0);
+//                String artist = (String) tableModel.getValueAt(selectedRow, 1);
+//                String genre = (String) tableModel.getValueAt(selectedRow, 2);
+                Music selectedMusic = playlist.getMusic().get(selectedRow);
+                new RateSong(gui, parent,selectedMusic);
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma música para avaliar.");
             }
@@ -166,6 +168,22 @@ public class CurrentPlaylist extends JPanel implements ActionListener {
                 rateMusic.setEnabled(true); // faz com que o botão de avaliar não fique disabled após remover uma música
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma música para remover.");
+            }
+        }
+    }
+
+    public void setPlaylist(Playlist playlistSelecionada) {
+        if (playlistSelecionada != null) {
+            this.playlist = playlistSelecionada;
+            panelTitle.setText(playlist.getNome());
+
+            // Limpa a tabela
+            tableModel.setRowCount(0);
+
+            // Adiciona as músicas da playlist à tabela
+            for (Music music : playlistSelecionada.getMusic()) {
+                Object[] rowData = {music.getTitle(), music.getArtist(), music.getGenre()};
+                tableModel.addRow(rowData);
             }
         }
     }

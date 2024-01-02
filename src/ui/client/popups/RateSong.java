@@ -1,5 +1,6 @@
 package ui.client.popups;
 
+import data.Music;
 import domain.RockstarDB;
 import ui.RockstarGUI;
 
@@ -16,10 +17,11 @@ public class RateSong extends JDialog implements ActionListener {
     private JComboBox<String> dropdown;
     private JButton okButton;
     private JButton cancelButton;
+    private Music music;
 
-    public RateSong(RockstarGUI gui, JFrame parent) {
+    public RateSong(RockstarGUI gui, JFrame parent, Music music) {
         super(parent, "Avaliar música", true);
-
+        this.music = music;
         ////Especificações da janela\\\\\
         setSize(400, 150);
         setLayout(new BorderLayout());
