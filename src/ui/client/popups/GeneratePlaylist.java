@@ -111,9 +111,11 @@ public class GeneratePlaylist extends JDialog implements ActionListener {
                 } else if (status == RockStarDBStatus.DB_SOME_FIELD_IS_EMPTY) {
                     JOptionPane.showMessageDialog(null, "Deixou um campo vazio.");
                 } else if (status == RockStarDBStatus.DB_PLAYLIST_GENERATED_SUCCESSFULLY) {
+                    gui.getMyPlaylists().atualizarTabelaPlaylists();
                     JOptionPane.showMessageDialog(null, "Playlist gerada com sucesso.");
                     dispose();
                 } else if (status == RockStarDBStatus.DB_PLAYLIST_GENERATED_BUT_WITHOUT_WANTED_SIZE) {
+                    gui.getMyPlaylists().atualizarTabelaPlaylists();
                     JOptionPane.showMessageDialog(null, "Playlist gerada com sucesso, mas sem quantidade pretendida.");
                     dispose();
                 } else if (status == RockStarDBStatus.DB_NO_SONGS_ADDED_TO_PLAYLIST) {

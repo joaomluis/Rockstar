@@ -13,15 +13,18 @@ public class RockstarModel implements Serializable {
     private final List<User> users;
     private final List<Music> songs;
     private final List<Album> albums;
+    private final List<Purchase> allPurchases;
     public RockstarModel() {
         this.users = new ArrayList<>();
         this.songs = new ArrayList<>();
         this.albums = new ArrayList<>();
+        this.allPurchases = new ArrayList<>();
     }
-    public RockstarModel(List<User> users, List<Music> musics, List<Album> albums) {
+    public RockstarModel(List<User> users, List<Music> musics, List<Album> albums, List<Purchase> allPurchases) {
         this.users = users;
         this.songs = musics != null ? musics : new ArrayList<>();
         this.albums = albums;
+        this.allPurchases = allPurchases;
     }
 
     public List<User> getUsers() {
@@ -48,6 +51,10 @@ public class RockstarModel implements Serializable {
 
     public List<Album> getAlbums() {
         return albums;
+    }
+
+    public List<Purchase> getAllPurchases() {
+        return allPurchases;
     }
 
 }

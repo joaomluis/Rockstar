@@ -54,9 +54,9 @@ public class PurchaseHistory extends JPanel {
             }
         };
 
-        tableModel.addColumn("Música");
+        tableModel.addColumn("Compra");
         tableModel.addColumn("Data");
-        tableModel.addColumn("Preço");
+        tableModel.addColumn("Custo total");
 
         purchaseTable = new JTable(tableModel);
         purchaseTable.getColumnModel().getColumn(0).setPreferredWidth(200);
@@ -88,8 +88,16 @@ public class PurchaseHistory extends JPanel {
 
         eastPanel.add(seePurchase);
 
-
-
         add(eastPanel, BorderLayout.EAST);
+
+        gui.getDb().addAllPurchasesToTable(purchaseTable);
+    }
+
+    public JTable getPurchaseTable() {
+        return purchaseTable;
+    }
+
+    public DefaultTableModel getTableModel() {
+        return tableModel;
     }
 }

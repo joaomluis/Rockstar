@@ -51,6 +51,10 @@ public class ClientRootFrame extends JFrame implements ActionListener {
         return myMusic;
     }
 
+    public PurchaseHistory getPurchaseHistory() {
+        return purchaseHistory;
+    }
+
     public void start() {
         RockstarDB db = gui.getDb();
 
