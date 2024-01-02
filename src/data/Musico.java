@@ -17,11 +17,6 @@ public class Musico extends User implements Serializable {
         this.pin = pin;
     }
 
-    public Musico() {
-        super();
-    }
-
-
     public ArrayList<Music> getMusicas() {
         return musics;
     }

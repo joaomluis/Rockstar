@@ -1,15 +1,12 @@
 package ui;
 
-import data.Album;
-import data.Playlist;
 import domain.RockstarDB;
 import ui.auth.*;
 import ui.client.*;
 import ui.musician.*;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.util.ArrayList;
-import java.util.List;
 
 public class RockstarGUI {
 
@@ -41,9 +38,42 @@ public class RockstarGUI {
         return clientFrame.getMyPlaylists();
     }
 
-    public ShoppingCart getShoppingCart() {
+
+    ////////////////////////////////////Atualizar painel carrinho\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    public ShoppingCart getShoppingCartPanel() {
         return clientFrame.getShoppingCart();
     }
+
+    public JTable getCartTable() {
+        return getShoppingCartPanel().getPurchaseTable();
+    }
+    public DefaultTableModel getCartTableModel() {
+        return getShoppingCartPanel().getTableModel();
+    }
+
+    public void updateCartTable(DefaultTableModel tableModel, JTable jTable) {
+        tableModel.setRowCount(0); // Limpa a tabela
+        getDb().addAllSongsInCartToTable(jTable); // Atualiza a tabela com as songs atualizadas
+    }
+
+    ///////////////////////////////////Atualizar tabela painel My Music\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    public MyMusic getMyMusicPanel() {
+        return clientFrame.getMyMusic();
+    }
+
+    public JTable getMyMusicTable() {
+        return getMyMusicPanel().getMusicTable();
+    }
+    public DefaultTableModel getMyMusicTableModel() {
+        return getMyMusicPanel().getTableModel();
+    }
+
+    public void updateMyMusicTable (DefaultTableModel tableModel, JTable table) {
+        tableModel.setRowCount(0);
+        getDb().addAllOwnedSongsToTable(table);
+    }
+
 
     /////////////////////METODOS PARA ABRIR PAINEIS AUTENTICAÇÃO\\\\\\\\\\\\\\\\\\\\\
     public void showMainMenu() {
@@ -145,4 +175,6 @@ public class RockstarGUI {
     public FrameMusico getMusicianFrame() {
         return musicianFrame;
     }
+
+
 }

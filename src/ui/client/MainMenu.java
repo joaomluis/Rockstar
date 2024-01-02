@@ -1,6 +1,7 @@
 package ui.client;
 
 import data.Cliente;
+import data.Music;
 import ui.RockstarGUI;
 import ui.client.popups.GeneratePlaylist;
 
@@ -108,9 +109,13 @@ public class MainMenu extends JPanel implements ActionListener {
         JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
         if (e.getSource() == store) {
             gui.showStore();
+            for (Music music : gui.getDb().getCurrentUserAsClient().getSongsInCart()) {
+                System.out.println(music);
+            }
         }
         if (e.getSource() == myMusic) {
             gui.showMyMusic();
+            gui.updateMyMusicTable(gui.getMyMusicTableModel(), gui.getMyMusicTable());
         }
         if (e.getSource() == myPlaylists) {
             gui.showMyPlaylists();

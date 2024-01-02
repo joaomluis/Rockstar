@@ -13,7 +13,6 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class MyMusic extends JPanel implements ActionListener {
 
@@ -137,39 +136,41 @@ public class MyMusic extends JPanel implements ActionListener {
 
         add(eastPanel, BorderLayout.EAST);
 
+        gui.getDb().addAllOwnedSongsToTable(musicTable);
+    }
 
+    public JTable getMusicTable() {
+        return musicTable;
+    }
+
+    public DefaultTableModel getTableModel() {
+        return tableModel;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
         JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
+        int selectedRow = musicTable.getSelectedRow();
         if (e.getSource() == rateMusic) {
-            int selectedRow = musicTable.getSelectedRow();
             if (selectedRow != -1) {
-                // Obtenha os detalhes da música selecionada
-                String title = (String) tableModel.getValueAt(selectedRow, 0);
-                String artist = (String) tableModel.getValueAt(selectedRow, 1);
-                String genre = (String) tableModel.getValueAt(selectedRow, 2);
-
 
                 new RateSong(gui, parent);
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma música para avaliar.");
             }
         } else if (e.getSource() == removeMusic) {
-            int selectedRow = musicTable.getSelectedRow();
             if (selectedRow != -1) {
                 // Remove da tabela
                 tableModel.removeRow(selectedRow);
-                // Remove da lista de músicas
-                //musicas.remove(selectedRow);
+                gui.getDb().getCurrentUserAsClient().getSongsOwned().remove(selectedRow);
+                gui.getDb().saveCurrentUser();
+                gui.updateMyMusicTable(tableModel, musicTable);
                 rateMusic.setEnabled(true); // faz com que o botão de avaliar não fique disabled após remover uma música
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma música para remover.");
             }
         } else if (e.getSource() == addToPlaylist) {
-            int selectedRow = musicTable.getSelectedRow();
             if (selectedRow != -1) {
                 // Obtenha os detalhes da música selecionada
                 String title = (String) tableModel.getValueAt(selectedRow, 0);

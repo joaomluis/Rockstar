@@ -10,6 +10,7 @@ public class Cliente extends User implements Serializable {
     private List<Playlist> playlists;
     private List<Music> songsInCart;
     private List<Music> songsOwned;
+    private List<Purchase> purchasesMade;
 
     public Cliente(String username, String password) {
         super(username, password);
@@ -17,14 +18,15 @@ public class Cliente extends User implements Serializable {
         this.playlists = new ArrayList<>();
         this.songsInCart = new ArrayList<>();
         this.songsOwned = new ArrayList<>();
-    }
-
-    public Cliente() {
-        super();
+        this.purchasesMade = new ArrayList<>();
     }
 
     public double getSaldo() {
         return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
     }
 
     public List<Music> getSongsInCart() {
@@ -38,6 +40,11 @@ public class Cliente extends User implements Serializable {
     public List<Music> getSongsOwned() {
         return songsOwned;
     }
+
+    public List<Purchase> getPurchasesMade() {
+        return purchasesMade;
+    }
+
 
     public boolean adicionaSaldo(double valor){
         if(valor >= 0){
