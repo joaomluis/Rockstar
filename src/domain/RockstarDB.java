@@ -336,6 +336,14 @@ public class RockstarDB {
 
     ///////////////////////////PLAYLISTS\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+    /**
+     * Método que verifica se a Playlist passada no parâmetro tem um nome igual a alguma que
+     * já exista na conta do cliente através de checkPlaylistNameExists. Se não exisitir a
+     * playlist é adicionada à coleção do cliente.
+     * @param playlist
+     * @return true se o nome não estiver em uso e a playlist é adicionada à coleção de playlists
+     * do cliente, false se o nome estiver em uso.
+     */
     public boolean addPlaylist(Playlist playlist) {
 
         Cliente cliente = getCurrentUserAsClient();
@@ -347,6 +355,22 @@ public class RockstarDB {
         return true;
     }
 
+    /**
+     * Método que serve para gerar uma playlist com músicas aleatórias ja compradas pelo Cliente.
+     * Cria um objeto Playlist com os pârametros que são especificados pelo input do user, depois
+     * faz uma série de verificações para ver se é possível fazer a dita playlist.
+     * Verifica se algum campo do input estava vazio, se já existe alguma Playlist na
+     * coleção do Cliente que o mesmo nome com o método checkPlaylistNameExists. Verifica também
+     * se a playlist criada não tem músicas repetidas com checkIfSongAlreadyAdded.
+     * O generatePlaylist vai adicionando músicas à nova playlist até chegar ao limite que o user
+     * deu ou até não existirem mais músicas do género especificado pelo user.
+     * @param name
+     * @param size
+     * @param genre
+     * @return São vários tipos do Enum RockStarDBStatus que conforme as condições são respeitadas,
+     * ou não, o return varia. Por exemplo, se já existir uma playlist com o nome dado na coleção do user,
+     * o return será DB_PLAYLIST_NAME_ALREADY_EXISTS.
+     */
     public RockStarDBStatus generatePlaylist(String name, int size, String genre) {
         Cliente currentClient = getCurrentUserAsClient();
         List<Music> originalOwnedSongs = currentClient.getSongsOwned();
@@ -384,37 +408,44 @@ public class RockstarDB {
             return RockStarDBStatus.DB_SOME_FIELD_IS_EMPTY;
         }
     }
-
-
+    
+    /**
+     * Verifica se a música passada no parâmetro já se encontra na playlist chamda no parâmetro.
+     * Faz isto ao chamar o makeSongTempID criando um ID unico da musica. De seguida, no for loop, são percorridas as músicas
+     * da playlist e para cada música é feito esse mesmo ID, se o ID for igual significa que a música passada no parâmetro
+     * já faz parte da playlist verificada.
+     * @param playlist
+     * @param song
+     * @return true se a música verificada já se encontra na playlist a verificar, false se não.
+     */
     private boolean checkIfSongAlreadyAdded (Playlist playlist, Music song) {
-        String songIdentifier = getSongIdentifier(song);
+        String songIdentifier = makeSongTempID(song);
 
         for (Music playlistMusic : playlist.getMusic()) {
-            String playlistMusicIdentifier = getSongIdentifier(playlistMusic);
+            String playlistMusicIdentifier = makeSongTempID(playlistMusic);
 
             if (playlistMusicIdentifier.equals(songIdentifier)) {
-                return true; // Song already exists in the playlist
+                return true;
             }
         }
-        return false; // Song doesn't exist in the playlist
+        return false;
     }
 
-    // Define a method to count the number of songs of a specific genre
-    private int countSongsByGenre(List<Music> songs, String genre) {
-        int count = 0;
-        for (Music music : songs) {
-            if (music.getGenre().equals(genre)) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    // Define a method to generate a unique identifier for a song based on title and artist
-    private String getSongIdentifier(Music music) {
+    /**
+     * Cria um "ID" com a junção do nome e do artista para poder servir para verificações.
+     * @param music
+     * @return Uma String que é a concatenação do título da música, mais um traço, mais o autor.
+     */
+    private String makeSongTempID(Music music) {
         return music.getTitle() + "-" + music.getArtist();
     }
 
+    /**
+     * Método que verifica se o nome da playlist passada como pârametro já existe na lista de playlists
+     * do cliente que está logado no sistema.
+     * @param newPlaylist
+     * @return true se o nome já existe na lista do Cliente, false se não.
+     */
     private boolean checkPlaylistNameExists(Playlist newPlaylist) {
         Cliente currentUser = getCurrentUserAsClient();
         String newPlaylistName = newPlaylist.getNome();
@@ -427,6 +458,30 @@ public class RockstarDB {
         return false; // Playlist name doesn't exist
     }
 
+    //////////////////////Histórico Compras\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    public void addAllPurchasesToTable(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        List<Purchase> purchasesMade = getCurrentUserAsClient().getPurchasesMade();
+
+        for (Purchase purchase : purchasesMade) {
+
+            Object[] row = {purchase.getPurchaseId(), purchase.getDataCompra(),String.format("%1$,.2f€", purchase.getPrice())};
+            if(!purchaseExistsOnTable(model, purchase)) {
+                model.addRow(row);
+            }
+        }
+    }
+
+    private boolean purchaseExistsOnTable(DefaultTableModel model, Purchase purchase) {
+        for (int row = 0; row < model.getRowCount(); row++) {
+            if (model.getValueAt(row, 0).equals(purchase.getPurchaseId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     ///////////////////////////LOJA\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     public void addAllRockstarSongsToTable(JTable table) {
@@ -436,14 +491,14 @@ public class RockstarDB {
         for (Music song : musicasPlataforma) {
             if(song.isVisibilidade()) {
                 Object[] row = {song.getTitle(), song.getArtist(), song.getGenre(),String.format("%1$,.2f€", song.getPreco())};
-                if(!existeMusicaNaTabela(model, song)) {
+                if(!songExistsOnTable(model, song)) {
                     model.addRow(row);
                 }
             }
         }
     }
 
-    private boolean existeMusicaNaTabela(DefaultTableModel model, Music song) {
+    private boolean songExistsOnTable(DefaultTableModel model, Music song) {
         for (int row = 0; row < model.getRowCount(); row++) {
             if (model.getValueAt(row, 0).equals(song.getTitle())) {
                 return true;
@@ -503,7 +558,7 @@ public class RockstarDB {
 
         for (Music song : songsInCart) {
             Object[] row = {song.getTitle(), song.getArtist(),String.format("%1$,.2f€", song.getPreco())};
-            if(!existeMusicaNaTabela(model, song)) {
+            if(!songExistsOnTable(model, song)) {
                 model.addRow(row);
             }
         }
@@ -516,6 +571,8 @@ public class RockstarDB {
      * @return
      */
     public RockStarDBStatus buyAllSongsFromCart(int rowIndex) {
+
+        Cliente currentUser = getCurrentUserAsClient();
         double currentBalance = getCurrentUserAsClient().getSaldo();
         double totalCartPrice = 0.0;
 
@@ -536,6 +593,8 @@ public class RockstarDB {
                 // Deduzir o preço total do saldo
                 getCurrentUserAsClient().setSaldo(currentBalance - totalCartPrice);
                 getCurrentUserAsClient().getSongsInCart().clear();
+                currentUser.getPurchasesMade().add(newPurchase); //adiciona compra à lista de compras do user
+                getDados().getAllPurchases().add(newPurchase);
                 saveCurrentUser();
 
                 return RockStarDBStatus.DB_SONGS_PURCHASED_SUCCESSFULLY;
@@ -564,7 +623,7 @@ public class RockstarDB {
         for (Music song : musicasCompradas) {
             if(song.isVisibilidade()) {
                 Object[] row = {song.getTitle(), song.getArtist(), song.getGenre(), song.getGenre()};
-                if(!existeMusicaNaTabela(model, song)) {
+                if(!songExistsOnTable(model, song)) {
                     model.addRow(row);
                 }
             }

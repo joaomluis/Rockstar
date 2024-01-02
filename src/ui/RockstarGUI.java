@@ -77,6 +77,24 @@ public class RockstarGUI {
         getDb().addAllOwnedSongsToTable(table);
     }
 
+    /////////////////////Atualizar painel Historico Compras\\\\\\\\\\\\\\\\\\\\\\
+
+    public PurchaseHistory getPurchaseHistoryPanel() {
+        return clientFrame.getPurchaseHistory();
+    }
+    public JTable getPurchaseHistoryTable() {
+        return getPurchaseHistoryPanel().getPurchaseTable();
+    }
+
+    public DefaultTableModel getPurchaseHistoryTableModel() {
+        return getPurchaseHistoryPanel().getTableModel();
+    }
+
+    public void updatePurchaseTable (DefaultTableModel tableModel, JTable table) {
+        tableModel.setRowCount(0);
+        getDb().addAllPurchasesToTable(table);
+    }
+
     /////////////////Atualizar painel Playlists\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     public boolean adicionarElementosTabela(JTable table) {

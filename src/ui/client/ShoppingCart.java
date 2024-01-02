@@ -135,6 +135,7 @@ public class ShoppingCart extends JPanel implements ActionListener {
             if (status == RockStarDBStatus.DB_INSUFFICIENT_BALANCE) {
                 JOptionPane.showMessageDialog(null, "Saldo insuficiente.");
             } else if (status == RockStarDBStatus.DB_SONGS_PURCHASED_SUCCESSFULLY) {
+
                 JOptionPane.showMessageDialog(null, "Compra realizada com sucesso.");
             } else if (status == RockStarDBStatus.DB_CART_EMPTY) {
                 JOptionPane.showMessageDialog(null, "Carrinho vazio, adicione uma música.");

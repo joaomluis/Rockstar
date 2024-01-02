@@ -53,6 +53,10 @@ public class ClientRootFrame extends JFrame implements ActionListener {
         return myMusic;
     }
 
+    public PurchaseHistory getPurchaseHistory() {
+        return purchaseHistory;
+    }
+
     public CurrentPlaylist getCurrentPlaylist() {
         return currentPlaylist;
     }

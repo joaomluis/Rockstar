@@ -3,6 +3,7 @@ package ui.client;
 import data.Cliente;
 import data.Music;
 import data.Playlist;
+import data.Purchase;
 import ui.RockstarGUI;
 import ui.client.popups.GeneratePlaylist;
 
@@ -110,9 +111,6 @@ public class MainMenu extends JPanel implements ActionListener {
         JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
         if (e.getSource() == store) {
             gui.showStore();
-            for (Music music : gui.getDb().getCurrentUserAsClient().getSongsInCart()) {
-                System.out.println(music);
-            }
         }
         if (e.getSource() == myMusic) {
             gui.showMyMusic();
@@ -128,6 +126,7 @@ public class MainMenu extends JPanel implements ActionListener {
             new GeneratePlaylist(gui, parent);
         }
         if (e.getSource() == purchaseHistory) {
+            gui.updatePurchaseTable(gui.getPurchaseHistoryTableModel(), gui.getPurchaseHistoryTable()); // NAO CRIOU COMPRA????????????
             gui.showPurchaseHistory();
         }
         if (e.getSource() == logOut) {
