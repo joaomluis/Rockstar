@@ -154,10 +154,9 @@ public class MyPlaylists extends JPanel implements ActionListener {
             int selectedRow = playlistTable.getSelectedRow();
             if (selectedRow != -1) {
                 // Obtenha os detalhes da música selecionada
-//                String title = (String) tableModel.getValueAt(selectedRow, 0);
-//                String visibilidade = (String) tableModel.getValueAt(selectedRow, 1);
+
                 int modelRow = playlistTable.convertRowIndexToModel(selectedRow);
-                Playlist playlistSelecionada = gui.getDb().getCurrentUserAsClient().getPlaylists().get(modelRow);
+                Playlist playlistSelecionada = client.getPlaylists().get(modelRow);
 
                 gui.getClientFrame().getCurrentPlaylist().setPlaylist(playlistSelecionada);     //selecionar a playlist para a CurrentPlaylist
                 gui.getClientFrame().showPanelClient("CurrentPlaylist");             //abrir o painel
@@ -172,7 +171,7 @@ public class MyPlaylists extends JPanel implements ActionListener {
             if (selectedRow != -1) {
                 // Remove da tabela
                 tableModel.removeRow(selectedRow);
-                gui.getDb().getCurrentUserAsClient().getPlaylists().remove(selectedRow);
+                client.getPlaylists().remove(selectedRow);
                 gui.getDb().saveCurrentUser();
                 createPlaylist.setEnabled(true); // faz com que o botão de avaliar não fique disabled após remover uma música
                 deletePlaylist.setEnabled(true);

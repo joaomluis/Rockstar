@@ -149,10 +149,7 @@ public class CurrentPlaylist extends JPanel implements ActionListener {
         if (e.getSource() == rateMusic) {
             int selectedRow = musicTable.getSelectedRow();
             if (selectedRow != -1) {
-                // Obtenha os detalhes da música selecionada
-//                String title = (String) tableModel.getValueAt(selectedRow, 0);
-//                String artist = (String) tableModel.getValueAt(selectedRow, 1);
-//                String genre = (String) tableModel.getValueAt(selectedRow, 2);
+
                 Music selectedMusic = playlist.getMusic().get(selectedRow);
                 new RateSong(gui, parent, selectedMusic);
             } else {

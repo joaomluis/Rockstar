@@ -31,6 +31,7 @@ public class ClientRootFrame extends JFrame implements ActionListener {
     private MyPlaylists myPlaylists;
     private CurrentPlaylist currentPlaylist;
     private PurchaseHistory purchaseHistory;
+    private PurchaseDetails purchaseDetails;
     private ShoppingCart shoppingCart;
     private JPanel currentPanel;
 
@@ -57,6 +58,10 @@ public class ClientRootFrame extends JFrame implements ActionListener {
         return purchaseHistory;
     }
 
+    public PurchaseDetails getPurchaseDetails() {
+        return purchaseDetails;
+    }
+
     public CurrentPlaylist getCurrentPlaylist() {
         return currentPlaylist;
     }
@@ -68,10 +73,6 @@ public class ClientRootFrame extends JFrame implements ActionListener {
 
     public Store getStore() {
         return store;
-    }
-
-    public PurchaseHistory getPurchaseHistory() {
-        return purchaseHistory;
     }
 
     public void start() {
@@ -104,6 +105,7 @@ public class ClientRootFrame extends JFrame implements ActionListener {
         purchaseHistory = new PurchaseHistory(gui);
         shoppingCart = new ShoppingCart(gui);
         currentPlaylist = new CurrentPlaylist(gui);
+        purchaseDetails = new PurchaseDetails(gui);
 
 
         //Junção dos paines ao card layout
@@ -114,6 +116,7 @@ public class ClientRootFrame extends JFrame implements ActionListener {
         panelContainer.add(purchaseHistory, PurchaseHistory.TITLE);
         panelContainer.add(shoppingCart, ShoppingCart.TITLE);
         panelContainer.add(currentPlaylist, CurrentPlaylist.TITLE);
+        panelContainer.add(purchaseDetails, PurchaseDetails.TITLE);
 
 
         //Painel que fica no topo com os botões
@@ -174,10 +177,6 @@ public class ClientRootFrame extends JFrame implements ActionListener {
 
 
         revalidate();
-    }
-
-    public void setCurrentPlaylist(CurrentPlaylist currentPlaylist) {
-        this.currentPlaylist = currentPlaylist;
     }
 
     public void setCurrentPanel(JPanel currentPanel) {

@@ -1,6 +1,7 @@
 package ui.client;
 
 import data.Cliente;
+import data.Music;
 import data.Playlist;
 import data.Purchase;
 import ui.RockstarGUI;
@@ -11,20 +12,19 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PurchaseHistory extends JPanel implements ActionListener {
+public class PurchaseDetails extends JPanel {
 
-    public static final String TITLE = "PurchaseHistory";
+    public static final String TITLE = "PurchaseDetails";
 
     private RockstarGUI gui;
     private final Cliente client;
     private JPanel topPanel;
-    private JPanel eastPanel;
     private JTable purchaseTable;
     private DefaultTableModel tableModel;
-    private JButton seePurchase;
     private JLabel panelTitle;
+    private Purchase purchase;
 
-    public PurchaseHistory(RockstarGUI gui) {
+    public PurchaseDetails(RockstarGUI gui) {
 
         this.gui = gui;
         client =  (Cliente) gui.getDb().getCurrentUser();
@@ -58,9 +58,9 @@ public class PurchaseHistory extends JPanel implements ActionListener {
             }
         };
 
-        tableModel.addColumn("Compra");
-        tableModel.addColumn("Data");
-        tableModel.addColumn("Custo total");
+        tableModel.addColumn("Música");
+        tableModel.addColumn("Artista");
+        tableModel.addColumn("Preço");
 
         purchaseTable = new JTable(tableModel);
         purchaseTable.getColumnModel().getColumn(0).setPreferredWidth(200);
@@ -77,50 +77,24 @@ public class PurchaseHistory extends JPanel implements ActionListener {
 
         add(scrollPane, BorderLayout.CENTER);
 
-        ///////// Painel Este \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        eastPanel = new JPanel();
-        eastPanel.setBackground(new Color(20, 64, 88));
-        eastPanel.setPreferredSize(new Dimension(150, 0));
-        eastPanel.setLayout(null);
 
-        //botão para criar nova playlist vazia
-        seePurchase = new JButton();
-        seePurchase.setText("Ver");
-        seePurchase.setBounds(0, 150, 120, 35);
-        seePurchase.setFocusable(false);
-        seePurchase.addActionListener(this);
-
-
-        eastPanel.add(seePurchase);
-
-        add(eastPanel, BorderLayout.EAST);
-
-        gui.getDb().addAllPurchasesToTable(purchaseTable);
     }
+    public void setPurchase(Purchase selectedPurchase) {
+        if (selectedPurchase != null) {
+            this.purchase = selectedPurchase;
+            panelTitle.setText(purchase.getPurchaseId());
 
-    public JTable getPurchaseTable() {
-        return purchaseTable;
-    }
+            // Limpa a tabela
+            tableModel.setRowCount(0);
 
-    public DefaultTableModel getTableModel() {
-        return tableModel;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == seePurchase) {
-            int selectedRow = purchaseTable.getSelectedRow();
-            if (selectedRow != -1) {
-
-                int modelRow = purchaseTable.convertRowIndexToModel(selectedRow);
-                Purchase selectedPurchase = client.getPurchasesMade().get(modelRow);
-
-                gui.getClientFrame().getPurchaseDetails().setPurchase(selectedPurchase);
-                gui.getClientFrame().showPanelClient("PurchaseDetails");
-
-            } else {
-                JOptionPane.showMessageDialog(this, "Selecione uma compra para visualizar.");
+            // Adiciona as músicas da playlist à tabela
+            for (Music music : selectedPurchase.getSongList()) {
+                Object[] rowData = {music.getTitle(), music.getArtist(),  String.format("%1$,.2f€", music.getPreco())};
+                tableModel.addRow(rowData);
             }
         }
     }
+
+
+
 }

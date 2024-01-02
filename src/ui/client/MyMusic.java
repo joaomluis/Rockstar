@@ -181,6 +181,7 @@ public class MyMusic extends JPanel implements ActionListener {
                 Music musica = gui.getDb().getCurrentUserAsClient().getSongsOwned().get(modelRow);
 
                 new AddToPlaylist(gui, parent,musica);
+                rateMusic.setEnabled(true);
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma música para adicionar.");
             }

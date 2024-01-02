@@ -1,6 +1,7 @@
 package ui;
 
 import data.Cliente;
+import data.Music;
 import data.Playlist;
 import domain.RockstarDB;
 import ui.auth.*;
@@ -9,6 +10,7 @@ import ui.musician.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RockstarGUI {
@@ -40,6 +42,8 @@ public class RockstarGUI {
     public MyPlaylists getMyPlaylists() {
         return clientFrame.getMyPlaylists();
     }
+
+    //////////////////////////////Atualizar painel compras\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
     ////////////////////////////////////Atualizar painel carrinho\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\

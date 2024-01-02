@@ -6,6 +6,8 @@ import ui.musician.CriteriosMusica;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class RockstarDB {
@@ -458,6 +460,15 @@ public class RockstarDB {
         return false; // Playlist name doesn't exist
     }
 
+    public RockStarDBStatus addMusicaPlaylist(Music music, Playlist playlist) {
+        if(checkIfSongAlreadyAdded(playlist, music)){
+            return RockStarDBStatus.DB_MUSIC_ALREADY_EXISTS_IN_THE_PLAYLIST;
+        }
+        playlist.getMusic().add(music);
+        saveDB();
+        return RockStarDBStatus.DB_MUSIC_ADDED;
+    }
+
     //////////////////////Histórico Compras\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     public void addAllPurchasesToTable(JTable table) {
@@ -466,11 +477,21 @@ public class RockstarDB {
 
         for (Purchase purchase : purchasesMade) {
 
-            Object[] row = {purchase.getPurchaseId(), purchase.getDataCompra(),String.format("%1$,.2f€", purchase.getPrice())};
+            Object[] row = {purchase.getPurchaseId(), formatLocalDateTime(purchase.getDataCompra()),String.format("%1$,.2f€", purchase.getPrice())};
             if(!purchaseExistsOnTable(model, purchase)) {
                 model.addRow(row);
             }
         }
+    }
+
+    /**
+     * Formata uma variável LocalDateTime para o formato mais refinado yyyy-MM-dd HH:mm:ss
+     * @param dateTime
+     * @return
+     */
+    private String formatLocalDateTime(LocalDateTime dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return dateTime.format(formatter);
     }
 
     private boolean purchaseExistsOnTable(DefaultTableModel model, Purchase purchase) {
@@ -737,18 +758,6 @@ public class RockstarDB {
 
         saveDB();
         return true;
-    }
-
-    public RockStarDBStatus addMusicaPlaylist(Music music, Playlist playlist) {
-        ArrayList<Music> musicasPlaylist = playlist.getMusic();
-        for(Music m : musicasPlaylist){
-            if(music.getTitle().equals(music.getTitle()) && m.getArtist()==music.getArtist()){
-                return RockStarDBStatus.DB_MUSIC_ALREADY_EXISTS_IN_THE_PLAYLIST;
-            }
-        }
-        playlist.getMusic().add(music);
-        saveDB();
-        return RockStarDBStatus.DB_MUSIC_ADDED;
     }
 }
 

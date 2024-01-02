@@ -132,7 +132,7 @@ public class Store extends JPanel implements ActionListener {
 
         add(eastPanel, BorderLayout.EAST);
 
-        atualizarTabelaMusicas((ArrayList<Music>) gui.getDb().getDados().getSongs());
+        gui.getDb().addAllOwnedSongsToTable(storeTable);
     }
 
     @Override
@@ -145,6 +145,7 @@ public class Store extends JPanel implements ActionListener {
                 Music musicaSelecionada = gui.getDb().getDados().getSongs().get(modelRow);
 
                 RockStarDBStatus status = gui.getDb().addSongToCart(musicaSelecionada);
+
                 if (status == RockStarDBStatus.DB_SONG_ALREADY_IN_CART) {
                     JOptionPane.showMessageDialog(null, "Já adicionou essa música ao carrinho");
                 } else if (status == RockStarDBStatus.DB_SONG_ADDED_TO_CART) {
@@ -172,7 +173,7 @@ public class Store extends JPanel implements ActionListener {
             atualizarTabelaMusicas(musicasEncontradas);
         }
     }
-    private void atualizarTabelaMusicas(ArrayList<Music> musicasEncontradas) {
+    public void atualizarTabelaMusicas(ArrayList<Music> musicasEncontradas) {
         // Limpar a tabela atual
         tableModel.setRowCount(0);
 
