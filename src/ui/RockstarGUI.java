@@ -158,30 +158,37 @@ public class RockstarGUI {
 
     public void showStore() {
         clientFrame.showPanelClient(Store.TITLE);
+        clientFrame.setCurrentPanel(clientFrame.getStore());
     }
 
     public void showMyMusic() {
         clientFrame.showPanelClient(MyMusic.TITLE);
+        clientFrame.setCurrentPanel(clientFrame.getMyMusic());
     }
 
     public void showMyPlaylists() {
         clientFrame.showPanelClient(MyPlaylists.TITLE);
+        clientFrame.setCurrentPanel(clientFrame.getMyPlaylists());
     }
 
     public void showPurchaseHistory() {
         clientFrame.showPanelClient(PurchaseHistory.TITLE);
+        clientFrame.setCurrentPanel(clientFrame.getPurchaseHistory());
     }
 
     public void showShoppingCart() {
+        //Não atualizar o painel atual. Retroceder sem nenhuma das outras opções volta ao current
         clientFrame.showPanelClient(ShoppingCart.TITLE);
     }
     public void showCurrentPlaylist() {
         clientFrame.showPanelClient(CurrentPlaylist.TITLE);
+        clientFrame.setCurrentPanel(clientFrame.getCurrentPlaylist());
     }
 
 
     public void showClientMainMenu() {
         clientFrame.showPanelClient(MainMenu.TITLE);
+        clientFrame.setCurrentPanel(clientFrame.getMenuInicial());
     }
 
 

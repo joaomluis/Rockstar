@@ -5,12 +5,14 @@ import data.Music;
 import domain.RockStarDBStatus;
 import ui.RockstarGUI;
 import ui.client.popups.AddBalance;
+import ui.musician.CriteriosMusica;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class Store extends JPanel implements ActionListener {
 
@@ -26,7 +28,7 @@ public class Store extends JPanel implements ActionListener {
     private JButton addBalance;
     private JLabel panelTitle;
     private JTextField barraPesquisa;
-    private JComboBox<String> dropdown;
+    private JComboBox<CriteriosMusica> dropdown;
     private JButton pesquisar;
 
     public Store(RockstarGUI gui) {
@@ -51,7 +53,8 @@ public class Store extends JPanel implements ActionListener {
         panelTitle.setBounds(275, 5, 250, 30);
 
         //Dropdown
-        dropdown = new JComboBox<>(new String[]{"Nome", "Género"});
+        CriteriosMusica[] itemsToShow = {CriteriosMusica.NAME, CriteriosMusica.GENRE};
+        dropdown = new JComboBox<>(itemsToShow);
         dropdown.setBounds(30, panelTitle.getY() + 45, 200, 35);
 
         // Barra pesquisa
@@ -62,7 +65,7 @@ public class Store extends JPanel implements ActionListener {
         pesquisar.setText("Pesquisar");
         pesquisar.setFocusable(false);
         pesquisar.setBounds(barraPesquisa.getX() + 280, barraPesquisa.getY(), 120, 35);
-
+        pesquisar.addActionListener(this);
 
         topPanel.add(panelTitle);
         topPanel.add(dropdown);
@@ -129,7 +132,7 @@ public class Store extends JPanel implements ActionListener {
 
         add(eastPanel, BorderLayout.EAST);
 
-        gui.getDb().addAllRockstarSongsToTable(storeTable);
+        atualizarTabelaMusicas((ArrayList<Music>) gui.getDb().getDados().getSongs());
     }
 
     @Override
@@ -160,6 +163,23 @@ public class Store extends JPanel implements ActionListener {
         } else if (e.getSource() == addBalance) {
             JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
             new AddBalance(gui, parent);
+        } else if(e.getSource() == pesquisar){
+            CriteriosMusica mo = (CriteriosMusica) dropdown.getSelectedItem();
+            String pesquisa = barraPesquisa.getText();
+
+            ArrayList<Music> musicasEncontradas = gui.getDb().procurarMusicas(pesquisa,mo);
+
+            atualizarTabelaMusicas(musicasEncontradas);
+        }
+    }
+    private void atualizarTabelaMusicas(ArrayList<Music> musicasEncontradas) {
+        // Limpar a tabela atual
+        tableModel.setRowCount(0);
+
+        // Adicionar as músicas encontradas à tabela
+        for (Music musica : musicasEncontradas) {
+            Object[] rowData = {musica.getTitle(), musica.getArtist(), musica.getGenre(), musica.getPreco()};
+            tableModel.addRow(rowData);
         }
     }
 }

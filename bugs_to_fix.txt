@@ -15,3 +15,5 @@ getArrayCompras.add(novaCompra);
 getArrayMusicasCliente.add(novaCompra.getSong)
 
 carrinho.remove(musica);
+
+Verificar a colocação das musicas para o carrinho. Por vezes não coloca a música selecionada.

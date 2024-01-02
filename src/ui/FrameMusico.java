@@ -160,8 +160,6 @@ public class FrameMusico extends JFrame implements ActionListener {
         cardLayout.show(panelContainer, panelName);
     }
 
-    public void updateAlbumTable() {
-    }
 }
 
 

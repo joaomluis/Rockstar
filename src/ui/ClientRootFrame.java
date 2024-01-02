@@ -32,11 +32,13 @@ public class ClientRootFrame extends JFrame implements ActionListener {
     private CurrentPlaylist currentPlaylist;
     private PurchaseHistory purchaseHistory;
     private ShoppingCart shoppingCart;
+    private JPanel currentPanel;
 
 
     public ClientRootFrame(RockstarGUI rockstarGUI) {
         this.gui = rockstarGUI;
         client = (Cliente) gui.getDb().getCurrentUser();
+        this.currentPanel = new JPanel();
     }
 
     public MyPlaylists getMyPlaylists() {
@@ -53,6 +55,19 @@ public class ClientRootFrame extends JFrame implements ActionListener {
 
     public CurrentPlaylist getCurrentPlaylist() {
         return currentPlaylist;
+    }
+
+
+    public MainMenu getMenuInicial() {
+        return menuInicial;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public PurchaseHistory getPurchaseHistory() {
+        return purchaseHistory;
     }
 
     public void start() {
@@ -156,6 +171,15 @@ public class ClientRootFrame extends JFrame implements ActionListener {
 
         revalidate();
     }
+
+    public void setCurrentPlaylist(CurrentPlaylist currentPlaylist) {
+        this.currentPlaylist = currentPlaylist;
+    }
+
+    public void setCurrentPanel(JPanel currentPanel) {
+        this.currentPanel = currentPanel;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -165,10 +189,29 @@ public class ClientRootFrame extends JFrame implements ActionListener {
         if (e.getSource() == homeButton) {
             gui.showClientMainMenu();
         }
+        else if(e.getSource() == backButton){
+            if(
+                    currentPanel == myPlaylists     ||
+                    currentPanel == myMusic         ||
+                    currentPanel == purchaseHistory ||
+                    currentPanel == store
+            ){
+                gui.showClientMainMenu();
+            }
+            else if(currentPanel == menuInicial){
+                gui.showClientMainMenu();
+            }else {
+                showCurrentPanel();
+            }
+        }
     }
 
     public void showPanelClient(String panelName) {
         cardLayout.show(panelContainer, panelName);
+    }
+
+    public void showCurrentPanel() {
+        cardLayout.show(panelContainer, currentPanel.getName());
     }
 
     public void updateBalanceLabel() {
