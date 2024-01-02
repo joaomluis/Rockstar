@@ -87,7 +87,7 @@ public class MyPlaylists extends JPanel implements ActionListener {
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
         playlistTable.setRowSorter(sorter);
 
-        gui.getDb().adicionarElementosTabela(playlistTable);
+        gui.adicionarElementosTabela(playlistTable);
 
         playlistTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -143,7 +143,7 @@ public class MyPlaylists extends JPanel implements ActionListener {
 
     public void atualizarTabelaPlaylists() {
         tableModel.setRowCount(0); // Limpa a tabela
-        gui.getDb().adicionarElementosTabela(playlistTable); // Atualiza a tabela com as playlists atualizadas
+        gui.adicionarElementosTabela(playlistTable); // Atualiza a tabela com as playlists atualizadas
     }
 
     @Override

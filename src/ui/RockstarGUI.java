@@ -1,5 +1,7 @@
 package ui;
 
+import data.Cliente;
+import data.Playlist;
 import domain.RockstarDB;
 import ui.auth.*;
 import ui.client.*;
@@ -7,6 +9,7 @@ import ui.musician.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.List;
 
 public class RockstarGUI {
 
@@ -72,6 +75,43 @@ public class RockstarGUI {
     public void updateMyMusicTable (DefaultTableModel tableModel, JTable table) {
         tableModel.setRowCount(0);
         getDb().addAllOwnedSongsToTable(table);
+    }
+
+    /////////////////Atualizar painel Playlists\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    public boolean adicionarElementosTabela(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        Cliente cliente = getDb().getCurrentUserAsClient();
+        List<Playlist> playlistCliente = cliente.getPlaylists();
+
+        try {
+            for (Playlist playlist : playlistCliente) {
+                String visibilidade = "";
+                if(playlist.isVisibilidade()) {
+                    visibilidade = "Pública";
+                } else {
+                    visibilidade = "Privada";
+                }
+
+                Object[] row = {playlist.getNome(), visibilidade};
+                if (!existePlaylistNaTabela(model, playlist)) {
+                    model.addRow(row);
+                }
+            }
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    private boolean existePlaylistNaTabela(DefaultTableModel model, Playlist playlist) {
+        for (int row = 0; row < model.getRowCount(); row++) {
+            if (model.getValueAt(row, 0).equals(playlist.getNome())) {
+                return true; // Playlist já existe na tabela
+            }
+        }
+        return false; // Playlist não encontrada na tabela
     }
 
 

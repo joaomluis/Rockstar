@@ -24,17 +24,6 @@ public class Playlist implements Serializable {
     public Playlist() {
     }
 
-    /**
-     * Contrutor que contem todos os parametros na criação de uma nova Playlist.
-     * @param nome
-     * @param music
-     */
-    public Playlist(String nome, ArrayList<Music> music, Cliente cliente) {
-        this.nome = nome;
-        this.music = music;
-        this.visibilidade = true; //Por defeito, as playlists sao visíveis.
-        this.autor = cliente;
-    }
 
     public boolean isVisibilidade() {
         return visibilidade;
@@ -79,5 +68,15 @@ public class Playlist implements Serializable {
     }
     public String getNome() {
         return nome;
+    }
+
+    @Override
+    public String toString() {
+        return "Playlist{" +
+                "nome='" + nome + '\'' +
+                ", music=" + music +
+                ", visibilidade=" + visibilidade +
+                ", autor=" + autor +
+                '}';
     }
 }

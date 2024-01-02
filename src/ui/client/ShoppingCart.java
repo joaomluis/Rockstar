@@ -140,8 +140,6 @@ public class ShoppingCart extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Carrinho vazio, adicione uma música.");
             }
 
-            //gui.getDb().buyOneSongFromCart(selectedRow);
-
             gui.updateCartTable(tableModel, purchaseTable);
             gui.updateBalance();
             //new ConfirmPurchase(gui, parent);

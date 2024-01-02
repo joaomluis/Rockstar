@@ -1,6 +1,7 @@
 package ui.client.popups;
 
-import data.Gender;
+import data.Genre;
+import domain.RockStarDBStatus;
 import ui.RockstarGUI;
 
 import javax.swing.*;
@@ -20,9 +21,12 @@ public class GeneratePlaylist extends JDialog implements ActionListener {
     private JComboBox<String> dropdown;
     private JButton okButton;
     private JButton cancelButton;
+    private RockstarGUI gui;
 
     public GeneratePlaylist(RockstarGUI gui, JFrame parent) {
         super(parent, "Gerar Playlist", true);
+
+        this.gui = gui;
 
         ////Especificações da janela\\\\\
         setSize(400, 220);
@@ -97,15 +101,27 @@ public class GeneratePlaylist extends JDialog implements ActionListener {
         if(e.getSource() == cancelButton){
             dispose();
         } else if (e.getSource() == okButton) {
-            if (!escolhaNome.isEmpty() && !quantidade.isEmpty()) {
-                try {
-                    int tamanho = Integer.parseInt(quantidade);
 
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Por favor, insira um valor numérico válido.");
+            try {
+                int tamanho = Integer.parseInt(quantidade);
+                RockStarDBStatus status = gui.getDb().generatePlaylist(escolhaNome, tamanho, escolhaGenero);
+
+                if (status == RockStarDBStatus.DB_PLAYLIST_NAME_ALREADY_EXISTS) {
+                    JOptionPane.showMessageDialog(null, "Playlist com esse nome já existe.");
+                } else if (status == RockStarDBStatus.DB_SOME_FIELD_IS_EMPTY) {
+                    JOptionPane.showMessageDialog(null, "Deixou um campo vazio.");
+                } else if (status == RockStarDBStatus.DB_PLAYLIST_GENERATED_SUCCESSFULLY) {
+                    JOptionPane.showMessageDialog(null, "Playlist gerada com sucesso.");
+                    dispose();
+                } else if (status == RockStarDBStatus.DB_PLAYLIST_GENERATED_BUT_WITHOUT_WANTED_SIZE) {
+                    JOptionPane.showMessageDialog(null, "Playlist gerada com sucesso, mas sem quantidade pretendida.");
+                    dispose();
+                } else if (status == RockStarDBStatus.DB_NO_SONGS_ADDED_TO_PLAYLIST) {
+                    JOptionPane.showMessageDialog(null, "Erro inesperado, tente novamente.");
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "Deixou um campo vazio.");
+
+            } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Por favor, insira um valor numérico válido.");
             }
         }
     }

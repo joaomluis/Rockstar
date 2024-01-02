@@ -25,7 +25,6 @@ public class Music implements Serializable {
         priceHistory.add(initialPrice);
 
         this.preco = setCurrentPriceFromHistory();
-        System.out.println("construtor com atributos usado");
     }
     public Music() {
     }

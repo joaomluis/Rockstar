@@ -6,9 +6,7 @@ import ui.musician.CriteriosMusica;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.*;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class RockstarDB {
 
@@ -186,6 +184,7 @@ public class RockstarDB {
         System.out.println("gravado");
         return true;
     }
+
     public boolean addAlbum(Album album) {
         if (currentUser instanceof Musico) {
             Musico musico = getCurrentUserAsMusician();
@@ -204,21 +203,21 @@ public class RockstarDB {
     }
 
 
-
     //devolve vetor com os generos das musicas
     ////////////////////////////ESTATISTICAS\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-    public int getTotalUsers(){
-        if(dados.getUsers()!=null){
+    public int getTotalUsers() {
+        if (dados.getUsers() != null) {
             return dados.getUsers().size();
         }
         return -1;
     }
+
     public int getTotalMusician() {
-        int totalMusicos=0;
-        if(dados.getUsers()!=null){
-            for(User u: dados.getUsers()){
-                if(u instanceof Musico){
+        int totalMusicos = 0;
+        if (dados.getUsers() != null) {
+            for (User u : dados.getUsers()) {
+                if (u instanceof Musico) {
                     totalMusicos++;
                 }
             }
@@ -226,6 +225,7 @@ public class RockstarDB {
         }
         return -1;
     }
+
     public int getTotalSongs() {
         List<Music> musics = dados.getSongs();
         if (musics != null) {
@@ -234,6 +234,7 @@ public class RockstarDB {
             return -1;
         }
     }
+
     public int getTotaAlbums() {
         List<Album> albums = dados.getAlbums();
         if (albums != null) {
@@ -242,22 +243,24 @@ public class RockstarDB {
             return -1;
         }
     }
+
     public double getTotalValueSongs() {
         double valorTotalMusicas = 0;
-        if(dados.getSongs() != null){
-            for(Music m : dados.getSongs()){
+        if (dados.getSongs() != null) {
+            for (Music m : dados.getSongs()) {
                 valorTotalMusicas += m.getPreco();
             }
             return valorTotalMusicas;
         }
         return -1;
     }
-    public String[] getMusicianAlbums(Musico musico){
-        int aux = musico.getAlbuns().size()+1;
+
+    public String[] getMusicianAlbums(Musico musico) {
+        int aux = musico.getAlbuns().size() + 1;
         String[] dropDown = new String[aux];
         dropDown[0] = "Sem Album";
-        int i=1;
-        for(Album a : musico.getAlbuns()){
+        int i = 1;
+        for (Album a : musico.getAlbuns()) {
             dropDown[i] = a.getTitle();
             i++;
         }
@@ -265,23 +268,23 @@ public class RockstarDB {
     }
 
 
-
     //devolve vetor com a quantidade de albuns de X genero
-    public int albumByGenre(String genero){
+    public int albumByGenre(String genero) {
         int albumByGenre = 0;
         //verifica se dados é null ou os albums são null antes de percorrer os albums
         if (dados != null && dados.getAlbums() != null) {
-            for(Album a: dados.getAlbums()){
-                if(a.getGenre().equalsIgnoreCase(genero)){
+            for (Album a : dados.getAlbums()) {
+                if (a.getGenre().equalsIgnoreCase(genero)) {
                     albumByGenre++;
                 }
             }
         }
         return albumByGenre;
     }
+
     //lê os generos de musicas que há disponiveis
     public String[] getMusicGenrs() {
-        Gender[] generos = Gender.values();
+        Genre[] generos = Genre.values();
         String[] generosMusicais = new String[generos.length];
 
         for (int i = 0; i < generos.length; i++) {
@@ -291,10 +294,9 @@ public class RockstarDB {
     }
 
 
-
     //verifica se existe um nome igual na lista de músicas
-    public boolean validSongName(String nome){
-        if(currentUser instanceof Musico && getCurrentUserAsMusician().getMusicas() != null && nome != null && !nome.isEmpty()) {
+    public boolean validSongName(String nome) {
+        if (currentUser instanceof Musico && getCurrentUserAsMusician().getMusicas() != null && nome != null && !nome.isEmpty()) {
             for (Music m : ((Musico) currentUser).getMusicas()) {
                 if (m.getTitle().equalsIgnoreCase(nome)) {
                     return false;
@@ -303,8 +305,9 @@ public class RockstarDB {
         }
         return true;
     }
-    public boolean validAlbumName(String nome){
-        if(currentUser instanceof Musico && getCurrentUserAsMusician().getMusicas() != null && nome != null && !nome.isEmpty()) {
+
+    public boolean validAlbumName(String nome) {
+        if (currentUser instanceof Musico && getCurrentUserAsMusician().getMusicas() != null && nome != null && !nome.isEmpty()) {
             for (Album a : ((Musico) currentUser).getAlbuns()) {
                 if (a.getTitle().equalsIgnoreCase(nome)) {
                     return false;
@@ -321,53 +324,98 @@ public class RockstarDB {
 
     ///////////////////////////PLAYLISTS\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-    public boolean addPlaylist (Playlist playlist) {
-        if (currentUser instanceof Cliente){
-            Cliente cliente = getCurrentUserAsClient();
+    public boolean addPlaylist(Playlist playlist) {
 
-            if (cliente.getPlaylists().stream().anyMatch(p -> p.getNome().equalsIgnoreCase(playlist.getNome()))) {
-                return false;
-            }
-            cliente.addPlaylistToClient(playlist);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean adicionarElementosTabela(JTable table) {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
         Cliente cliente = getCurrentUserAsClient();
-        List<Playlist> playlistCliente = cliente.getPlaylists();
 
-        try {
-            for (Playlist playlist : playlistCliente) {
-                String visibilidade = "";
-                if(playlist.isVisibilidade()) {
-                    visibilidade = "Pública";
+        if (checkPlaylistNameExists(playlist)) {
+            return false;
+        }
+        cliente.addPlaylistToClient(playlist);
+        return true;
+    }
+
+    public RockStarDBStatus generatePlaylist(String name, int size, String genre) {
+        Cliente currentClient = getCurrentUserAsClient();
+        List<Music> originalOwnedSongs = currentClient.getSongsOwned();
+        List<Music> ownedSongs = new ArrayList<>(originalOwnedSongs);
+        Playlist newPlaylist = new Playlist(name, currentClient);
+
+        if (!name.isEmpty() && size > 0) {
+            if (!checkPlaylistNameExists(newPlaylist)) {
+                int songsAdded = 0;
+
+                Collections.shuffle(ownedSongs);
+                for (Music music : ownedSongs) {
+                    if (music.getGenre().equals(genre) && !checkIfSongAlreadyAdded(newPlaylist, music)) {
+                        newPlaylist.getMusic().add(music);
+                        songsAdded++;
+
+                        if (songsAdded == size) { //aqui ele vai adicionando dentro do loop e compara cada vez que adiciona se chegou ao size
+                            currentClient.addPlaylistToClient(newPlaylist);
+                            saveCurrentUser();
+                            return RockStarDBStatus.DB_PLAYLIST_GENERATED_SUCCESSFULLY;
+                        }
+                    }
+                }
+                if (songsAdded > 0) {
+                    currentClient.addPlaylistToClient(newPlaylist);
+                    saveCurrentUser();
+                    return RockStarDBStatus.DB_PLAYLIST_GENERATED_BUT_WITHOUT_WANTED_SIZE;
                 } else {
-                    visibilidade = "Privada";
+                    return RockStarDBStatus.DB_NO_SONGS_ADDED_TO_PLAYLIST;
                 }
-
-                Object[] row = {playlist.getNome(), visibilidade};
-                if (!existePlaylistNaTabela(model, playlist)) {
-                    model.addRow(row);
-                }
+            } else {
+                return RockStarDBStatus.DB_PLAYLIST_NAME_ALREADY_EXISTS;
             }
-            return true;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } else {
+            return RockStarDBStatus.DB_SOME_FIELD_IS_EMPTY;
         }
-        return false;
     }
 
-    private boolean existePlaylistNaTabela(DefaultTableModel model, Playlist playlist) {
-        for (int row = 0; row < model.getRowCount(); row++) {
-            if (model.getValueAt(row, 0).equals(playlist.getNome())) {
-                return true; // Playlist já existe na tabela
+
+    private boolean checkIfSongAlreadyAdded (Playlist playlist, Music song) {
+        String songIdentifier = getSongIdentifier(song);
+
+        for (Music playlistMusic : playlist.getMusic()) {
+            String playlistMusicIdentifier = getSongIdentifier(playlistMusic);
+
+            if (playlistMusicIdentifier.equals(songIdentifier)) {
+                return true; // Song already exists in the playlist
             }
         }
-        return false; // Playlist não encontrada na tabela
+        return false; // Song doesn't exist in the playlist
     }
+
+    // Define a method to count the number of songs of a specific genre
+    private int countSongsByGenre(List<Music> songs, String genre) {
+        int count = 0;
+        for (Music music : songs) {
+            if (music.getGenre().equals(genre)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // Define a method to generate a unique identifier for a song based on title and artist
+    private String getSongIdentifier(Music music) {
+        return music.getTitle() + "-" + music.getArtist();
+    }
+
+    private boolean checkPlaylistNameExists(Playlist newPlaylist) {
+        Cliente currentUser = getCurrentUserAsClient();
+        String newPlaylistName = newPlaylist.getNome();
+
+        for (Playlist playlist : currentUser.getPlaylists()) {
+            if (playlist.getNome().equalsIgnoreCase(newPlaylistName)) {
+                return true; // Playlist name already exists
+            }
+        }
+        return false; // Playlist name doesn't exist
+    }
+
+
     ///////////////////////////LOJA\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     public void addAllRockstarSongsToTable(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -450,6 +498,11 @@ public class RockstarDB {
     }
 
 
+    /**
+     *
+     * @param rowIndex
+     * @return
+     */
     public RockStarDBStatus buyAllSongsFromCart(int rowIndex) {
         double currentBalance = getCurrentUserAsClient().getSaldo();
         double totalCartPrice = 0.0;
@@ -505,7 +558,6 @@ public class RockstarDB {
             }
         }
     }
-
 
     ////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     public Musico getCurrentUserAsMusician() {
