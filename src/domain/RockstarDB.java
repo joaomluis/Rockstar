@@ -374,9 +374,7 @@ public class RockstarDB {
         List<Music> musicasPlataforma = dados.getSongs();
 
         for (Music song : musicasPlataforma) {
-            System.out.println(song);
             if(song.isVisibilidade()) {
-
                 Object[] row = {song.getTitle(), song.getArtist(), song.getGenre(),String.format("%1$,.2f€", song.getPreco())};
                 if(!existeMusicaNaTabela(model, song)) {
                     model.addRow(row);
@@ -397,16 +395,13 @@ public class RockstarDB {
     //////////////////////////////////CARRINHO\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     public RockStarDBStatus addSongToCart(Music song) {
-        List<Music> songsInCart = getCurrentUserAsClient().getSongsInCart();
-
-        for (Music music : songsInCart) {
-            if (isSongOnCart(song)) {
-                return RockStarDBStatus.DB_SONG_ALREADY_IN_CART;
-            } else if (isSongAlreadyOwned(song)) {
-                return RockStarDBStatus.DB_SONG_ALREADY_BOUGHT;
-            }
+        if (isSongOnCart(song)) {
+            return RockStarDBStatus.DB_SONG_ALREADY_IN_CART;
+        } else if (isSongAlreadyOwned(song)) {
+            return RockStarDBStatus.DB_SONG_ALREADY_BOUGHT;
+        } else {
+            return RockStarDBStatus.DB_SONG_ADDED_TO_CART;
         }
-        return RockStarDBStatus.DB_SONG_ADDED_TO_CART;
     }
 
     /**
@@ -455,7 +450,64 @@ public class RockstarDB {
     }
 
 
-    ////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    public RockStarDBStatus buyAllSongsFromCart(int rowIndex) {
+        double currentBalance = getCurrentUserAsClient().getSaldo();
+        double totalCartPrice = 0.0;
+
+        if(!getCurrentUserAsClient().getSongsInCart().isEmpty()) {
+            // Calcular o preço total das músicas no carrinho
+            for (Music music : getCurrentUserAsClient().getSongsInCart()) {
+                totalCartPrice += music.getPreco();
+            }
+
+            // Verificar se o saldo é suficiente para comprar todas as músicas
+            if (totalCartPrice <= currentBalance) {
+                Purchase newPurchase = new Purchase(getCurrentUserAsClient(), totalCartPrice);
+                for (Music music : getCurrentUserAsClient().getSongsInCart()) {
+                    newPurchase.getSongList().add(music); // Adicionar música à lista de músicas compradas
+                    addSongToMyMusic(music);
+                }
+
+                // Deduzir o preço total do saldo
+                getCurrentUserAsClient().setSaldo(currentBalance - totalCartPrice);
+                getCurrentUserAsClient().getSongsInCart().clear();
+                saveCurrentUser();
+
+                return RockStarDBStatus.DB_SONGS_PURCHASED_SUCCESSFULLY;
+            } else {
+                return RockStarDBStatus.DB_INSUFFICIENT_BALANCE;
+            }
+        }
+        return RockStarDBStatus.DB_CART_EMPTY;
+    }
+
+
+    /**
+     * Adiciona a música à lista de músicas que o cliente possui.
+     * @param song
+     */
+    private void addSongToMyMusic(Music song) {
+        getCurrentUserAsClient().getSongsOwned().add(song);
+    }
+
+    ////////////////////////////////////MINHA MUSICA\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    public void addAllOwnedSongsToTable(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        List<Music> musicasCompradas = getCurrentUserAsClient().getSongsOwned();
+
+        for (Music song : musicasCompradas) {
+            if(song.isVisibilidade()) {
+                Object[] row = {song.getTitle(), song.getArtist(), song.getGenre(), song.getGenre()};
+                if(!existeMusicaNaTabela(model, song)) {
+                    model.addRow(row);
+                }
+            }
+        }
+    }
+
+
+    ////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     public Musico getCurrentUserAsMusician() {
         return (Musico) currentUser;
     }

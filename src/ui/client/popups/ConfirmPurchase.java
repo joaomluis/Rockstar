@@ -3,6 +3,7 @@ package ui.client.popups;
 import ui.RockstarGUI;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,10 +15,12 @@ public class ConfirmPurchase extends JDialog implements ActionListener {
     private JLabel addBalanceLabel;
     private JButton okButton;
     private JButton cancelButton;
+    private RockstarGUI gui;
 
     public ConfirmPurchase(RockstarGUI gui, JFrame parent) {
 
         super(parent, "Confirmar compra", true);
+        this.gui = gui;
 
         ////Especificações da janela\\\\\
         setSize(400, 150);
@@ -28,9 +31,9 @@ public class ConfirmPurchase extends JDialog implements ActionListener {
         panelCenter = new JPanel(null);
 
         addBalanceLabel = new JLabel();
-        addBalanceLabel.setText("O valor total da sua compra é: xxx.xx€");
+        addBalanceLabel.setText("Comprar musica x por x euros?");
         addBalanceLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        addBalanceLabel.setBounds(45,20,270,25);
+        addBalanceLabel.setBounds(45, 20, 270, 25);
 
         panelCenter.add(addBalanceLabel);
 
@@ -64,6 +67,19 @@ public class ConfirmPurchase extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == cancelButton) {
             dispose();
+        }
+        DefaultTableModel modeloCarrinho = gui.getCartTableModel();
+        JTable tabelaCarrinho = gui.getCartTable();
+
+        if (e.getSource() == okButton) {
+            int selectedRow = tabelaCarrinho.getSelectedRow();
+            System.out.println( "tamanho da array é " + gui.getDb().getCurrentUserAsClient().getSongsInCart().size());
+            System.out.println(selectedRow);
+            if (selectedRow != -1) {
+                gui.updateCartTable(modeloCarrinho, tabelaCarrinho);
+                //gui.getDb().convertToPurchase(selectedRow);
+                gui.updateCartTable(modeloCarrinho, tabelaCarrinho);
+            }
         }
     }
 }

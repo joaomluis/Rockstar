@@ -152,7 +152,7 @@ public class Store extends JPanel implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Música já foi comprada");
                 }
 
-                gui.getShoppingCart().atualizarTabelaMusicasCarrinho();
+                gui.updateCartTable(gui.getCartTableModel(), gui.getCartTable()); //atualiza tabela do cart
 
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma música para comprar.");

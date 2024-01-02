@@ -1,8 +1,8 @@
 package ui.client;
 
 import data.Cliente;
+import domain.RockStarDBStatus;
 import ui.RockstarGUI;
-import ui.client.popups.ConfirmPurchase;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -106,30 +106,55 @@ public class ShoppingCart extends JPanel implements ActionListener {
 
         gui.getDb().addAllSongsInCartToTable(purchaseTable);
 
-        atualizarTabelaMusicasCarrinho();
+        gui.updateCartTable(tableModel, purchaseTable);
+    }
+
+    public JTable getPurchaseTable() {
+        return purchaseTable;
+    }
+
+    public DefaultTableModel getTableModel() {
+        return tableModel;
     }
 
     /**
      * Atualiza a tabela para aparecem todas as musicas que foram adicionadas ao carrinho
      */
-    public void atualizarTabelaMusicasCarrinho() {
-        tableModel.setRowCount(0); // Limpa a tabela
-        gui.getDb().addAllSongsInCartToTable(purchaseTable); // Atualiza a tabela com as songs atualizadas
-    }
-
+//    public void atualizarTabelaMusicasCarrinho() {
+//        tableModel.setRowCount(0); // Limpa a tabela
+//        gui.getDb().addAllSongsInCartToTable(purchaseTable); // Atualiza a tabela com as songs atualizadas
+//    }
     @Override
     public void actionPerformed(ActionEvent e) {
         JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
+        int selectedRow = purchaseTable.getSelectedRow();
         if (e.getSource() == confirmPurchase) {
-            new ConfirmPurchase(gui, parent);
-        } else if (e.getSource() == removePurchase) {
-            int selectedRow = purchaseTable.getSelectedRow();
+
+            RockStarDBStatus status = gui.getDb().buyAllSongsFromCart(selectedRow);
+
+            if (status == RockStarDBStatus.DB_INSUFFICIENT_BALANCE) {
+                JOptionPane.showMessageDialog(null, "Saldo insuficiente.");
+            } else if (status == RockStarDBStatus.DB_SONGS_PURCHASED_SUCCESSFULLY) {
+                JOptionPane.showMessageDialog(null, "Compra realizada com sucesso.");
+            } else if (status == RockStarDBStatus.DB_CART_EMPTY) {
+                JOptionPane.showMessageDialog(null, "Carrinho vazio, adicione uma música.");
+            }
+
+            //gui.getDb().buyOneSongFromCart(selectedRow);
+
+            gui.updateCartTable(tableModel, purchaseTable);
+            gui.updateBalance();
+            //new ConfirmPurchase(gui, parent);
+
+        }
+        if (e.getSource() == removePurchase) {
             if (selectedRow != -1) {
                 // Remove da tabela
                 tableModel.removeRow(selectedRow);
                 gui.getDb().getCurrentUserAsClient().getSongsInCart().remove(selectedRow);
                 gui.getDb().saveCurrentUser();
                 confirmPurchase.setEnabled(true); // faz com que o botão de avaliar não fique disabled após remover uma música
+                gui.updateCartTable(tableModel, purchaseTable);
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma música para remover do carrinho.");
             }
