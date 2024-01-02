@@ -177,7 +177,10 @@ public class MyMusic extends JPanel implements ActionListener {
         } else if (e.getSource() == addToPlaylist) {
             if (selectedRow != -1) {
                 // Obtenha os detalhes da música selecionada
-                new AddToPlaylist(gui, parent);
+                int modelRow = musicTable.convertRowIndexToModel(selectedRow);
+                Music musica = gui.getDb().getCurrentUserAsClient().getSongsOwned().get(modelRow);
+
+                new AddToPlaylist(gui, parent,musica);
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma música para adicionar.");
             }

@@ -266,6 +266,18 @@ public class RockstarDB {
         }
         return dropDown;
     }
+    public Playlist[] getClientPlaylist(Cliente cliente) {
+        int aux = cliente.getPlaylists().size() + 1;
+        Playlist[] dropDown = new Playlist[aux];
+        dropDown[0] = null;
+        int i = 1;
+        for (Playlist a : cliente.getPlaylists()) {
+            dropDown[i] = a;
+            i++;
+        }
+        return dropDown;
+    }
+
 
 
     //devolve vetor com a quantidade de albuns de X genero
@@ -559,6 +571,7 @@ public class RockstarDB {
         }
     }
 
+
     ////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     public Musico getCurrentUserAsMusician() {
         return (Musico) currentUser;
@@ -663,11 +676,20 @@ public class RockstarDB {
 
         music.getAvaliacoes().add(rate);
 
-        System.out.println("adicionada nova avaliação musica");
         saveDB();
-        System.out.println("gravado");
-        System.out.println(music.avaliacaoMedia());
         return true;
+    }
+
+    public RockStarDBStatus addMusicaPlaylist(Music music, Playlist playlist) {
+        ArrayList<Music> musicasPlaylist = playlist.getMusic();
+        for(Music m : musicasPlaylist){
+            if(music.getTitle().equals(music.getTitle()) && m.getArtist()==music.getArtist()){
+                return RockStarDBStatus.DB_MUSIC_ALREADY_EXISTS_IN_THE_PLAYLIST;
+            }
+        }
+        playlist.getMusic().add(music);
+        saveDB();
+        return RockStarDBStatus.DB_MUSIC_ADDED;
     }
 }
 

@@ -72,11 +72,6 @@ public class Playlist implements Serializable {
 
     @Override
     public String toString() {
-        return "Playlist{" +
-                "nome='" + nome + '\'' +
-                ", music=" + music +
-                ", visibilidade=" + visibilidade +
-                ", autor=" + autor +
-                '}';
+        return nome;
     }
 }
