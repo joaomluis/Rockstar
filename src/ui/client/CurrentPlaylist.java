@@ -16,6 +16,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 
 public class CurrentPlaylist extends JPanel implements ActionListener {
@@ -40,7 +41,6 @@ public class CurrentPlaylist extends JPanel implements ActionListener {
         client = (Cliente) gui.getDb().getCurrentUser();
         setLayout(new BorderLayout());
         setBackground(new Color(20, 64, 88));
-
 
 
         ///////////Painel Superior\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -171,11 +171,34 @@ public class CurrentPlaylist extends JPanel implements ActionListener {
 
     public void setPlaylist(Playlist playlistSelecionada) {
         if (playlistSelecionada != null) {
+
+            DefaultTableModel myPlaylistsTableModel = gui.getMyPlaylistsTableModel();
+            JTable myPlaylistsTable = gui.getMyPlaylistsTable();
+
             this.playlist = playlistSelecionada;
             panelTitle.setText(playlist.getNome());
 
             // Limpa a tabela
             tableModel.setRowCount(0);
+            visibilidadePlaylist.setSelected(!playlistSelecionada.isVisibilidade());
+
+            visibilidadePlaylist.addItemListener(e -> {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    // Checkbox is selected - update playlist visibility to false
+                    playlistSelecionada.setVisibilidade(false);
+                    gui.atualizarTabelaPlaylists(myPlaylistsTableModel, myPlaylistsTable);
+                    gui.getMyPlaylistsButtonsToEnable();
+                    gui.getDb().saveCurrentUser();
+                    // Perform any other necessary actions
+                } else {
+                    // Checkbox is deselected - update playlist visibility to true
+                    playlistSelecionada.setVisibilidade(true);
+                    gui.atualizarTabelaPlaylists(myPlaylistsTableModel, myPlaylistsTable);
+                    gui.getMyPlaylistsButtonsToEnable();
+                    gui.getDb().saveCurrentUser();
+                    // Perform any other necessary actions
+                }
+            });
 
             // Adiciona as músicas da playlist à tabela
             for (Music music : playlistSelecionada.getMusic()) {

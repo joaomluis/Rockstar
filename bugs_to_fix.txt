@@ -2,4 +2,4 @@
 - colocar uma condição para impedir que se faça log in de cliente com dados de user do tipo músico
 - falta corrigir index pesquisa na loja
 - falta ordenar minhas musicas
-- falta alterar visibiliade playlist atual
+- falta alterar visibiliade playlist atual FEITO

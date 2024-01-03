@@ -5,6 +5,7 @@ import data.Playlist;
 import ui.RockstarGUI;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,6 +58,9 @@ public class MakePlaylist extends JDialog implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String input = nameField.getText();
+
+                DefaultTableModel myPlaylistsTableModel = gui.getMyPlaylistsTableModel();
+                JTable myPlaylistsTable = gui.getMyPlaylistsTable();
                 if (!input.isEmpty()) {
 
                     Cliente cliente = (Cliente) gui.getDb().getCurrentUser(); // vai buscar a GUI que vai buscar a DB que tem acesso aos dados
@@ -73,7 +77,7 @@ public class MakePlaylist extends JDialog implements ActionListener {
                         gui.getDb().saveCurrentUser(); // outra vez ir buscar GUI para a DB e guarda a operação
                         System.out.println("Playlist criada");
                         if(gui.getMyPlaylists() != null) {
-                            gui.getMyPlaylists().atualizarTabelaPlaylists();
+                            gui.atualizarTabelaPlaylists(myPlaylistsTableModel, myPlaylistsTable);
                         }
 
                     }

@@ -5,6 +5,7 @@ import domain.RockStarDBStatus;
 import ui.RockstarGUI;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -101,7 +102,8 @@ public class GeneratePlaylist extends JDialog implements ActionListener {
         if(e.getSource() == cancelButton){
             dispose();
         } else if (e.getSource() == okButton) {
-
+            DefaultTableModel myPlaylistsTableModel = gui.getMyPlaylistsTableModel();
+            JTable myPlaylistsTable = gui.getMyPlaylistsTable();
             try {
                 int tamanho = Integer.parseInt(quantidade);
                 RockStarDBStatus status = gui.getDb().generatePlaylist(escolhaNome, tamanho, escolhaGenero);
@@ -111,11 +113,11 @@ public class GeneratePlaylist extends JDialog implements ActionListener {
                 } else if (status == RockStarDBStatus.DB_SOME_FIELD_IS_EMPTY) {
                     JOptionPane.showMessageDialog(null, "Deixou um campo vazio.");
                 } else if (status == RockStarDBStatus.DB_PLAYLIST_GENERATED_SUCCESSFULLY) {
-                    gui.getMyPlaylists().atualizarTabelaPlaylists();
+                    gui.atualizarTabelaPlaylists(myPlaylistsTableModel, myPlaylistsTable);
                     JOptionPane.showMessageDialog(null, "Playlist gerada com sucesso.");
                     dispose();
                 } else if (status == RockStarDBStatus.DB_PLAYLIST_GENERATED_BUT_WITHOUT_WANTED_SIZE) {
-                    gui.getMyPlaylists().atualizarTabelaPlaylists();
+                    gui.atualizarTabelaPlaylists(myPlaylistsTableModel, myPlaylistsTable);
                     JOptionPane.showMessageDialog(null, "Playlist gerada com sucesso, mas sem quantidade pretendida.");
                     dispose();
                 } else if (status == RockStarDBStatus.DB_NO_SONGS_ADDED_TO_PLAYLIST) {

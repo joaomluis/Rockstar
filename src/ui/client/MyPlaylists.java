@@ -141,9 +141,20 @@ public class MyPlaylists extends JPanel implements ActionListener {
         add(eastPanel, BorderLayout.EAST);
     }
 
-    public void atualizarTabelaPlaylists() {
-        tableModel.setRowCount(0); // Limpa a tabela
-        gui.adicionarElementosTabela(playlistTable); // Atualiza a tabela com as playlists atualizadas
+    public JTable getPlaylistTable() {
+        return playlistTable;
+    }
+
+    public DefaultTableModel getTableModel() {
+        return tableModel;
+    }
+
+    public JButton getCreatePlaylist() {
+        return createPlaylist;
+    }
+
+    public JButton getDeletePlaylist() {
+        return deletePlaylist;
     }
 
     @Override

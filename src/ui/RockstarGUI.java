@@ -136,6 +136,23 @@ public class RockstarGUI {
         return false; // Playlist não encontrada na tabela
     }
 
+    public void atualizarTabelaPlaylists(DefaultTableModel tableModel, JTable table) {
+        tableModel.setRowCount(0); // Limpa a tabela
+        adicionarElementosTabela(table); // Atualiza a tabela com as playlists atualizadas
+    }
+
+    public JTable getMyPlaylistsTable() {
+        return getMyPlaylists().getPlaylistTable();
+    }
+
+    public DefaultTableModel getMyPlaylistsTableModel() {
+        return getMyPlaylists().getTableModel();
+    }
+
+    public void getMyPlaylistsButtonsToEnable() {
+        getMyPlaylists().getCreatePlaylist().setEnabled(true);
+        getMyPlaylists().getDeletePlaylist().setEnabled(true);
+    }
 
     /////////////////////METODOS PARA ABRIR PAINEIS AUTENTICAÇÃO\\\\\\\\\\\\\\\\\\\\\
     public void showMainMenu() {
