@@ -2,4 +2,5 @@
 - colocar uma condição para impedir que se faça log in de cliente com dados de user do tipo músico
 - falta corrigir index pesquisa na loja
 - falta ordenar minhas musicas
-- falta alterar visibiliade playlist atual FEITO
+- desativar ordenação em Jtables onde não é preciso
+- ordenação nas musicas do musico está meia bugada?
