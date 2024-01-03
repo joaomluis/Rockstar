@@ -34,8 +34,6 @@ public class RockstarDB {
         } else {
             saveDB();
         }
-
-        // dbInitialized = true;
     }
 
     private boolean checkIfDBExists() {

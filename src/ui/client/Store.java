@@ -132,7 +132,7 @@ public class Store extends JPanel implements ActionListener {
 
         add(eastPanel, BorderLayout.EAST);
 
-        gui.getDb().addAllOwnedSongsToTable(storeTable);
+        gui.getDb().addAllRockstarSongsToTable(storeTable);
     }
 
     @Override
