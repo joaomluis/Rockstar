@@ -184,19 +184,19 @@ public class CurrentPlaylist extends JPanel implements ActionListener {
 
             visibilidadePlaylist.addItemListener(e -> {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    // Checkbox is selected - update playlist visibility to false
+
                     playlistSelecionada.setVisibilidade(false);
                     gui.atualizarTabelaPlaylists(myPlaylistsTableModel, myPlaylistsTable);
                     gui.getMyPlaylistsButtonsToEnable();
                     gui.getDb().saveCurrentUser();
-                    // Perform any other necessary actions
+
                 } else {
-                    // Checkbox is deselected - update playlist visibility to true
+
                     playlistSelecionada.setVisibilidade(true);
-                    gui.atualizarTabelaPlaylists(myPlaylistsTableModel, myPlaylistsTable);
-                    gui.getMyPlaylistsButtonsToEnable();
+                    gui.atualizarTabelaPlaylists(myPlaylistsTableModel, myPlaylistsTable); //atualiza a tabela para mostrar as alterações 
+                    gui.getMyPlaylistsButtonsToEnable(); // volta a ativar os botões após usar porque ficavam desativados
                     gui.getDb().saveCurrentUser();
-                    // Perform any other necessary actions
+
                 }
             });
 
