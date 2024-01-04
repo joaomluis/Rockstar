@@ -179,8 +179,13 @@ public class MyMusic extends JPanel implements ActionListener {
                 // Obtenha os detalhes da música selecionada
                 int modelRow = musicTable.convertRowIndexToModel(selectedRow);
                 Music musica = gui.getDb().getCurrentUserAsClient().getSongsOwned().get(modelRow);
+                if (musica.isVisibilidade()) {
+                    new AddToPlaylist(gui, parent,musica);
 
-                new AddToPlaylist(gui, parent,musica);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Música indisponível para adicionar para adicionar a uma nova playlsit.");
+                }
+
                 rateMusic.setEnabled(true);
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma música para adicionar.");

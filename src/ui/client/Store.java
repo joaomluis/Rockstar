@@ -142,7 +142,7 @@ public class Store extends JPanel implements ActionListener {
             if (selectedRow != -1) {
 
                 int modelRow = storeTable.convertRowIndexToModel(selectedRow);
-                Music musicaSelecionada = gui.getDb().getDados().getSongs().get(modelRow);
+                Music musicaSelecionada = gui.getDb().getDados().getAllSongsAvailable().get(modelRow);
 
                 RockStarDBStatus status = gui.getDb().addSongToCart(musicaSelecionada);
 
@@ -182,6 +182,14 @@ public class Store extends JPanel implements ActionListener {
             Object[] rowData = {musica.getTitle(), musica.getArtist(), musica.getGenre(), musica.getPreco()};
             tableModel.addRow(rowData);
         }
+    }
+
+    public JTable getStoreTable() {
+        return storeTable;
+    }
+
+    public DefaultTableModel getTableModel() {
+        return tableModel;
     }
 }
 

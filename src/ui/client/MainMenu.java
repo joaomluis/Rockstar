@@ -114,19 +114,14 @@ public class MainMenu extends JPanel implements ActionListener {
         }
         if (e.getSource() == myMusic) {
             gui.showMyMusic();
-            gui.updateMyMusicTable(gui.getMyMusicTableModel(), gui.getMyMusicTable());
         }
         if (e.getSource() == myPlaylists) {
             gui.showMyPlaylists();
-            for (Playlist playlist : gui.getDb().getCurrentUserAsClient().getPlaylists()) {
-                System.out.println(playlist);
-            }
         }
         if(e.getSource() == createPlaylist) {
             new GeneratePlaylist(gui, parent);
         }
         if (e.getSource() == purchaseHistory) {
-            gui.updatePurchaseTable(gui.getPurchaseHistoryTableModel(), gui.getPurchaseHistoryTable()); // NAO CRIOU COMPRA????????????
             gui.showPurchaseHistory();
         }
         if (e.getSource() == logOut) {

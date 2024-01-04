@@ -88,7 +88,9 @@ public class AddToPlaylist extends JDialog implements ActionListener {
                 JOptionPane.showMessageDialog(null, "A música já existe na Playlist.");
             }else if(db==RockStarDBStatus.DB_MUSIC_ADDED){
                 JOptionPane.showMessageDialog(null, "A música foi adiciona com sucesso à Playlist!");
-            }else{
+            } else if (db == RockStarDBStatus.DB_MUSIC_CANT_BE_ADDED_TO_PLAYLISTS) {
+                JOptionPane.showMessageDialog(null, "Música indisponível para adicionar a playlists.");
+            } else{
                 JOptionPane.showMessageDialog(null,"Algo inesperado aconteceu.");
             }
             dispose();

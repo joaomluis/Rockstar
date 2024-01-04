@@ -66,7 +66,6 @@ public class ClientRootFrame extends JFrame implements ActionListener {
         return currentPlaylist;
     }
 
-
     public MainMenu getMenuInicial() {
         return menuInicial;
     }

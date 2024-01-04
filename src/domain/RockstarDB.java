@@ -178,7 +178,7 @@ public class RockstarDB {
             return false;
         }
         getCurrentUserAsMusician().addMusic(music);
-        dados.getSongs().add(music);
+        dados.getAllSongsAvailable().add(music);
         System.out.println("adicionada nova musica");
         saveDB();
         System.out.println("gravado");
@@ -227,7 +227,7 @@ public class RockstarDB {
     }
 
     public int getTotalSongs() {
-        List<Music> musics = dados.getSongs();
+        List<Music> musics = dados.getAllSongsAvailable();
         if (musics != null) {
             return musics.size();
         } else {
@@ -246,8 +246,8 @@ public class RockstarDB {
 
     public double getTotalValueSongs() {
         double valorTotalMusicas = 0;
-        if (dados.getSongs() != null) {
-            for (Music m : dados.getSongs()) {
+        if (dados.getAllSongsAvailable() != null) {
+            for (Music m : dados.getAllSongsAvailable()) {
                 valorTotalMusicas += m.getPreco();
             }
             return valorTotalMusicas;
@@ -459,13 +459,20 @@ public class RockstarDB {
     }
 
     public RockStarDBStatus addMusicaPlaylist(Music music, Playlist playlist) {
-        if(checkIfSongAlreadyAdded(playlist, music)){
-            return RockStarDBStatus.DB_MUSIC_ALREADY_EXISTS_IN_THE_PLAYLIST;
+        if (music.isVisibilidade()) {
+            if (checkIfSongAlreadyAdded(playlist, music)) {
+                return RockStarDBStatus.DB_MUSIC_ALREADY_EXISTS_IN_THE_PLAYLIST;
+            }
+            playlist.getMusic().add(music);
+            saveDB();
+            return RockStarDBStatus.DB_MUSIC_ADDED;
         }
-        playlist.getMusic().add(music);
-        saveDB();
-        return RockStarDBStatus.DB_MUSIC_ADDED;
+        return RockStarDBStatus.DB_MUSIC_CANT_BE_ADDED_TO_PLAYLISTS;
     }
+
+//    public RockStarDBStatus canAddToPlaylist(Music music) {
+//        getDados().getAllSongsAvailable()
+//    }
 
     //////////////////////Histórico Compras\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -505,7 +512,7 @@ public class RockstarDB {
     ///////////////////////////LOJA\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     public void addAllRockstarSongsToTable(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        List<Music> musicasPlataforma = dados.getSongs();
+        List<Music> musicasPlataforma = dados.getAllSongsAvailable();
 
         for (Music song : musicasPlataforma) {
             if(song.isVisibilidade()) {
@@ -640,11 +647,9 @@ public class RockstarDB {
         List<Music> musicasCompradas = getCurrentUserAsClient().getSongsOwned();
 
         for (Music song : musicasCompradas) {
-            if(song.isVisibilidade()) {
-                Object[] row = {song.getTitle(), song.getArtist(), song.getGenre(), song.getGenre()};
-                if(!songExistsOnTable(model, song)) {
-                    model.addRow(row);
-                }
+            Object[] row = {song.getTitle(), song.getArtist(), song.getGenre(), song.getGenre()};
+            if(!songExistsOnTable(model, song)) {
+                model.addRow(row);
             }
         }
     }
@@ -728,7 +733,7 @@ public class RockstarDB {
             songs = getCurrentUserAsMusician().getMusicas();
         }
         else if(currentUser instanceof Cliente){
-            songs = (ArrayList<Music>) getDados().getSongs();
+            songs = (ArrayList<Music>) getDados().getAllSongsAvailable();
         }
 
         for(Music m : songs){

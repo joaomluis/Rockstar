@@ -43,8 +43,6 @@ public class RockstarGUI {
         return clientFrame.getMyPlaylists();
     }
 
-    //////////////////////////////Atualizar painel compras\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
 
     ////////////////////////////////////Atualizar painel carrinho\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     public ShoppingCart getShoppingCartPanel() {
@@ -65,14 +63,14 @@ public class RockstarGUI {
 
     ///////////////////////////////////Atualizar tabela painel My Music\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-    public MyMusic getMyMusicPanel() {
+    private MyMusic getMyMusicPanel() {
         return clientFrame.getMyMusic();
     }
 
-    public JTable getMyMusicTable() {
+    private JTable getMyMusicTable() {
         return getMyMusicPanel().getMusicTable();
     }
-    public DefaultTableModel getMyMusicTableModel() {
+    private DefaultTableModel getMyMusicTableModel() {
         return getMyMusicPanel().getTableModel();
     }
 
@@ -83,20 +81,37 @@ public class RockstarGUI {
 
     /////////////////////Atualizar painel Historico Compras\\\\\\\\\\\\\\\\\\\\\\
 
-    public PurchaseHistory getPurchaseHistoryPanel() {
+    private PurchaseHistory getPurchaseHistoryPanel() {
         return clientFrame.getPurchaseHistory();
     }
-    public JTable getPurchaseHistoryTable() {
+    private JTable getPurchaseHistoryTable() {
         return getPurchaseHistoryPanel().getPurchaseTable();
     }
 
-    public DefaultTableModel getPurchaseHistoryTableModel() {
+    private DefaultTableModel getPurchaseHistoryTableModel() {
         return getPurchaseHistoryPanel().getTableModel();
     }
 
-    public void updatePurchaseTable (DefaultTableModel tableModel, JTable table) {
+    private void updatePurchaseTable (DefaultTableModel tableModel, JTable table) {
         tableModel.setRowCount(0);
         getDb().addAllPurchasesToTable(table);
+    }
+
+    //////////////////Atualizar painel Loja\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    private Store getStorePanel() {
+        return clientFrame.getStore();
+    }
+    private DefaultTableModel getStoreTableModel() {
+        return getStorePanel().getTableModel();
+    }
+    private JTable getStoreTable() {
+        return getStorePanel().getStoreTable();
+    }
+
+    private void updateStoreTable(DefaultTableModel tableModel, JTable table) {
+        tableModel.setRowCount(0);
+        getDb().addAllRockstarSongsToTable(table);
     }
 
     /////////////////Atualizar painel Playlists\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -198,11 +213,13 @@ public class RockstarGUI {
     public void showStore() {
         clientFrame.showPanelClient(Store.TITLE);
         clientFrame.setCurrentPanel(clientFrame.getStore());
+        updateStoreTable(getStoreTableModel(), getStoreTable());
     }
 
     public void showMyMusic() {
         clientFrame.showPanelClient(MyMusic.TITLE);
         clientFrame.setCurrentPanel(clientFrame.getMyMusic());
+        updateMyMusicTable(getMyMusicTableModel(), getMyMusicTable());
     }
 
     public void showMyPlaylists() {
@@ -213,6 +230,7 @@ public class RockstarGUI {
     public void showPurchaseHistory() {
         clientFrame.showPanelClient(PurchaseHistory.TITLE);
         clientFrame.setCurrentPanel(clientFrame.getPurchaseHistory());
+        updatePurchaseTable(getPurchaseHistoryTableModel(), getPurchaseHistoryTable());
     }
 
     public void showShoppingCart() {
