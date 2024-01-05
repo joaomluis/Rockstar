@@ -84,10 +84,6 @@ public class CurrentPlaylist extends JPanel implements ActionListener {
         // Impede a movimentação das colunas.
         musicTable.getTableHeader().setReorderingAllowed(false);
 
-        // Adicionando TableRowSorter à JTable - ordena a tabela
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
-        musicTable.setRowSorter(sorter);
-
         musicTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {

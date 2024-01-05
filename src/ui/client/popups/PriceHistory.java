@@ -47,8 +47,8 @@ public class PriceHistory extends JDialog {
 
         add(scrollPane);
         setLocationRelativeTo(parent);
-        setVisible(true);
 
         gui.getDb().addPriceHistoryToTable(selectedMusic, priceTable);
+        setVisible(true);
     }
 }

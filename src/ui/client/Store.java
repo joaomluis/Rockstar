@@ -92,6 +92,7 @@ public class Store extends JPanel implements ActionListener {
         tableModel.addColumn("Artista");
         tableModel.addColumn("Género");
         tableModel.addColumn("Preço");
+        tableModel.addColumn("Rating");
 
         //adiciona as musicas da array list à table, tem que ser trocado por um método mais tarde
 
@@ -101,6 +102,7 @@ public class Store extends JPanel implements ActionListener {
         storeTable.getColumnModel().getColumn(1).setPreferredWidth(200);
         storeTable.getColumnModel().getColumn(2).setPreferredWidth(200);
         storeTable.getColumnModel().getColumn(3).setPreferredWidth(200);
+        storeTable.getColumnModel().getColumn(4).setPreferredWidth(200);
         // Impede a movimentação das colunas.
         storeTable.getTableHeader().setReorderingAllowed(false);
 
@@ -120,7 +122,7 @@ public class Store extends JPanel implements ActionListener {
 
         //botão para comprar músicas
         buySong = new JButton();
-        buySong.setText("<html><div style='display: table-cell; vertical-align: middle; text-align: center;'>Adicionar ao<br/>Carrinho</html>");
+        buySong.setText("<html><div style='display: table-cell; vertical-align: middle; text-align: center;'>Adicionar<br/>Carrinho</html>");
         buySong.setBounds(0, 100, 120, 45);
         buySong.setFocusable(false);
         buySong.addActionListener(this);
@@ -185,19 +187,23 @@ public class Store extends JPanel implements ActionListener {
 
             musics = gui.getDb().procurarMusicas(pesquisa,mo); //atualizar a array com as músicas pesquisadas
 
-            atualizarTabelaMusicas(musicasEncontradas);
+            atualizarTabelaMusicas(musics);
         } else if (e.getSource() == seePriceHistory) {
             int selectedRow = storeTable.getSelectedRow();
             if (selectedRow != -1) {
 
-                int modelRow = storeTable.convertRowIndexToModel(selectedRow);
-                Music musicaSelecionada = gui.getDb().getDados().getAllSongsAvailable().get(modelRow);
+                //int modelRow = storeTable.convertRowIndexToModel(selectedRow);
+                //Music musicaSelecionada = gui.getDb().getDados().getAllSongsAvailable().get(selectedRow);
+                Music musicaSelecionada = musics.get(selectedRow);
+
+                System.out.println(musicaSelecionada);
 
                 for (Price price : musicaSelecionada.getHistoricoPreco()) {
                     System.out.println(price);
                 }
 
                 new PriceHistory(gui ,parent, musicaSelecionada);
+
             }
         }
     }

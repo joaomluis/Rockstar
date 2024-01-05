@@ -479,6 +479,7 @@ public class RockstarDB {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         List<Price> priceList = song.getHistoricoPreco();
 
+        System.out.println(priceList);
         for (Price price: priceList) {
             Object[] row = {formatLocalDateTime(price.getData()), String.format("%1$,.2f€", song.getPreco())};
                 model.addRow(row);

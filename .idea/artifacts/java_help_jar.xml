@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="java_help:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/java_help_jar</output-path>
+    <root id="archive" name="java_help.jar">
+      <element id="module-output" name="java_help" />
+    </root>
+  </artifact>
+</component>
