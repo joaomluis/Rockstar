@@ -5,12 +5,12 @@ import data.Music;
 import ui.RockstarGUI;
 import ui.client.popups.AddToPlaylist;
 import ui.client.popups.RateSong;
+import ui.musician.CriteriosMusica;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +30,10 @@ public class MyMusic extends JPanel implements ActionListener {
     private JButton rateMusic;
     private JButton addToPlaylist;
     private JLabel panelTitle;
+    private JComboBox<CriteriosMusica> dropdown;
+    private JTextField searchField;
+    private JButton searchButton;
+
 
     public MyMusic(RockstarGUI gui) {
 
@@ -39,12 +43,10 @@ public class MyMusic extends JPanel implements ActionListener {
         setLayout(new BorderLayout());
         setBackground(new Color(20, 64, 88));
 
-
-
         ///////////Painel Superior\\\\\\\\\\\\\\\\\\\\\\\\\\\
         topPanel = new JPanel();
         topPanel.setBackground(new Color(20, 64, 88));
-        topPanel.setPreferredSize(new Dimension(0, 40));
+        topPanel.setPreferredSize(new Dimension(0, 95));
         topPanel.setLayout(null);
 
         //Titulo do Painel
@@ -52,9 +54,27 @@ public class MyMusic extends JPanel implements ActionListener {
         panelTitle.setText("Minhas Músicas");
         panelTitle.setFont(new Font("Arial", Font.BOLD, 22));
         panelTitle.setForeground(new Color(198, 107, 61));
-        panelTitle.setBounds(250, 5, 250, 30);
+        panelTitle.setBounds(275, 5, 250, 30);
+
+        //Dropdown
+        CriteriosMusica[] itemsToShow = {CriteriosMusica.NAME, CriteriosMusica.GENRE};
+        dropdown = new JComboBox<>(itemsToShow);
+        dropdown.setBounds(30, panelTitle.getY() + 45, 200, 35);
+
+        // Barra pesquisa
+        searchField = new JTextField();
+        searchField.setBounds(dropdown.getX()+ 225,dropdown.getY(),240,35);
+        // botão pesquisar
+        searchButton = new JButton();
+        searchButton.setText("Pesquisar");
+        searchButton.setFocusable(false);
+        searchButton.setBounds(searchField.getX() + 280, searchField.getY(), 120, 35);
+        searchButton.addActionListener(this);
 
         topPanel.add(panelTitle);
+        topPanel.add(dropdown);
+        topPanel.add(searchField);
+        topPanel.add(searchButton);
 
         add(topPanel, BorderLayout.NORTH);
 
@@ -134,6 +154,8 @@ public class MyMusic extends JPanel implements ActionListener {
         add(eastPanel, BorderLayout.EAST);
 
         gui.getDb().addAllOwnedSongsToTable(musicTable);
+
+        setVisible(true);
     }
 
     public JTable getMusicTable() {

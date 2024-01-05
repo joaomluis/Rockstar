@@ -73,19 +73,14 @@ public class MyPlaylists extends JPanel implements ActionListener {
 
         tableModel.addColumn("Nome");
         tableModel.addColumn("Visibilidade");
-        //tableModel.addColumn("Género");
 
 
         playlistTable = new JTable(tableModel);
         playlistTable.getColumnModel().getColumn(0).setPreferredWidth(200);
         playlistTable.getColumnModel().getColumn(1).setPreferredWidth(200);
-        //playlistTable.getColumnModel().getColumn(2).setPreferredWidth(200);
         // Impede a movimentação das colunas.
         playlistTable.getTableHeader().setReorderingAllowed(false);
 
-        // Adicionando TableRowSorter à JTable - ordena a tabela
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
-        playlistTable.setRowSorter(sorter);
 
         gui.adicionarElementosTabela(playlistTable);
 

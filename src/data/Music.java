@@ -146,7 +146,7 @@ public class Music implements Serializable {
     public double avaliacaoMedia() {
         double soma = 0;
         if (avaliacoes.isEmpty()) {
-            return 3;
+            return 0;
         } else {
             for (Rating a : avaliacoes) {
                 soma += a.getAvaliacao();

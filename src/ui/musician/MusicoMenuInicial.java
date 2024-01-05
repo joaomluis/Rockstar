@@ -104,6 +104,10 @@ public class MusicoMenuInicial extends JPanel implements ActionListener {
         if (e.getSource() == pesquisa) {
             gui.showMusicianSearch();
         }
+        if (e.getSource() == logOut) {
+            gui.getDb().logOut();
+            gui.showAutenticationFrame();
+        }
     }
 }
 

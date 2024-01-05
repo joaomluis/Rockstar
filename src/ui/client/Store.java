@@ -192,16 +192,7 @@ public class Store extends JPanel implements ActionListener {
             int selectedRow = storeTable.getSelectedRow();
             if (selectedRow != -1) {
 
-                //int modelRow = storeTable.convertRowIndexToModel(selectedRow);
-                //Music musicaSelecionada = gui.getDb().getDados().getAllSongsAvailable().get(selectedRow);
                 Music musicaSelecionada = musics.get(selectedRow);
-
-                System.out.println(musicaSelecionada);
-
-                for (Price price : musicaSelecionada.getHistoricoPreco()) {
-                    System.out.println(price);
-                }
-
                 new PriceHistory(gui ,parent, musicaSelecionada);
 
             }
@@ -211,9 +202,15 @@ public class Store extends JPanel implements ActionListener {
         // Limpar a tabela atual
         tableModel.setRowCount(0);
 
+        String rating = "";
         // Adicionar as músicas encontradas à tabela
         for (Music musica : musicasEncontradas) {
-            Object[] rowData = {musica.getTitle(), musica.getArtist(), musica.getGenre(), musica.getPreco()};
+            if (musica.avaliacaoMedia() == 0) {
+                rating = "Sem Rating";
+            } else {
+                rating = String.valueOf(musica.avaliacaoMedia());
+            }
+            Object[] rowData = {musica.getTitle(), musica.getArtist(), musica.getGenre(), String.format("%1$,.2f€", musica.getPreco()), rating};
             tableModel.addRow(rowData);
         }
     }
@@ -224,6 +221,10 @@ public class Store extends JPanel implements ActionListener {
 
     public DefaultTableModel getTableModel() {
         return tableModel;
+    }
+
+    public void setMusics(ArrayList<Music> musics) {
+        this.musics = musics;
     }
 }
 

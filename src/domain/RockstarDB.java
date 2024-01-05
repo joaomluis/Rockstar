@@ -479,7 +479,6 @@ public class RockstarDB {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         List<Price> priceList = song.getHistoricoPreco();
 
-        System.out.println(priceList);
         for (Price price: priceList) {
             Object[] row = {formatLocalDateTime(price.getData()), String.format("%1$,.2f€", song.getPreco())};
                 model.addRow(row);
@@ -534,10 +533,16 @@ public class RockstarDB {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         List<Music> musicasPlataforma = dados.getAllSongsAvailable();
 
+        String rating = "";
         for (Music song : musicasPlataforma) {
-            if(song.isVisibilidade()) {
-                Object[] row = {song.getTitle(), song.getArtist(), song.getGenre(),String.format("%1$,.2f€", song.getPreco())};
-                if(!songExistsOnTable(model, song)) {
+            if (song.avaliacaoMedia() == 0) {
+                rating = "Sem Rating";
+            } else {
+                rating = String.valueOf(song.avaliacaoMedia());
+            }
+            if (song.isVisibilidade()) {
+                Object[] row = {song.getTitle(), song.getArtist(), song.getGenre(), String.format("%1$,.2f€", song.getPreco()), rating};
+                if (!songExistsOnTable(model, song)) {
                     model.addRow(row);
                 }
             }

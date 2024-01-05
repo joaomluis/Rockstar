@@ -11,6 +11,7 @@ public class PriceHistory extends JDialog {
 
     private JTable priceTable;
     DefaultTableModel tableModel;
+    private JLabel musicTitle;
     private Music selectedMusic;
     private RockstarGUI gui;
 
@@ -18,8 +19,8 @@ public class PriceHistory extends JDialog {
 
         super(parent, "Histórico de preços", true);
 
-        this.gui = gui;
         this.selectedMusic = music;
+        this.gui = gui;
 
         setSize(550, 350);
         setLayout(new BorderLayout());

@@ -196,17 +196,19 @@ public class RockstarGUI {
     /// fechar frame de log in abre menu do cliente
     public void showMusicianFrame() {
         musicianFrame.start();
-        authenticationFrame.dispose();
+        authenticationFrame.setVisible(false);
     }
 
     public void showClientFrame() {
         clientFrame.start();
-        authenticationFrame.dispose();
+        authenticationFrame.setVisible(false);
     }
 
     public void showAutenticationFrame() {
-        authenticationFrame.start();
-        clientFrame.dispose();
+        authenticationFrame.setVisible(true);
+        authenticationFrame.showPanel(MenuInicial.TITLE);
+        clientFrame.setVisible(false);
+        musicianFrame.setVisible(false);
     }
 
     /////////////////////////METODOS PARA ABRIR PAINEIS CLIENTE\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -215,6 +217,7 @@ public class RockstarGUI {
         clientFrame.showPanelClient(Store.TITLE);
         clientFrame.setCurrentPanel(clientFrame.getStore());
         updateStoreTable(getStoreTableModel(), getStoreTable());
+        clientFrame.getStore().setMusics(getDb().addAllRockstarSongsVisible());
     }
 
     public void showMyMusic() {
