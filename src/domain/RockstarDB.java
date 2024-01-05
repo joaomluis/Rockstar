@@ -140,12 +140,14 @@ public class RockstarDB {
     public RockStarDBStatus loginCliente(String inputUsername, String inputPassword) {
         List<User> users = dados.getUsers();
         for (User user : users) {
-            if (user.getUsername().equals(inputUsername)) {
-                if (user.getPassword().equals(inputPassword)) {
-                    currentUser = user;
-                    return RockStarDBStatus.DB_USER_LOGIN_SUCCESS;
-                } else {
-                    return RockStarDBStatus.DB_USER_LOGIN_FAILED;
+            if (user instanceof Cliente) {
+                if (user.getUsername().equals(inputUsername)) {
+                    if (user.getPassword().equals(inputPassword)) {
+                        currentUser = user;
+                        return RockStarDBStatus.DB_USER_LOGIN_SUCCESS;
+                    } else {
+                        return RockStarDBStatus.DB_USER_LOGIN_FAILED;
+                    }
                 }
             }
         }
@@ -470,9 +472,26 @@ public class RockstarDB {
         return RockStarDBStatus.DB_MUSIC_CANT_BE_ADDED_TO_PLAYLISTS;
     }
 
-//    public RockStarDBStatus canAddToPlaylist(Music music) {
-//        getDados().getAllSongsAvailable()
-//    }
+
+    //////////////////Adicionar histórico preços à JDialog\\\\\\\\\\\\\\\\\\\\\\\\
+
+    public void addPriceHistoryToTable(Music song, JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        List<Price> priceList = song.getHistoricoPreco();
+
+        for (Price price: priceList) {
+            Object[] row = {formatLocalDateTime(price.getData()), String.format("%1$,.2f€", song.getPreco())};
+                model.addRow(row);
+        }
+    }
+    private boolean priceExistsOnTable(DefaultTableModel model, Price price) {
+        for (int row = 0; row < model.getRowCount(); row++) {
+            if (model.getValueAt(row, 0).equals(price.getData())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     //////////////////////Histórico Compras\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 

@@ -2,9 +2,11 @@ package ui.client;
 
 import data.Cliente;
 import data.Music;
+import data.Price;
 import domain.RockStarDBStatus;
 import ui.RockstarGUI;
 import ui.client.popups.AddBalance;
+import ui.client.popups.PriceHistory;
 import ui.musician.CriteriosMusica;
 
 import javax.swing.*;
@@ -26,6 +28,7 @@ public class Store extends JPanel implements ActionListener {
     private DefaultTableModel tableModel;
     private JButton buySong;
     private JButton addBalance;
+    private JButton seePriceHistory;
     private JLabel panelTitle;
     private JTextField barraPesquisa;
     private JComboBox<CriteriosMusica> dropdown;
@@ -117,20 +120,30 @@ public class Store extends JPanel implements ActionListener {
 
         //botão para comprar músicas
         buySong = new JButton();
-        buySong.setText("Add Carrinho");
-        buySong.setBounds(0, 150, 120, 35);
+        buySong.setText("<html><div style='display: table-cell; vertical-align: middle; text-align: center;'>Adicionar ao<br/>Carrinho</html>");
+        buySong.setBounds(0, 100, 120, 45);
         buySong.setFocusable(false);
         buySong.addActionListener(this);
 
         //botão para adicionar saldo
         addBalance = new JButton();
-        addBalance.setText("Add Saldo");
-        addBalance.setBounds(0, buySong.getY() + 50, 120, 35);
+        addBalance.setText("<html><div style='display: table-cell; vertical-align: middle; text-align: center;'>Adicionar<br/>Saldo</html>");
+        addBalance.setBounds(0, buySong.getY() + 60, 120, 45);
         addBalance.setFocusable(false);
         addBalance.addActionListener(this);
 
+        //botão para ver historico de preços
+        seePriceHistory = new JButton();
+        seePriceHistory.setText("<html><div style='display: table-cell; vertical-align: middle; text-align: center;'>Histórico<br/>Preços</html>");
+        seePriceHistory.setBounds(0, addBalance.getY() + 60, 120, 45);
+        seePriceHistory.setFocusable(false);
+        seePriceHistory.addActionListener(this);
+
+
+
         eastPanel.add(buySong);
         eastPanel.add(addBalance);
+        eastPanel.add(seePriceHistory);
 
         add(eastPanel, BorderLayout.EAST);
 
@@ -138,6 +151,8 @@ public class Store extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
+
         if (e.getSource() == buySong) {
             int selectedRow = storeTable.getSelectedRow();
             if (selectedRow != -1) {
@@ -163,7 +178,6 @@ public class Store extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Selecione uma música para comprar.");
             }
         } else if (e.getSource() == addBalance) {
-            JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
             new AddBalance(gui, parent);
         } else if(e.getSource() == pesquisar){
             CriteriosMusica mo = (CriteriosMusica) dropdown.getSelectedItem();
@@ -171,7 +185,20 @@ public class Store extends JPanel implements ActionListener {
 
             musics = gui.getDb().procurarMusicas(pesquisa,mo); //atualizar a array com as músicas pesquisadas
 
-            atualizarTabelaMusicas(musics); //atualiza a tabela
+            atualizarTabelaMusicas(musicasEncontradas);
+        } else if (e.getSource() == seePriceHistory) {
+            int selectedRow = storeTable.getSelectedRow();
+            if (selectedRow != -1) {
+
+                int modelRow = storeTable.convertRowIndexToModel(selectedRow);
+                Music musicaSelecionada = gui.getDb().getDados().getAllSongsAvailable().get(modelRow);
+
+                for (Price price : musicaSelecionada.getHistoricoPreco()) {
+                    System.out.println(price);
+                }
+
+                new PriceHistory(gui ,parent, musicaSelecionada);
+            }
         }
     }
     public void atualizarTabelaMusicas(ArrayList<Music> musicasEncontradas) {

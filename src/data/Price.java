@@ -22,4 +22,8 @@ public class Price implements Serializable {
     public double getPreco(){
         return preco;
     }
+
+    public LocalDateTime getData() {
+        return data;
+    }
 }

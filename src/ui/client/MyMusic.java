@@ -70,6 +70,7 @@ public class MyMusic extends JPanel implements ActionListener {
         tableModel.addColumn("Titulo");
         tableModel.addColumn("Artista");
         tableModel.addColumn("Género");
+        tableModel.addColumn("Meu Rating");
 
         //adiciona as musicas da array list à table, tem que ser trocado por um método mais tarde
 
@@ -78,6 +79,7 @@ public class MyMusic extends JPanel implements ActionListener {
         musicTable.getColumnModel().getColumn(0).setPreferredWidth(200);
         musicTable.getColumnModel().getColumn(1).setPreferredWidth(200);
         musicTable.getColumnModel().getColumn(2).setPreferredWidth(200);
+        //musicTable.getColumnModel().getColumn(3).setPreferredWidth(200);
         // Impede a movimentação das colunas.
         musicTable.getTableHeader().setReorderingAllowed(false);
 
@@ -94,7 +96,6 @@ public class MyMusic extends JPanel implements ActionListener {
                 }
             }
         });
-
 
         JScrollPane scrollPane = new JScrollPane(musicTable);
 
@@ -192,4 +193,5 @@ public class MyMusic extends JPanel implements ActionListener {
             }
         }
     }
+
 }

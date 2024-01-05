@@ -1,6 +1,9 @@
 - Corrigir interface depois do log out, fica tudo desconfigurado
-- colocar uma condição para impedir que se faça log in de cliente com dados de user do tipo músico
+- colocar uma condição para impedir que se faça log in de cliente com dados de user do tipo músico - FEITO
 - falta corrigir index pesquisa na loja
 - falta ordenar minhas musicas
 - desativar ordenação em Jtables onde não é preciso
 - ordenação nas musicas do musico está meia bugada?
+- aparecer rating que cliente deu na minha musica
+- aparecer média de ratings na loja
+- visuzalizar historico de preços, não está a aparecer na JDialog

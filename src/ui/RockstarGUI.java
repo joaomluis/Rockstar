@@ -3,6 +3,7 @@ package ui;
 import data.Cliente;
 import data.Music;
 import data.Playlist;
+import data.Price;
 import domain.RockstarDB;
 import ui.auth.*;
 import ui.client.*;

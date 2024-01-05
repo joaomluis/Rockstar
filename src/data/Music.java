@@ -11,6 +11,7 @@ public class Music implements Serializable {
     private String genre;
     private double preco;
     private List<Price> priceHistory;
+    private double rating;
     private ArrayList<Rating> avaliacoes = new ArrayList<>(); //<User, Avaliação>
     private boolean visibilidade;
     private Album album;
