@@ -524,6 +524,20 @@ public class RockstarDB {
         }
     }
 
+    /**
+     * Procura todas as músicas disponiveis para o cliente efetuar uma compra
+     * @return musicas visiveis no momento
+     */
+    public ArrayList<Music> addAllRockstarSongsVisible() {
+        List<Music> musicasPlataforma = dados.getAllSongsAvailable();
+        ArrayList<Music> musicasVisiveis = new ArrayList<>();
+
+        for(Music m : musicasPlataforma){
+            if(m.isVisibilidade()) musicasVisiveis.add(m);
+        }
+        return musicasVisiveis;
+    }
+
     private boolean songExistsOnTable(DefaultTableModel model, Music song) {
         for (int row = 0; row < model.getRowCount(); row++) {
             if (model.getValueAt(row, 0).equals(song.getTitle())) {
@@ -733,7 +747,7 @@ public class RockstarDB {
             songs = getCurrentUserAsMusician().getMusicas();
         }
         else if(currentUser instanceof Cliente){
-            songs = (ArrayList<Music>) getDados().getAllSongsAvailable();
+            songs = addAllRockstarSongsVisible();
         }
 
         for(Music m : songs){

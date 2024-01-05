@@ -30,10 +30,12 @@ public class Store extends JPanel implements ActionListener {
     private JTextField barraPesquisa;
     private JComboBox<CriteriosMusica> dropdown;
     private JButton pesquisar;
+    private ArrayList<Music> musics;
 
     public Store(RockstarGUI gui) {
         this.gui = gui;
         client = (Cliente) gui.getDb().getCurrentUser();
+        this.musics = gui.getDb().addAllRockstarSongsVisible(); //inicia as musics com o array de sons disponiveis no momento.
 
         setLayout(new BorderLayout());
         setBackground(new Color(20, 64, 88));
@@ -132,7 +134,6 @@ public class Store extends JPanel implements ActionListener {
 
         add(eastPanel, BorderLayout.EAST);
 
-        gui.getDb().addAllRockstarSongsToTable(storeTable);
     }
 
     @Override
@@ -142,7 +143,7 @@ public class Store extends JPanel implements ActionListener {
             if (selectedRow != -1) {
 
                 int modelRow = storeTable.convertRowIndexToModel(selectedRow);
-                Music musicaSelecionada = gui.getDb().getDados().getAllSongsAvailable().get(modelRow);
+                Music musicaSelecionada = musics.get(modelRow);
 
                 RockStarDBStatus status = gui.getDb().addSongToCart(musicaSelecionada);
 
@@ -168,9 +169,9 @@ public class Store extends JPanel implements ActionListener {
             CriteriosMusica mo = (CriteriosMusica) dropdown.getSelectedItem();
             String pesquisa = barraPesquisa.getText();
 
-            ArrayList<Music> musicasEncontradas = gui.getDb().procurarMusicas(pesquisa,mo);
+            musics = gui.getDb().procurarMusicas(pesquisa,mo); //atualizar a array com as músicas pesquisadas
 
-            atualizarTabelaMusicas(musicasEncontradas);
+            atualizarTabelaMusicas(musics); //atualiza a tabela
         }
     }
     public void atualizarTabelaMusicas(ArrayList<Music> musicasEncontradas) {
