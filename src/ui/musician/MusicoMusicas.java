@@ -164,43 +164,6 @@ public class MusicoMusicas extends JPanel implements ActionListener, MouseListen
         // Atualizar a exibição da tabela de álbuns
         atualizarTabelaMusicas();
     }
-    private ArrayList<Music> ordenarMusicas(CriteriosMusica mo) {
-        if (musics.isEmpty()) {
-            return new ArrayList<>(); // Não há nada para ordenar ou exibir na tabela
-        }
-
-        ArrayList<Music> musicasOrdenadas = new ArrayList<>(musics); //O array será do mesmo tamanho do original (musicas)
-
-        for (int i = 0; i < musicasOrdenadas.size() - 1; i++) {
-            for (int j = 0; j < musicasOrdenadas.size() - i - 1; j++) {
-                if(mo == CriteriosMusica.Nome) {
-                    // Comparar os títulos das músicas e trocar se estiverem fora de ordem
-                    if (musicasOrdenadas.get(j).getTitle().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getTitle()) > 0) {
-                        Music temp = musicasOrdenadas.get(j);
-                        musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
-                        musicasOrdenadas.set(j + 1, temp);
-                    }
-                }
-                else if(mo == CriteriosMusica.Genero){
-                    // Comparar os títulos das músicas e trocar se estiverem fora de ordem
-                    if (musicasOrdenadas.get(j).getGenre().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getGenre()) > 0) {
-                        Music temp = musicasOrdenadas.get(j);
-                        musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
-                        musicasOrdenadas.set(j + 1, temp);
-                    }
-                }
-                else if(mo == CriteriosMusica.Visibilidade){
-                    musics.sort(Comparator.comparing(Music::isVisibilidade).reversed());
-                }
-                else if(mo == CriteriosMusica.Preco){
-                    Collections.sort(musics, Comparator.comparingDouble(Music::getPreco));
-                }
-            }
-        }
-        return musicasOrdenadas;
-    }
-
-
 
     @Override
     public void actionPerformed(ActionEvent e) {

@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
  * Janela pop-up para adicionar saldo à conta do cliente.
  */
 public class AddBalance extends JDialog {
-
     private JPanel panelCenter;
     private JPanel panelSouth;
     private JLabel addBalanceLabel;
@@ -100,11 +99,4 @@ public class AddBalance extends JDialog {
         setLocationRelativeTo(parent);
         setVisible(true);
     }
-
-//    @Override
-//    public void actionPerformed(ActionEvent e) {
-//        if (e.getSource() == cancelButton) {
-//            dispose();
-//        }
-//    }
 }

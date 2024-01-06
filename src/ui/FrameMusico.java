@@ -1,6 +1,5 @@
 package ui;
 
-import data.Musico;
 import domain.RockstarDB;
 import ui.musician.*;
 

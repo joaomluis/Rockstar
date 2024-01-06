@@ -20,11 +20,12 @@ import java.util.ArrayList;
 
 public class MyMusic extends JPanel implements ActionListener, MouseListener {
 
-
+    /**
+     * Título utilizado para identificar essa seção na interface gráfica.
+     */
     public static final String TITLE = "MyMusic";
 
     private RockstarGUI gui;
-    private final Cliente client;
     private JPanel topPanel;
     private JPanel eastPanel;
     private JTable musicTable;
@@ -43,7 +44,6 @@ public class MyMusic extends JPanel implements ActionListener, MouseListener {
 
         this.gui = gui;
         this.musics = (ArrayList<Music>) gui.getDb().getCurrentUserAsClient().getSongsOwned(); //retorna o array com todas musicas visiveis
-        client = (Cliente) gui.getDb().getCurrentUser();
         setLayout(new BorderLayout());
         setBackground(new Color(20, 64, 88));
 

@@ -70,6 +70,7 @@ public class AlterarPreco extends JDialog implements ActionListener{
         setLocationRelativeTo(parent); // Centraliza o diálogo em relação à frame principal. (Para ñ aparecer ao canto)
         setVisible(true);
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == cancelButton) {

@@ -259,43 +259,58 @@ public class RockstarGUI {
 
 
     /////////////////////METODOS PARA ABRIR PAINEIS MUSICO\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
+    /**
+     * Exibe os painéis das músicas do músico e atualiza o painel.
+     */
     public void showMusicianSongs() {
         musicianFrame.showPanelMusician(MusicoMusicas.TITLE);
         musicianFrame.setCurrentPanel(musicianFrame.getMusicoMusicas());
-
     }
+    /**
+     * Exibe os painéis dos álbuns do músico. e atualiza o painel.
+     */
     public void showMusicianAlbuns() {
         musicianFrame.showPanelMusician(MusicoMeusAlbuns.TITLE);
         musicianFrame.setCurrentPanel(musicianFrame.getMusicoMeusAlbuns());
-
     }
+    /**
+     * Exibe os painéis das estatísticas do músico e atualiza o painel.
+     */
     public void showMusicianStats() {
         musicianFrame.showPanelMusician(MusicoEstatistica.TITLE);
         musicianFrame.setCurrentPanel(musicianFrame.getMusicoEstatistica());
     }
-
+    /**
+     * Exibe os painéis da pesquisa do músico e atualiza o painel.
+     */
     public void showMusicianSearch() {
         musicianFrame.showPanelMusician(MusicoPesquisa.TITLE);
         musicianFrame.setCurrentPanel(musicianFrame.getMusicoPesquisa());
     }
-
+    /**
+     * Exibe o menu inicial do músico e atualiza o painel.
+     */
     public void showMusicianMainMenu() {
         musicianFrame.showPanelMusician(MusicoMenuInicial.TITLE);
         musicianFrame.setCurrentPanel(musicianFrame.getMusicoMenuInicial());
     }
-
     /**
      * Atualiza a label, após carregamento, que mostra o saldo do user
      */
     public void updateBalance() {
         clientFrame.updateBalanceLabel();
     }
-
+    /**
+     * Obtém o frame do músico.
+     * @return O frame do músico.
+     */
     public FrameMusico getMusicianFrame() {
         return musicianFrame;
     }
-
+    /**
+     * Obtém o frame do cliente.
+     * @return O frame do cliente.
+     */
     public ClientRootFrame getClientFrame() {
         return clientFrame;
     }

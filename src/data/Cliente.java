@@ -7,6 +7,13 @@ import java.util.List;
  * Representa um cliente na aplicação, herdando a classe User.
  */
 public class Cliente extends User implements Serializable {
+    /**
+     * Número de versão utilizado na serialização da classe para garantir compatibilidade durante a desserialização.
+     * Este campo é usado para identificar a versão da classe serializada e é importante para controlar a compatibilidade
+     * durante operações de serialização e desserialização de objetos.
+     * Se a versão da classe que realizou a serialização for diferente da versão atual da classe durante a desserialização,
+     * pode ocorrer uma InvalidClassException.
+     */
     private static final long serialVersionUID = 1325672347L;
     private double saldo;
     private List<Playlist> playlists;
