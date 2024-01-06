@@ -8,13 +8,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * Classe que representa o frame principal para a interface do músico.
+ */
 public class FrameMusico extends JFrame implements ActionListener {
-
+    /**
+     * Título da classe FrameMusico.
+     */
     public static String TITLE = "Musico";
 
     private RockstarGUI gui;
-    private Musico musician;
     private JPanel northPanel;
     private JLabel username;
     private JButton back;
@@ -27,13 +30,17 @@ public class FrameMusico extends JFrame implements ActionListener {
     private MusicoEstatistica musicoEstatistica;
     private MusicoPesquisa musicoPesquisa;
     private JPanel currentPanel;
-
+    /**
+     * Construtor da classe FrameMusico.
+     * @param gui Instância da classe RockstarGUI.
+     */
     public FrameMusico(RockstarGUI gui){
         this.gui = gui;
-        musician = (Musico) gui.getDb().getCurrentUser();
         currentPanel = new JPanel();
     }
-
+    /**
+     * Inicializa o frame e define os componentes gráficos.
+     */
     public void start() {
         RockstarDB db= gui.getDb();
 
@@ -103,7 +110,10 @@ public class FrameMusico extends JFrame implements ActionListener {
         northPanel.setBackground(fundo);
         setVisible(true);
     }
-
+    /**
+     * Define o painel atual exibido no frame.
+     * @param currentPanel Painel atual.
+     */
     public void setCurrentPanel(JPanel currentPanel) {
         this.currentPanel = currentPanel;
     }
@@ -148,7 +158,10 @@ public class FrameMusico extends JFrame implements ActionListener {
             }
         }
     }
-
+    /**
+     * Mostra um painel específico no container principal.
+     * @param panelName Nome do painel a ser exibido.
+     */
     public void showPanelMusician(String panelName) {
         cardLayout.show(panelContainer, panelName);
     }

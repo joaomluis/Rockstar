@@ -1,22 +1,24 @@
 package ui.musician;
 
 
-import data.Cliente;
 import data.Musico;
-import ui.FrameMusico;
 import ui.RockstarGUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * Painel que representa o menu inicial para músicos na aplicação RockStar.
+ * Permite acesso rápido a diferentes funcionalidades, como visualizar músicas, álbuns, estatísticas e pesquisar.
+ */
 public class MusicoMenuInicial extends JPanel implements ActionListener {
-
+    /**
+     * Título da classe MusicoMenuInicial.
+     */
     public static String TITLE = "Client MENU";
 
     RockstarGUI gui;
-    private final Musico musician;
     private JButton logOut;
     private JLabel tittle;
     private JButton musicas;
@@ -24,11 +26,12 @@ public class MusicoMenuInicial extends JPanel implements ActionListener {
     private JButton pesquisa;
 
     private JButton estatistica;
-
+    /**
+     * Construtor da classe MusicoMenuInicial.
+     * @param gui Referência para o objeto RockstarGUI.
+     */
     public MusicoMenuInicial(RockstarGUI gui) {
         this.gui = gui;
-        musician = (Musico) gui.getDb().getCurrentUser();
-
         setLayout(null);
         setBackground(new Color(77, 24, 28));
 

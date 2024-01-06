@@ -19,9 +19,16 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
+/**
+ * Representa o painel de exibição das músicas do músico na interface do RockStar.
+ * Permite visualizar, adicionar,
+ * editar nome, preço, disponibilidade
+ * e ordenar as músicas por critérios específicos.
+ */
 public class MusicoMusicas extends JPanel implements ActionListener, MouseListener {
-
+    /**
+     * Título da classe MusicoMusicas.
+     */
     public static final String TITLE = "MusicianSongs";
 
     private RockstarGUI gui;
@@ -71,10 +78,10 @@ public class MusicoMusicas extends JPanel implements ActionListener, MouseListen
         };
 
         tabelaDefault.addColumn("Titulo");
-        tabelaDefault.addColumn("Genero");
+        tabelaDefault.addColumn("Género");
         tabelaDefault.addColumn("Preço");
         tabelaDefault.addColumn("Disponibilidade");
-        tabelaDefault.addColumn("Album");
+        tabelaDefault.addColumn("Álbum");
 
         tabela = new JTable(tabelaDefault);
         tabela.getColumnModel().getColumn(0).setPreferredWidth(200);
@@ -245,26 +252,34 @@ public class MusicoMusicas extends JPanel implements ActionListener, MouseListen
             atualizarTabelaMusicas();
         }
     }
-
+    /**
+     * Método chamado quando ocorre um clique do mouse.
+     * Se um clique é detectado, ordena as músicas em ordem crescente no primeiro click e em ordem decrescente no segundo click.
+     * @param e Evento de mouse
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getSource() == tabela.getTableHeader()) {
-            int columnIndex = tabela.columnAtPoint(e.getPoint()); // Obtém o índice da coluna clicada
-            if (columnIndex == 0) { // Verifica se o clique foi na primeira coluna (Título)
-                musics = ordenarMusicas(CriteriosMusica.Nome); // Ordena as músicas pelo título
-                atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
+        if (e.getClickCount() == 1) {
+            if (e.getSource() == tabela.getTableHeader()) {
+                int columnIndex = tabela.columnAtPoint(e.getPoint()); // Obtém o índice da coluna clicada
+                if (columnIndex == 0) { // Verifica se o clique foi na primeira coluna (Título)
+                    musics = gui.getDb().ordenarMusicasCrescente(CriteriosMusica.Nome, musics);// Ordena as músicas pelo título
+                    atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
+                } else if (columnIndex == 1) { // Verifica se o clique foi na primeira coluna (Genero)
+                    musics = gui.getDb().ordenarMusicasCrescente(CriteriosMusica.Genero, musics); // Ordena as músicas pelo título
+                    atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
+                }
             }
-            else if (columnIndex == 1) { // Verifica se o clique foi na primeira coluna (Genero)
-                musics = ordenarMusicas(CriteriosMusica.Genero); // Ordena as músicas pelo título
-                atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
-            }
-            else if (columnIndex == 2) { // Verifica se o clique foi na primeira coluna (Genero)
-                musics = ordenarMusicas(CriteriosMusica.Preco); // Ordena as músicas pelo título
-                atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
-            }
-            else if (columnIndex == 3) { // Verifica se o clique foi na primeira coluna (Genero)
-                musics = ordenarMusicas(CriteriosMusica.Visibilidade); // Ordena as músicas pelo título
-                atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
+        }else if(e.getClickCount() == 2) {
+            if (e.getSource() == tabela.getTableHeader()) {
+                int columnIndex = tabela.columnAtPoint(e.getPoint()); // Obtém o índice da coluna clicada
+                if (columnIndex == 0) { // Verifica se o clique foi na primeira coluna (Título)
+                    musics = gui.getDb().ordenarMusicasDecrescente(CriteriosMusica.Nome, musics);// Ordena as músicas pelo título
+                    atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
+                } else if (columnIndex == 1) { // Verifica se o clique foi na primeira coluna (Genero)
+                    musics = gui.getDb().ordenarMusicasDecrescente(CriteriosMusica.Genero, musics); // Ordena as músicas pelo título
+                    atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
+                }
             }
         }
     }

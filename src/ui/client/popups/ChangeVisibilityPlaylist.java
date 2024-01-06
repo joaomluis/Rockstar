@@ -1,7 +1,6 @@
 package ui.client.popups;
 
 
-import data.Music;
 import data.Playlist;
 import domain.RockStarDBStatus;
 import ui.RockstarGUI;
@@ -10,7 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * Pop-up para alterar a visibilidade de uma playlist.
+ */
 public class ChangeVisibilityPlaylist extends JDialog implements ActionListener{
     private JLabel estado;
     private JComboBox<String> disponibilidade;
@@ -22,6 +23,12 @@ public class ChangeVisibilityPlaylist extends JDialog implements ActionListener{
     private int height = 150;
     private Playlist playlist;
     private RockstarGUI gui;
+    /**
+     * Construtor para o pop-up de alteração de visibilidade da playlist.
+     * @param gui       A instância da interface gráfica principal da aplicação.
+     * @param parent    O JFrame pai associado ao pop-up.
+     * @param playlist  A playlist cuja visibilidade será alterada.
+     */
     public ChangeVisibilityPlaylist(RockstarGUI gui, JFrame parent, Playlist playlist) {
         super(parent, "Alterar Disponibilidade", true);
         this.playlist = playlist;
@@ -70,8 +77,8 @@ public class ChangeVisibilityPlaylist extends JDialog implements ActionListener{
 
             boolean visibilidade = true;
 
-            if(escolhaEstado.equals("Disponivel"))  visibilidade= true;
-            else if(escolhaEstado.equals("Indisponível")) visibilidade = false;
+            if(escolhaEstado.equalsIgnoreCase("Disponivel"))  visibilidade= true;
+            else if(escolhaEstado.equalsIgnoreCase("Indisponível")) visibilidade = false;
 
             RockStarDBStatus status = gui.getDb().changePlaylistVisibility(visibilidade, playlist);
 

@@ -9,7 +9,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * Classe que representa a janela de criação de playlist.
+ */
 public class MakePlaylist extends JDialog implements ActionListener {
 
     private JPanel panelCenter;
@@ -19,7 +21,11 @@ public class MakePlaylist extends JDialog implements ActionListener {
     private JCheckBox visibilidadePlaylist;
     private JButton okButton;
     private JButton cancelButton;
-
+    /**
+     * Construtor da classe MakePlaylist.
+     * @param gui A instância da classe RockstarGUI.
+     * @param parent O JFrame pai.
+     */
     public MakePlaylist(RockstarGUI gui, JFrame parent) {
         super(parent, "Criar Playlist", true);
 

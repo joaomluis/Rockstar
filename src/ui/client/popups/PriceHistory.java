@@ -6,15 +6,21 @@ import ui.RockstarGUI;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-
+/**
+ * Classe que representa a janela de histórico de preços.
+ */
 public class PriceHistory extends JDialog {
 
     private JTable priceTable;
     DefaultTableModel tableModel;
-    private JLabel musicTitle;
     private Music selectedMusic;
     private RockstarGUI gui;
-
+    /**
+     * Construtor da classe PriceHistory.
+     * @param gui A instância da classe RockstarGUI.
+     * @param parent O JFrame pai.
+     * @param music A música a ser observada.
+     */
     public PriceHistory(RockstarGUI gui, JFrame parent, Music music) {
 
         super(parent, "Histórico de preços", true);

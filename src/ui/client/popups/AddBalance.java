@@ -7,7 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * Janela pop-up para adicionar saldo à conta do cliente.
+ */
 public class AddBalance extends JDialog {
 
     private JPanel panelCenter;
@@ -17,7 +19,11 @@ public class AddBalance extends JDialog {
     private JButton okButton;
     private JButton cancelButton;
 
-
+    /**
+     * Construtor para o pop-up de adição de saldo.
+     * @param gui    A instância da interface gráfica principal da aplicação.
+     * @param parent O JFrame pai associado à janela pop-up.
+     */
     public AddBalance(RockstarGUI gui, JFrame parent) {
         super(parent, "Adicionar Saldo", true);
 

@@ -7,7 +7,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * Pop-up para confirmar a compra de uma música.
+ */
 public class ConfirmPurchase extends JDialog implements ActionListener {
 
     private JPanel panelCenter;
@@ -16,7 +18,11 @@ public class ConfirmPurchase extends JDialog implements ActionListener {
     private JButton okButton;
     private JButton cancelButton;
     private RockstarGUI gui;
-
+    /**
+     * Construtor para o pop-up de confirmação de compra.
+     * @param gui     A instância da interface gráfica principal da aplicação.
+     * @param parent  O JFrame pai associado ao pop-up.
+     */
     public ConfirmPurchase(RockstarGUI gui, JFrame parent) {
 
         super(parent, "Confirmar compra", true);

@@ -3,7 +3,9 @@ package data;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Representa um cliente na aplicação, herdando a classe User.
+ */
 public class Cliente extends User implements Serializable {
     private static final long serialVersionUID = 1325672347L;
     private double saldo;
@@ -11,7 +13,12 @@ public class Cliente extends User implements Serializable {
     private List<Music> songsInCart;
     private List<Music> songsOwned;
     private List<Purchase> purchasesMade;
-
+    /**
+     * Construtor para inicializar um Cliente com um nome de usuário e senha.
+     * Inicializa as listas de músicas no carrinho, músicas possuídas e compras feitas.
+     * @param username Nome de usuário do cliente.
+     * @param password Senha do cliente.
+     */
     public Cliente(String username, String password) {
         super(username, password);
         saldo = 0.00;
@@ -24,7 +31,10 @@ public class Cliente extends User implements Serializable {
     public double getSaldo() {
         return saldo;
     }
-
+    /**
+     * Define o saldo do cliente.
+     * @param saldo O novo saldo a ser definido para o cliente.
+     */
     public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
@@ -45,7 +55,11 @@ public class Cliente extends User implements Serializable {
         return purchasesMade;
     }
 
-
+    /**
+     * Adiciona saldo à conta do cliente.
+     * @param valor O valor a ser adicionado ao saldo. Deve ser maior ou igual a zero.
+     * @return true se o valor for adicionado com sucesso, false caso contrário.
+     */
     public boolean adicionaSaldo(double valor){
         if(valor >= 0){
             saldo += valor;
@@ -57,7 +71,11 @@ public class Cliente extends User implements Serializable {
     public void addPlaylistToClient(Playlist playlist) {
         playlists.add(playlist);
     }
-
+    /**
+     * Verifica se o cliente já avaliou uma música específica.
+     * @param music A música a verificar.
+     * @return true se o cliente já avaliou a música, false caso contrário.
+     */
     public boolean hasRatedMusic(Music music) {
         for (Rating avaliacao : music.getAvaliacoes()) {
             if (avaliacao.getCliente() == this) {

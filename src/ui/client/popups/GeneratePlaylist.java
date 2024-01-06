@@ -1,6 +1,5 @@
 package ui.client.popups;
 
-import data.Genre;
 import domain.RockStarDBStatus;
 import ui.RockstarGUI;
 
@@ -9,7 +8,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * Classe que representa a janela de gerar playlist.
+ */
 public class GeneratePlaylist extends JDialog implements ActionListener {
 
     private JPanel panelCenter;
@@ -23,7 +24,11 @@ public class GeneratePlaylist extends JDialog implements ActionListener {
     private JButton okButton;
     private JButton cancelButton;
     private RockstarGUI gui;
-
+    /**
+     * Construtor da classe GeneratePlaylist.
+     * @param gui A instância da classe RockstarGUI.
+     * @param parent O JFrame pai.
+     */
     public GeneratePlaylist(RockstarGUI gui, JFrame parent) {
         super(parent, "Gerar Playlist", true);
 

@@ -8,7 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * Classe que representa a janela de avaliação de músicas.
+ */
 public class RateSong extends JDialog implements ActionListener {
 
     private JPanel panelCenter;
@@ -19,7 +21,12 @@ public class RateSong extends JDialog implements ActionListener {
     private JButton cancelButton;
     private Music music;
     private RockstarGUI gui;
-
+    /**
+     * Construtor da classe RateSong.
+     * @param gui A instância da classe RockstarGUI.
+     * @param parent O JFrame pai.
+     * @param music A música a ser avaliada.
+     */
     public RateSong(RockstarGUI gui, JFrame parent, Music music) {
         super(parent, "Avaliar música", true);
         this.gui = gui;

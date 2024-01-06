@@ -10,7 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import static domain.RockStarDBStatus.DB_MUSIC_PRICE_HAS_CHANGED;
-
+/**
+ * Esta classe representa um pop-up para alterar o preço de uma música.
+ * Permite que um músico modifique o preço de uma música da sua lista.
+ */
 public class AlterarPreco extends JDialog implements ActionListener{
     private JPanel panelCenter;
     private JPanel panelSouth;
@@ -21,7 +24,14 @@ public class AlterarPreco extends JDialog implements ActionListener{
     private int width = 300;
     private int height = 150;
     private Music music;
-    RockstarGUI gui;
+    private RockstarGUI gui;
+    /**
+     * Construtor da classe.
+     *
+     * @param gui    Referência para a instância do RockstarGUI.
+     * @param parent JFrame pai associado ao pop-up.
+     * @param music  Referência para a música cujo preço será alterado.
+     */
     public AlterarPreco(RockstarGUI gui, JFrame parent, Music music) {
         super(parent, "Alterar Preço", true);
         this.music = music;

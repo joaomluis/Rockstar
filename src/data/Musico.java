@@ -4,7 +4,9 @@ package data;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
-
+/**
+ * Classe que representa um músico, que é herdada da classe User e implementando Serializable.
+ */
 public class Musico extends User implements Serializable {
     @Serial
     private static final long serialVersionUID = 1325672347L;
@@ -12,11 +14,16 @@ public class Musico extends User implements Serializable {
     private String pin;
     private ArrayList<Music> musics = new ArrayList<>();
     private ArrayList<Album> albuns = new ArrayList<>();
+    /**
+     * Construtor da classe Musico.
+     * @param username Nome de usuário.
+     * @param password Senha de acesso.
+     * @param pin PIN do músico.
+     */
     public Musico(String username, String password, String pin) {
         super(username, password);
         this.pin = pin;
     }
-
     public ArrayList<Music> getMusicas() {
         return musics;
     }
@@ -28,11 +35,9 @@ public class Musico extends User implements Serializable {
     }
     public void addMusic(Music music) {
         musics.add(music);
-        System.out.println("add musica ao musicoMusicas");
     }
     public void addAlbum(Album album){
         albuns.add(album);
-        System.out.println("add album ao musicoAlbuns");
     }
     @Override
     public String toString() {

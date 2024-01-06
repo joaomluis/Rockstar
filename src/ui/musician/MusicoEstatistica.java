@@ -1,20 +1,23 @@
 package ui.musician;
 
 import data.Musico;
-import domain.RockstarDB;
 import ui.RockstarGUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * Painel que exibe estatísticas relacionadas aos músicos, como o total de usuários, músicos, músicas, álbuns,
+ * o valor total das músicas e o valor total das músicas vendidas. Permite visualizar o total de álbuns por género.
+ */
 public class MusicoEstatistica extends JPanel implements ActionListener {
-
+    /**
+     * Título da classe MusicoEstatistica.
+     */
     public static final String TITLE = "MusicianStats";
 
     private RockstarGUI gui;
-    private final Musico musician;
     private JLabel totalAlbunsGeneroCont;
     private JComboBox<String> genero;
     private double valorTotalMusicasVendidasInt;
@@ -39,7 +42,6 @@ public class MusicoEstatistica extends JPanel implements ActionListener {
 
     public MusicoEstatistica(RockstarGUI gui) {
         this.gui = gui;
-        musician = (Musico) gui.getDb().getCurrentUser();
         setLayout(null);
 
         JLabel titulo = new JLabel("Estatisticas");

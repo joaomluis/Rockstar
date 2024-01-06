@@ -42,7 +42,7 @@ public class MyMusic extends JPanel implements ActionListener, MouseListener {
     public MyMusic(RockstarGUI gui) {
 
         this.gui = gui;
-        this.musics = gui.getDb().addAllOwnedSongsToTable(); //retorna o array com todas musicas visiveis
+        this.musics = (ArrayList<Music>) gui.getDb().getCurrentUserAsClient().getSongsOwned(); //retorna o array com todas musicas visiveis
         client = (Cliente) gui.getDb().getCurrentUser();
         setLayout(new BorderLayout());
         setBackground(new Color(20, 64, 88));

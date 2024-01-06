@@ -10,7 +10,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * Esta classe representa um pop-up para adicionar uma música.
+ * Permite que um músico adicione uma nova música ao seu Álbum.
+ * Os campos necessários incluem nome, género, preço e álbum associado à música.
+ */
 public class AdicionarMusica extends JDialog implements ActionListener{
     private JComboBox albumDropdown;
     private JLabel album;
@@ -27,7 +31,11 @@ public class AdicionarMusica extends JDialog implements ActionListener{
     private JButton cancelButton;
     private int width = 400;
     private int height = 200;
-
+    /**
+     * Construtor da classe AdicionarMusica.
+     * @param gui A instância da classe RockstarGUI.
+     * @param parent O JFrame pai.
+     */
     public AdicionarMusica(RockstarGUI gui, JFrame parent) {
         super(parent, "Adicionar Música", true);
         this.gui = gui;
@@ -44,7 +52,7 @@ public class AdicionarMusica extends JDialog implements ActionListener{
         okButton = new JButton("OK");
         cancelButton = new JButton("Cancelar");
         nome = new JLabel("Nome:");
-        genero = new JLabel("Genero:");
+        genero = new JLabel("Género:");
         preco = new JLabel("Preço:");
         album = new JLabel("Album:");
         albumDropdown = new JComboBox<>(gui.getDb().getMusicianAlbums(gui.getDb().getCurrentUserAsMusician()));//vetor com os albuns criados pelo musico
@@ -78,6 +86,7 @@ public class AdicionarMusica extends JDialog implements ActionListener{
         setLocationRelativeTo(parent); // Centraliza o diálogo em relação à frame principal. (Para ñ aparecer ao canto)
         setVisible(true);
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == cancelButton){
@@ -101,7 +110,7 @@ public class AdicionarMusica extends JDialog implements ActionListener{
             }else if(db==RockStarDBStatus.DB_MUSIC_ADDED){
                 JOptionPane.showMessageDialog(null, "A sua música "+escolhaNome+" foi adicionada com sucesso.");
             }
-            dispose();
+            dispose();// Fecha o pop-up.
         }
     }
 }

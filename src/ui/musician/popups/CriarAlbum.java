@@ -1,8 +1,6 @@
 package ui.musician.popups;
 
 
-import data.Album;
-import data.Musico;
 import domain.RockStarDBStatus;
 import ui.RockstarGUI;
 
@@ -11,7 +9,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Array;
-
+/**
+ * Esta classe representa um pop-up para a criação de um álbum musical.
+ * Permite que um músico crie um novo álbum, inserindo seu nome e género.
+ */
 public class CriarAlbum extends JDialog implements ActionListener {
     private JPanel panelCenter;
     private JPanel panelSouth;
@@ -25,7 +26,11 @@ public class CriarAlbum extends JDialog implements ActionListener {
     private int height = 200;
     private RockstarGUI gui;
 
-
+    /**
+     * Construtor da classe.
+     * @param gui    Referência para a instância do RockstarGUI.
+     * @param parent JFrame pai associado ao pop-up.
+     */
     public CriarAlbum(RockstarGUI gui, JFrame parent) {
         super(parent, "Criar Album", true);
         this.gui = gui;

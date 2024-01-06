@@ -8,7 +8,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * Esta classe representa um pop-up para alterar o nome de uma música.
+ * Permite que um músico altere o nome de uma música da sua lista.
+ */
 public class AlterarNome extends JDialog implements ActionListener{
     private JPanel panelCenter;
     private JPanel panelSouth;
@@ -20,6 +23,12 @@ public class AlterarNome extends JDialog implements ActionListener{
     private int height = 150;
     private Music music;
     private RockstarGUI gui;
+    /**
+     * Construtor da classe.
+     * @param gui    Referência para a instância do RockstarGUI.
+     * @param parent JFrame pai associado ao pop-up.
+     * @param music  Referência para a música cujo nome será alterado.
+     */
     public AlterarNome(RockstarGUI gui, JFrame parent, Music music) {
         super(parent, "Alterar Nome", true);
         this.music = music;

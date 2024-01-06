@@ -11,7 +11,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * Pop-up para adicionar uma música a uma playlist.
+ */
 public class AddToPlaylist extends JDialog implements ActionListener {
 
     private JPanel panelCenter;
@@ -22,7 +24,12 @@ public class AddToPlaylist extends JDialog implements ActionListener {
     private JButton cancelButton;
     private RockstarGUI gui;
     private Music music;
-
+    /**
+     * Construtor para o pop-up de adição de música a uma playlist.
+     * @param gui    A instância da interface gráfica principal da aplicação.
+     * @param parent O JFrame pai associado ao pop-up.
+     * @param music  A música a ser adicionada à playlist.
+     */
     public AddToPlaylist(RockstarGUI gui, JFrame parent, Music music) {
 
         super(parent, "Adicionar música a playlist", true);

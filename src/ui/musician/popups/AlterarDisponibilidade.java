@@ -10,7 +10,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * Esta classe representa um pop-up para alterar a disponibilidade de uma música.
+ * Permite que um músico altere o estado de disponibilidade (Disponível/Indisponível) de uma música.
+ */
 public class AlterarDisponibilidade extends JDialog implements ActionListener{
     private JLabel estado;
     private JComboBox<String> disponibilidade;
@@ -22,6 +25,12 @@ public class AlterarDisponibilidade extends JDialog implements ActionListener{
     private int height = 150;
     private Music music;
     private RockstarGUI gui;
+    /**
+     * Construtor da classe.
+     * @param gui    Referência para a instância do RockstarGUI.
+     * @param parent JFrame pai associado ao pop-up.
+     * @param music  Referência para a música cuja disponibilidade será alterada.
+     */
     public AlterarDisponibilidade(RockstarGUI gui, JFrame parent, Music music) {
         super(parent, "Alterar Disponibilidade", true);
         this.music = music;

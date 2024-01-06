@@ -11,13 +11,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
+/**
+ * Classe que representa a interface gráfica para pesquisa de músicas por um músico.
+ */
 public class MusicoPesquisa extends JPanel implements ActionListener {
-
+    /**
+     * Título da classe MusicoPesquisa.
+     */
     public static final String TITLE = "MusicianSearch";
 
     private RockstarGUI gui;
-    private Musico musician;
     private JTextField barraPesquisa;
     private JComboBox<CriteriosMusica> dropdown;
     private JPanel painelCentralSuperior;
@@ -29,10 +32,12 @@ public class MusicoPesquisa extends JPanel implements ActionListener {
     private JTable tabela;
     private JButton pesquisar;
 
-
+    /**
+     * Construtor da classe MusicoPesquisa.
+     * @param gui Instância da classe RockstarGUI.
+     */
     public MusicoPesquisa(RockstarGUI gui) {
         this.gui = gui;
-        musician = (Musico) gui.getDb().getCurrentUser();
         setLayout(new BorderLayout());
 
 
@@ -75,14 +80,8 @@ public class MusicoPesquisa extends JPanel implements ActionListener {
 
         // Define as colunas da tabela
         tabelaDefault.addColumn("Titulo");
-        tabelaDefault.addColumn("Gênero");
+        tabelaDefault.addColumn("Género");
         tabelaDefault.addColumn("Produtor");
-
-//        // Adiciona as músicas ao modelo de tabela
-//        for (Musica musica : musicas) {
-//            Object[] musicaObjeto = {musica.getTittle(), musica.getArtist()}; //falta preço
-//            tabelaDefault.addRow(musicaObjeto);
-//        }
 
         // Cria a tabela com o modelo
         tabela = new JTable(tabelaDefault);
@@ -115,7 +114,10 @@ public class MusicoPesquisa extends JPanel implements ActionListener {
 
         setVisible(true);
     }
-
+    /**
+     * Atualiza a tabela de músicas com a lista fornecida.
+     * @param musics Lista de músicas a ser exibida na tabela.
+     */
     private void atualizarTabelaMusicas(ArrayList<Music> musics) {
         // Limpar os dados existentes na tabela
         tabelaDefault.setRowCount(0);
@@ -129,7 +131,10 @@ public class MusicoPesquisa extends JPanel implements ActionListener {
         // Atualizar a exibição da tabela
         tabela.repaint();
     }
-
+    /**
+     * Método chamado quando uma ação é executada, como o clique em um botão.
+     * @param e Evento de ação.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == pesquisar) {

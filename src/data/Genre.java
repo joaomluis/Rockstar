@@ -1,5 +1,7 @@
 package data;
-
+/**
+ * Enumeração dos géneros disponiveis.
+ */
 public enum Genre {
     Pop,
     Rock,

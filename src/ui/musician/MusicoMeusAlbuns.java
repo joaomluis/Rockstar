@@ -11,10 +11,15 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-
+/**
+ * Representa o painel de exibição dos álbuns do músico na interface do RockStar.
+ * Permite a visualização e criação de novos álbuns.
+ */
 public class MusicoMeusAlbuns extends JPanel implements ActionListener {
+    /**
+     * Título da classe MusicoMeusAlbuns.
+     */
     public static final String TITLE = "MusicianAlbuns";
 
     private RockstarGUI gui;
@@ -27,7 +32,10 @@ public class MusicoMeusAlbuns extends JPanel implements ActionListener {
     private JTable tabela;
     private JButton criar;
     private ArrayList<Album> albuns;
-
+    /**
+     * Construtor da classe MusicoMeusAlbuns.
+     * @param gui Referência para a instância do RockstarGUI.
+     */
     public MusicoMeusAlbuns(RockstarGUI gui) {
         this.gui = gui;
         musician = (Musico) gui.getDb().getCurrentUser();
@@ -58,7 +66,7 @@ public class MusicoMeusAlbuns extends JPanel implements ActionListener {
 
         // Define as colunas da tabela
         tabelaDefault.addColumn("Nome");
-        tabelaDefault.addColumn("Gênero");
+        tabelaDefault.addColumn("Género");
         tabelaDefault.addColumn("Produtor");
 
         // Cria a tabela com o modelo
