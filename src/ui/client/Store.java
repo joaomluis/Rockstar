@@ -14,9 +14,11 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-public class Store extends JPanel implements ActionListener {
+public class Store extends JPanel implements ActionListener, MouseListener {
 
     public static final String TITLE = "Store";
     private RockstarGUI gui;
@@ -105,6 +107,7 @@ public class Store extends JPanel implements ActionListener {
         storeTable.getColumnModel().getColumn(4).setPreferredWidth(200);
         // Impede a movimentação das colunas.
         storeTable.getTableHeader().setReorderingAllowed(false);
+        storeTable.getTableHeader().addMouseListener(this);
 
         JScrollPane scrollPane = new JScrollPane(storeTable);
 
@@ -149,6 +152,7 @@ public class Store extends JPanel implements ActionListener {
 
         add(eastPanel, BorderLayout.EAST);
 
+        gui.getDb().addAllRockstarSongsToTable(storeTable,musics);
     }
 
     @Override
@@ -225,6 +229,52 @@ public class Store extends JPanel implements ActionListener {
 
     public void setMusics(ArrayList<Music> musics) {
         this.musics = musics;
+    }
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if(e.getClickCount() == 1) {
+            if (e.getSource() == storeTable.getTableHeader()) {
+                int columnIndex = storeTable.columnAtPoint(e.getPoint()); // Obtém o índice da coluna clicada
+                if (columnIndex == 0) { // Verifica se o clique foi na primeira coluna (Título)
+                    musics = gui.getDb().ordenarMusicasCrescente(CriteriosMusica.NAME, musics); // Ordena as músicas pelo título
+                    atualizarTabelaMusicas(musics); // Atualiza a exibição da tabela com as músicas ordenadas
+                } else if (columnIndex == 2) { // Verifica se o clique foi na primeira coluna (Genero)
+                    musics = gui.getDb().ordenarMusicasCrescente(CriteriosMusica.GENRE, musics); // Ordena as músicas pelo título
+                    atualizarTabelaMusicas(musics); // Atualiza a exibição da tabela com as músicas ordenadas
+                }
+            }
+        }else if(e.getClickCount() == 2) {
+            if (e.getSource() == storeTable.getTableHeader()) {
+                int columnIndex = storeTable.columnAtPoint(e.getPoint()); // Obtém o índice da coluna clicada
+                if (columnIndex == 0) { // Verifica se o clique foi na primeira coluna (Título)
+                    musics = gui.getDb().ordenarMusicasDecrescente(CriteriosMusica.NAME, musics); // Ordena as músicas pelo título
+                    atualizarTabelaMusicas(musics); // Atualiza a exibição da tabela com as músicas ordenadas
+                } else if (columnIndex == 2) { // Verifica se o clique foi na primeira coluna (Genero)
+                    musics = gui.getDb().ordenarMusicasDecrescente(CriteriosMusica.GENRE, musics); // Ordena as músicas pelo título
+                    atualizarTabelaMusicas(musics); // Atualiza a exibição da tabela com as músicas ordenadas
+                }
+            }
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
 

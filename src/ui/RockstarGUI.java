@@ -112,7 +112,7 @@ public class RockstarGUI {
 
     private void updateStoreTable(DefaultTableModel tableModel, JTable table) {
         tableModel.setRowCount(0);
-        getDb().addAllRockstarSongsToTable(table);
+        getDb().addAllRockstarSongsToTable(table,getDb().addAllRockstarSongsVisible());
     }
 
     /////////////////Atualizar painel Playlists\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\

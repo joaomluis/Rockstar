@@ -14,8 +14,11 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
-public class MyMusic extends JPanel implements ActionListener {
+public class MyMusic extends JPanel implements ActionListener, MouseListener {
 
 
     public static final String TITLE = "MyMusic";
@@ -33,13 +36,14 @@ public class MyMusic extends JPanel implements ActionListener {
     private JComboBox<CriteriosMusica> dropdown;
     private JTextField searchField;
     private JButton searchButton;
+    private ArrayList<Music> musics;
 
 
     public MyMusic(RockstarGUI gui) {
 
         this.gui = gui;
+        this.musics = gui.getDb().addAllOwnedSongsToTable(); //retorna o array com todas musicas visiveis
         client = (Cliente) gui.getDb().getCurrentUser();
-
         setLayout(new BorderLayout());
         setBackground(new Color(20, 64, 88));
 
@@ -100,7 +104,7 @@ public class MyMusic extends JPanel implements ActionListener {
         musicTable.getColumnModel().getColumn(2).setPreferredWidth(200);
         // Impede a movimentação das colunas.
         musicTable.getTableHeader().setReorderingAllowed(false);
-
+        musicTable.getTableHeader().addMouseListener(this);
 
         musicTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -153,8 +157,8 @@ public class MyMusic extends JPanel implements ActionListener {
 
         add(eastPanel, BorderLayout.EAST);
 
-        gui.getDb().addAllOwnedSongsToTable(musicTable);
 
+        atualizarTabelaMusicas(musics);
         setVisible(true);
     }
 
@@ -210,5 +214,61 @@ public class MyMusic extends JPanel implements ActionListener {
             }
         }
     }
+    public void atualizarTabelaMusicas(ArrayList<Music> musicasEncontradas) {
+        // Limpar a tabela atual
+        tableModel.setRowCount(0);
+        // Adicionar as músicas encontradas à tabela
+        for (Music musica : musicasEncontradas) {
+            Object[] rowData = {musica.getTitle(), musica.getArtist(), musica.getGenre()};
+            tableModel.addRow(rowData);
+        }
+    }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if(e.getClickCount() == 1) {
+            if (e.getSource() == musicTable.getTableHeader()) {
+                int columnIndex = musicTable.columnAtPoint(e.getPoint()); // Obtém o índice da coluna clicada
+                if (columnIndex == 0) { // Verifica se o clique foi na primeira coluna (Título)
+                    musics = gui.getDb().ordenarMusicasCrescente(CriteriosMusica.NAME, musics); // Ordena as músicas pelo título
+                    atualizarTabelaMusicas(musics); // Atualiza a exibição da tabela com as músicas ordenadas
+                } else if (columnIndex == 2) { // Verifica se o clique foi na primeira coluna (Genero)
+                    musics = gui.getDb().ordenarMusicasCrescente(CriteriosMusica.GENRE, musics); // Ordena as músicas pelo título
+                    atualizarTabelaMusicas(musics); // Atualiza a exibição da tabela com as músicas ordenadas
+                }
+            }
+        }else if(e.getClickCount() == 2) {
+            if (e.getSource() == musicTable.getTableHeader()) {
+                int columnIndex = musicTable.columnAtPoint(e.getPoint()); // Obtém o índice da coluna clicada
+                if (columnIndex == 0) { // Verifica se o clique foi na primeira coluna (Título)
+                    musics = gui.getDb().ordenarMusicasDecrescente(CriteriosMusica.NAME, musics); // Ordena as músicas pelo título
+                    atualizarTabelaMusicas(musics); // Atualiza a exibição da tabela com as músicas ordenadas
+                } else if (columnIndex == 2) { // Verifica se o clique foi na primeira coluna (Genero)
+                    musics = gui.getDb().ordenarMusicasDecrescente(CriteriosMusica.GENRE, musics); // Ordena as músicas pelo título
+                    atualizarTabelaMusicas(musics); // Atualiza a exibição da tabela com as músicas ordenadas
+                }
+            }
+        }
+    }
+
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }

@@ -6,6 +6,7 @@ import ui.musician.CriteriosMusica;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -529,22 +530,19 @@ public class RockstarDB {
 
 
     ///////////////////////////LOJA\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-    public void addAllRockstarSongsToTable(JTable table) {
+    public void addAllRockstarSongsToTable(JTable table, ArrayList<Music> musics) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        List<Music> musicasPlataforma = dados.getAllSongsAvailable();
 
         String rating = "";
-        for (Music song : musicasPlataforma) {
+        for (Music song : musics) {
             if (song.avaliacaoMedia() == 0) {
                 rating = "Sem Rating";
             } else {
                 rating = String.valueOf(song.avaliacaoMedia());
             }
-            if (song.isVisibilidade()) {
-                Object[] row = {song.getTitle(), song.getArtist(), song.getGenre(), String.format("%1$,.2f€", song.getPreco()), rating};
-                if (!songExistsOnTable(model, song)) {
-                    model.addRow(row);
-                }
+            Object[] row = {song.getTitle(), song.getArtist(), song.getGenre(), String.format("%1$,.2f€", song.getPreco()), rating};
+            if (!songExistsOnTable(model, song)) {
+                model.addRow(row);
             }
         }
     }
@@ -692,6 +690,14 @@ public class RockstarDB {
             }
         }
     }
+    public ArrayList<Music> addAllOwnedSongsToTable() {
+        ArrayList<Music> musics = new ArrayList<>();
+        ArrayList<Music> ownedSongs = (ArrayList<Music>) getCurrentUserAsClient().getSongsOwned();
+        for(Music m : ownedSongs){
+            if(m.isVisibilidade()) musics.add(m);
+        }
+        return musics;
+    }
 
 
     ////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -763,7 +769,7 @@ public class RockstarDB {
     }
 
 
-    ////////////////////////////   \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    //////////////////////////// PESQUISA DE MÚSICAS   \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     public ArrayList<Music> procurarMusicas(String nome, CriteriosMusica cm){
         ArrayList<Music> musics = new ArrayList<>();
@@ -788,6 +794,62 @@ public class RockstarDB {
         }
         return musics;
     }
+    ////////////////////////////////////////////////////////// ARRAYS DE ORDENAÇÃO DE TABELAS \\\\\\\\\\\\\\\\\\\\\\\\\
+    public ArrayList<Music> ordenarMusicasCrescente(CriteriosMusica mo, ArrayList<Music> musics) {
+        if (musics.isEmpty()) {
+            return new ArrayList<>(); // Não há nada para ordenar ou exibir na tabela
+        }
+        ArrayList<Music> musicasOrdenadas = new ArrayList<>(musics); //O array será do mesmo tamanho do original (musicas)
+
+        for (int i = 0; i < musicasOrdenadas.size() - 1; i++) {
+            for (int j = 0; j < musicasOrdenadas.size() - i - 1; j++) {
+                if(mo == CriteriosMusica.NAME) {
+                    if (musicasOrdenadas.get(j).getTitle().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getTitle()) > 0) {
+                        Music temp = musicasOrdenadas.get(j);
+                        musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
+                        musicasOrdenadas.set(j + 1, temp);
+                    }
+                }
+                else if(mo == CriteriosMusica.GENRE){
+                    if (musicasOrdenadas.get(j).getGenre().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getGenre()) > 0) {
+                        Music temp = musicasOrdenadas.get(j);
+                        musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
+                        musicasOrdenadas.set(j + 1, temp);
+                    }
+                }
+            }
+        }
+        return musicasOrdenadas;
+    }
+
+    public ArrayList<Music> ordenarMusicasDecrescente(CriteriosMusica mo, ArrayList<Music> musics) {
+        if (musics.isEmpty()) {
+            return new ArrayList<>(); // Não há nada para ordenar ou exibir na tabela
+        }
+        ArrayList<Music> musicasOrdenadas = new ArrayList<>(musics); //O array será do mesmo tamanho do original (musicas)
+
+        for (int i = 0; i < musicasOrdenadas.size() - 1; i++) {
+            for (int j = 0; j < musicasOrdenadas.size() - i - 1; j++) {
+                if(mo == CriteriosMusica.NAME) {
+                    if (musicasOrdenadas.get(j).getTitle().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getTitle()) < 0) {
+                        Music temp = musicasOrdenadas.get(j);
+                        musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
+                        musicasOrdenadas.set(j + 1, temp);
+                    }
+                }
+                else if(mo == CriteriosMusica.GENRE){
+                    if (musicasOrdenadas.get(j).getGenre().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getGenre()) < 0) {
+                        Music temp = musicasOrdenadas.get(j);
+                        musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
+                        musicasOrdenadas.set(j + 1, temp);
+                    }
+                }
+            }
+        }
+        return musicasOrdenadas;
+    }
+
+
 
 
     public boolean rateSong(Music music, double rating) {
