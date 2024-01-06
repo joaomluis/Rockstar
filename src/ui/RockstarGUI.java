@@ -194,6 +194,7 @@ public class RockstarGUI {
     ////////////////////////////METODOS PARA ABRIR FRAMES\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     /// fechar frame de log in abre menu do cliente
+
     public void showMusicianFrame() {
         musicianFrame.start();
         authenticationFrame.setVisible(false);
@@ -205,10 +206,10 @@ public class RockstarGUI {
     }
 
     public void showAutenticationFrame() {
+
         authenticationFrame.setVisible(true);
         authenticationFrame.showPanel(MenuInicial.TITLE);
-        clientFrame.setVisible(false);
-        musicianFrame.setVisible(false);
+
     }
 
     /////////////////////////METODOS PARA ABRIR PAINEIS CLIENTE\\\\\\\\\\\\\\\\\\\\\\\\\

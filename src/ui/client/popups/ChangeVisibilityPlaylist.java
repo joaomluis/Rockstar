@@ -1,9 +1,9 @@
-package ui.musician.popups;
+package ui.client.popups;
 
 
 import data.Music;
+import data.Playlist;
 import domain.RockStarDBStatus;
-import domain.RockstarDB;
 import ui.RockstarGUI;
 
 import javax.swing.*;
@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AlterarDisponibilidade extends JDialog implements ActionListener{
+public class ChangeVisibilityPlaylist extends JDialog implements ActionListener{
     private JLabel estado;
     private JComboBox<String> disponibilidade;
     private JPanel panelCenter;
@@ -20,11 +20,11 @@ public class AlterarDisponibilidade extends JDialog implements ActionListener{
     private JButton cancelButton;
     private int width = 300;
     private int height = 150;
-    private Music music;
+    private Playlist playlist;
     private RockstarGUI gui;
-    public AlterarDisponibilidade(RockstarGUI gui, JFrame parent, Music music) {
+    public ChangeVisibilityPlaylist(RockstarGUI gui, JFrame parent, Playlist playlist) {
         super(parent, "Alterar Disponibilidade", true);
-        this.music = music;
+        this.playlist = playlist;
         this.gui = gui;
 
 //SETTINGS DA JANELA////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,7 +35,6 @@ public class AlterarDisponibilidade extends JDialog implements ActionListener{
 //CRIAR BOTÕES//////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         okButton = new JButton("OK");
-        okButton.addActionListener(this);
         cancelButton = new JButton("Cancelar");
         estado = new JLabel("Disponibilidade:");
         disponibilidade = new JComboBox<>(new String[]{"Disponivel","Indisponível"});
@@ -51,6 +50,7 @@ public class AlterarDisponibilidade extends JDialog implements ActionListener{
         panelSouth.add(okButton);
         panelSouth.add(cancelButton);
         //Adicionar ao listener.
+        okButton.addActionListener(this);
         cancelButton.addActionListener(this);
 //(PAINEL PRINCIPAL) ADD AO PAINEL//////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -73,12 +73,18 @@ public class AlterarDisponibilidade extends JDialog implements ActionListener{
             if(escolhaEstado.equals("Disponivel"))  visibilidade= true;
             else if(escolhaEstado.equals("Indisponível")) visibilidade = false;
 
+            RockStarDBStatus status = gui.getDb().changePlaylistVisibility(visibilidade, playlist);
 
-            RockStarDBStatus db = gui.getDb().alterarDisponibilidade(music,visibilidade);
+            if (status == RockStarDBStatus.DB_PLAYLIST_VISIB_CHANGED) {
+                JOptionPane.showMessageDialog(null, "Visibilidade alterada com sucesso,");
+            } else if (status == RockStarDBStatus.DB_PLAYLIST_VISIB_UNCHANGED) {
+                JOptionPane.showMessageDialog(null, "Visibilidade não alterada.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro inesperado, tente novamente.");
+            }
 
-            if(db == RockStarDBStatus.DB_MUSIC_VISIBILITY_CHANGED) JOptionPane.showMessageDialog(null,"Alterou a visibilidade da sua música com sucesso.");
-            else if(db == RockStarDBStatus.DB_MUSIC_VISIBILITY_FAIL) JOptionPane.showMessageDialog(null, "Não foi possivel fazer a alteração de visibilidade.");
-            else JOptionPane.showMessageDialog(null, "Algo correu mal.");
+            gui.atualizarTabelaPlaylists(gui.getMyPlaylistsTableModel(), gui.getMyPlaylistsTable());
+            gui.getMyPlaylistsButtonsToEnable();
             dispose(); // Fecha o pop-up.
         }
     }

@@ -9,6 +9,6 @@
 
 - ordenação nas musicas do musico falta descente
 - falta ordenar minhas musicas
-- pesquisa minha música cliente 
+- pesquisa minha música cliente
 - java doc
 - relatório

@@ -166,7 +166,7 @@ public class MusicoMusicas extends JPanel implements ActionListener, MouseListen
 
         for (int i = 0; i < musicasOrdenadas.size() - 1; i++) {
             for (int j = 0; j < musicasOrdenadas.size() - i - 1; j++) {
-                if(mo == CriteriosMusica.NAME) {
+                if(mo == CriteriosMusica.Nome) {
                     // Comparar os títulos das músicas e trocar se estiverem fora de ordem
                     if (musicasOrdenadas.get(j).getTitle().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getTitle()) > 0) {
                         Music temp = musicasOrdenadas.get(j);
@@ -174,7 +174,7 @@ public class MusicoMusicas extends JPanel implements ActionListener, MouseListen
                         musicasOrdenadas.set(j + 1, temp);
                     }
                 }
-                else if(mo == CriteriosMusica.GENRE){
+                else if(mo == CriteriosMusica.Genero){
                     // Comparar os títulos das músicas e trocar se estiverem fora de ordem
                     if (musicasOrdenadas.get(j).getGenre().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getGenre()) > 0) {
                         Music temp = musicasOrdenadas.get(j);
@@ -182,10 +182,10 @@ public class MusicoMusicas extends JPanel implements ActionListener, MouseListen
                         musicasOrdenadas.set(j + 1, temp);
                     }
                 }
-                else if(mo == CriteriosMusica.VISIBILITY){
+                else if(mo == CriteriosMusica.Visibilidade){
                     musics.sort(Comparator.comparing(Music::isVisibilidade).reversed());
                 }
-                else if(mo == CriteriosMusica.PRICE){
+                else if(mo == CriteriosMusica.Preco){
                     Collections.sort(musics, Comparator.comparingDouble(Music::getPreco));
                 }
             }
@@ -251,19 +251,19 @@ public class MusicoMusicas extends JPanel implements ActionListener, MouseListen
         if (e.getSource() == tabela.getTableHeader()) {
             int columnIndex = tabela.columnAtPoint(e.getPoint()); // Obtém o índice da coluna clicada
             if (columnIndex == 0) { // Verifica se o clique foi na primeira coluna (Título)
-                musics = ordenarMusicas(CriteriosMusica.NAME); // Ordena as músicas pelo título
+                musics = ordenarMusicas(CriteriosMusica.Nome); // Ordena as músicas pelo título
                 atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
             }
             else if (columnIndex == 1) { // Verifica se o clique foi na primeira coluna (Genero)
-                musics = ordenarMusicas(CriteriosMusica.GENRE); // Ordena as músicas pelo título
+                musics = ordenarMusicas(CriteriosMusica.Genero); // Ordena as músicas pelo título
                 atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
             }
             else if (columnIndex == 2) { // Verifica se o clique foi na primeira coluna (Genero)
-                musics = ordenarMusicas(CriteriosMusica.PRICE); // Ordena as músicas pelo título
+                musics = ordenarMusicas(CriteriosMusica.Preco); // Ordena as músicas pelo título
                 atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
             }
             else if (columnIndex == 3) { // Verifica se o clique foi na primeira coluna (Genero)
-                musics = ordenarMusicas(CriteriosMusica.VISIBILITY); // Ordena as músicas pelo título
+                musics = ordenarMusicas(CriteriosMusica.Visibilidade); // Ordena as músicas pelo título
                 atualizarTabelaMusicas(); // Atualiza a exibição da tabela com as músicas ordenadas
             }
         }

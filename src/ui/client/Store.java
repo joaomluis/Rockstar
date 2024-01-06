@@ -2,7 +2,6 @@ package ui.client;
 
 import data.Cliente;
 import data.Music;
-import data.Price;
 import domain.RockStarDBStatus;
 import ui.RockstarGUI;
 import ui.client.popups.AddBalance;
@@ -60,7 +59,7 @@ public class Store extends JPanel implements ActionListener, MouseListener {
         panelTitle.setBounds(275, 5, 250, 30);
 
         //Dropdown
-        CriteriosMusica[] itemsToShow = {CriteriosMusica.NAME, CriteriosMusica.GENRE};
+        CriteriosMusica[] itemsToShow = {CriteriosMusica.Nome, CriteriosMusica.Genero};
         dropdown = new JComboBox<>(itemsToShow);
         dropdown.setBounds(30, panelTitle.getY() + 45, 200, 35);
 
@@ -192,13 +191,16 @@ public class Store extends JPanel implements ActionListener, MouseListener {
             musics = gui.getDb().procurarMusicas(pesquisa,mo); //atualizar a array com as músicas pesquisadas
 
             atualizarTabelaMusicas(musics);
-        } else if (e.getSource() == seePriceHistory) {
+        }
+        if (e.getSource() == seePriceHistory) {
             int selectedRow = storeTable.getSelectedRow();
             if (selectedRow != -1) {
 
                 Music musicaSelecionada = musics.get(selectedRow);
                 new PriceHistory(gui ,parent, musicaSelecionada);
 
+            } else {
+                JOptionPane.showMessageDialog(this, "Selecione uma música para verificar o histórico.");
             }
         }
     }
@@ -236,10 +238,10 @@ public class Store extends JPanel implements ActionListener, MouseListener {
             if (e.getSource() == storeTable.getTableHeader()) {
                 int columnIndex = storeTable.columnAtPoint(e.getPoint()); // Obtém o índice da coluna clicada
                 if (columnIndex == 0) { // Verifica se o clique foi na primeira coluna (Título)
-                    musics = gui.getDb().ordenarMusicasCrescente(CriteriosMusica.NAME, musics); // Ordena as músicas pelo título
+                    musics = gui.getDb().ordenarMusicasCrescente(CriteriosMusica.Nome, musics); // Ordena as músicas pelo título
                     atualizarTabelaMusicas(musics); // Atualiza a exibição da tabela com as músicas ordenadas
                 } else if (columnIndex == 2) { // Verifica se o clique foi na primeira coluna (Genero)
-                    musics = gui.getDb().ordenarMusicasCrescente(CriteriosMusica.GENRE, musics); // Ordena as músicas pelo título
+                    musics = gui.getDb().ordenarMusicasCrescente(CriteriosMusica.Genero, musics); // Ordena as músicas pelo título
                     atualizarTabelaMusicas(musics); // Atualiza a exibição da tabela com as músicas ordenadas
                 }
             }
@@ -247,10 +249,10 @@ public class Store extends JPanel implements ActionListener, MouseListener {
             if (e.getSource() == storeTable.getTableHeader()) {
                 int columnIndex = storeTable.columnAtPoint(e.getPoint()); // Obtém o índice da coluna clicada
                 if (columnIndex == 0) { // Verifica se o clique foi na primeira coluna (Título)
-                    musics = gui.getDb().ordenarMusicasDecrescente(CriteriosMusica.NAME, musics); // Ordena as músicas pelo título
+                    musics = gui.getDb().ordenarMusicasDecrescente(CriteriosMusica.Nome, musics); // Ordena as músicas pelo título
                     atualizarTabelaMusicas(musics); // Atualiza a exibição da tabela com as músicas ordenadas
                 } else if (columnIndex == 2) { // Verifica se o clique foi na primeira coluna (Genero)
-                    musics = gui.getDb().ordenarMusicasDecrescente(CriteriosMusica.GENRE, musics); // Ordena as músicas pelo título
+                    musics = gui.getDb().ordenarMusicasDecrescente(CriteriosMusica.Genero, musics); // Ordena as músicas pelo título
                     atualizarTabelaMusicas(musics); // Atualiza a exibição da tabela com as músicas ordenadas
                 }
             }

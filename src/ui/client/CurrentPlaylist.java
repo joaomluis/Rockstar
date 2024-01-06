@@ -31,7 +31,6 @@ public class CurrentPlaylist extends JPanel implements ActionListener {
     private DefaultTableModel tableModel;
     private JButton removeMusic;
     private JButton rateMusic;
-    private JCheckBox visibilidadePlaylist;
     private JLabel panelTitle;
     private Playlist playlist;
 
@@ -72,10 +71,6 @@ public class CurrentPlaylist extends JPanel implements ActionListener {
         tableModel.addColumn("Titulo");
         tableModel.addColumn("Artista");
         tableModel.addColumn("Género");
-
-        //adiciona as musicas da array list à table, tem que ser trocado por um método mais tarde
-
-
 
         musicTable = new JTable(tableModel);
         musicTable.getColumnModel().getColumn(0).setPreferredWidth(200);
@@ -122,17 +117,8 @@ public class CurrentPlaylist extends JPanel implements ActionListener {
         removeMusic.setFocusable(false);
         removeMusic.addActionListener(this);
 
-        //checkbox para definir a visibildade da playlist
-        visibilidadePlaylist = new JCheckBox();
-        visibilidadePlaylist.setText("Privado");
-        visibilidadePlaylist.setBounds(removeMusic.getX() + 30, removeMusic.getY() + 45, 90, 20);
-        visibilidadePlaylist.setBackground(new Color(20, 64, 88));
-        visibilidadePlaylist.setForeground(new Color(198, 107, 61));
-        visibilidadePlaylist.setFocusable(false);
-
         eastPanel.add(rateMusic);
         eastPanel.add(removeMusic);
-        eastPanel.add(visibilidadePlaylist);
 
         add(eastPanel, BorderLayout.EAST);
 
@@ -157,14 +143,13 @@ public class CurrentPlaylist extends JPanel implements ActionListener {
                 // Remove da tabela
                 tableModel.removeRow(selectedRow);
                 // Remove da lista de músicas
-                //musicas.remove(selectedRow);
+                //
                 rateMusic.setEnabled(true); // faz com que o botão de avaliar não fique disabled após remover uma música
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma música para remover.");
             }
         }
     }
-
     public void setPlaylist(Playlist playlistSelecionada) {
         if (playlistSelecionada != null) {
 
@@ -176,25 +161,7 @@ public class CurrentPlaylist extends JPanel implements ActionListener {
 
             // Limpa a tabela
             tableModel.setRowCount(0);
-            visibilidadePlaylist.setSelected(!playlistSelecionada.isVisibilidade());
-
-            visibilidadePlaylist.addItemListener(e -> {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-
-                    playlistSelecionada.setVisibilidade(false);
-                    gui.atualizarTabelaPlaylists(myPlaylistsTableModel, myPlaylistsTable);
-                    gui.getMyPlaylistsButtonsToEnable();
-                    gui.getDb().saveCurrentUser();
-
-                } else {
-
-                    playlistSelecionada.setVisibilidade(true);
-                    gui.atualizarTabelaPlaylists(myPlaylistsTableModel, myPlaylistsTable); //atualiza a tabela para mostrar as alterações 
-                    gui.getMyPlaylistsButtonsToEnable(); // volta a ativar os botões após usar porque ficavam desativados
-                    gui.getDb().saveCurrentUser();
-
-                }
-            });
+            
 
             // Adiciona as músicas da playlist à tabela
             for (Music music : playlistSelecionada.getMusic()) {

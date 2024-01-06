@@ -6,6 +6,7 @@ import data.Music;
 import data.Playlist;
 import ui.ClientRootFrame;
 import ui.RockstarGUI;
+import ui.client.popups.ChangeVisibilityPlaylist;
 import ui.client.popups.MakePlaylist;
 
 import javax.swing.*;
@@ -32,6 +33,7 @@ public class MyPlaylists extends JPanel implements ActionListener {
     private JButton seePlaylist;
     private JButton createPlaylist;
     private JButton deletePlaylist;
+    private JButton changeVisibility;
     private JLabel panelTitle;
 
 
@@ -111,7 +113,7 @@ public class MyPlaylists extends JPanel implements ActionListener {
         //botão para criar nova playlist vazia
         createPlaylist = new JButton();
         createPlaylist.setText("Criar Playlist");
-        createPlaylist.setBounds(0, 150, 120, 35);
+        createPlaylist.setBounds(0, 120, 120, 35);
         createPlaylist.setFocusable(false);
         createPlaylist.addActionListener(this);
 
@@ -129,9 +131,17 @@ public class MyPlaylists extends JPanel implements ActionListener {
         deletePlaylist.setFocusable(false);
         deletePlaylist.addActionListener(this);
 
+        //botão para mudar visibilidade
+        changeVisibility = new JButton();
+        changeVisibility.setText("<html><div style='display: table-cell; vertical-align: middle; text-align: center;'>Alterar<br/>Visibilidade</html>");
+        changeVisibility.setBounds(deletePlaylist.getX(), deletePlaylist.getY() + 50, 120, 45);
+        changeVisibility.setFocusable(false);
+        changeVisibility.addActionListener(this);
+
         eastPanel.add(createPlaylist);
         eastPanel.add(seePlaylist);
         eastPanel.add(deletePlaylist);
+        eastPanel.add(changeVisibility);
 
         add(eastPanel, BorderLayout.EAST);
     }
@@ -156,13 +166,16 @@ public class MyPlaylists extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
+        int selectedRow = playlistTable.getSelectedRow();
+        int modelRow = playlistTable.convertRowIndexToModel(selectedRow);
+        Playlist playlistSelecionada = client.getPlaylists().get(modelRow);
+
         if (e.getSource() == seePlaylist) {
-            int selectedRow = playlistTable.getSelectedRow();
             if (selectedRow != -1) {
                 // Obtenha os detalhes da música selecionada
 
-                int modelRow = playlistTable.convertRowIndexToModel(selectedRow);
-                Playlist playlistSelecionada = client.getPlaylists().get(modelRow);
+                //int modelRow = playlistTable.convertRowIndexToModel(selectedRow);
+                //Playlist playlistSelecionada = client.getPlaylists().get(modelRow);
 
                 gui.getClientFrame().getCurrentPlaylist().setPlaylist(playlistSelecionada);     //selecionar a playlist para a CurrentPlaylist
                 gui.showCurrentPlaylist();                                                      //abrir o painel
@@ -173,7 +186,6 @@ public class MyPlaylists extends JPanel implements ActionListener {
         } else if (e.getSource() == createPlaylist) {
             new MakePlaylist(gui, parent);
         } else if (e.getSource() == deletePlaylist) {
-            int selectedRow = playlistTable.getSelectedRow();
             if (selectedRow != -1) {
                 // Remove da tabela
                 tableModel.removeRow(selectedRow);
@@ -184,6 +196,9 @@ public class MyPlaylists extends JPanel implements ActionListener {
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma playlist para remover.");
             }
+        }
+        if (e.getSource() == changeVisibility) {
+            new ChangeVisibilityPlaylist(gui, parent, playlistSelecionada);
         }
     }
 }

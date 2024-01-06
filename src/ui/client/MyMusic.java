@@ -61,7 +61,7 @@ public class MyMusic extends JPanel implements ActionListener, MouseListener {
         panelTitle.setBounds(275, 5, 250, 30);
 
         //Dropdown
-        CriteriosMusica[] itemsToShow = {CriteriosMusica.NAME, CriteriosMusica.GENRE};
+        CriteriosMusica[] itemsToShow = {CriteriosMusica.Nome, CriteriosMusica.Genero};
         dropdown = new JComboBox<>(itemsToShow);
         dropdown.setBounds(30, panelTitle.getY() + 45, 200, 35);
 
@@ -133,7 +133,7 @@ public class MyMusic extends JPanel implements ActionListener, MouseListener {
         //botão de avaliar músicas
         rateMusic = new JButton();
         rateMusic.setText("Avaliar Música");
-        rateMusic.setBounds(0, 150, 120, 35);
+        rateMusic.setBounds(0, 120, 120, 35);
         rateMusic.setFocusable(false);
         rateMusic.addActionListener(this);
 
@@ -146,8 +146,8 @@ public class MyMusic extends JPanel implements ActionListener, MouseListener {
 
         //botão para adicionar música a uma playlist;
         addToPlaylist = new JButton();
-        addToPlaylist.setText("Adicionar");
-        addToPlaylist.setBounds(0, removeMusic.getY() + 50, 120, 35);
+        addToPlaylist.setText("<html><div style='display: table-cell; vertical-align: middle; text-align: center;'>Adicionar<br/>Playlist</html>");
+        addToPlaylist.setBounds(0, removeMusic.getY() + 50, 120, 45);
         addToPlaylist.setFocusable(false);
         addToPlaylist.addActionListener(this);
 
@@ -177,7 +177,7 @@ public class MyMusic extends JPanel implements ActionListener, MouseListener {
         int selectedRow = musicTable.getSelectedRow();
         if (e.getSource() == rateMusic) {
             if (selectedRow != -1) {
-//                Music music = new Music();
+
                 int modelRow = musicTable.convertRowIndexToModel(selectedRow);
                 Music musica = gui.getDb().getCurrentUserAsClient().getSongsOwned().get(modelRow);
 
@@ -205,13 +205,21 @@ public class MyMusic extends JPanel implements ActionListener, MouseListener {
                     new AddToPlaylist(gui, parent,musica);
 
                 } else {
-                    JOptionPane.showMessageDialog(this, "Música indisponível para adicionar para adicionar a uma nova playlsit.");
+                    JOptionPane.showMessageDialog(this, "Música indisponível para adicionar a uma nova playlist.");
                 }
 
                 rateMusic.setEnabled(true);
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma música para adicionar.");
             }
+        }
+        if (e.getSource() == searchButton) {
+            CriteriosMusica mo = (CriteriosMusica) dropdown.getSelectedItem();
+            String pesquisa = searchField.getText();
+
+            musics = gui.getDb().procurarMinhasMusicasCliente(pesquisa,mo); //atualizar a array com as músicas pesquisadas
+
+            atualizarTabelaMusicas(musics);
         }
     }
     public void atualizarTabelaMusicas(ArrayList<Music> musicasEncontradas) {
@@ -230,10 +238,10 @@ public class MyMusic extends JPanel implements ActionListener, MouseListener {
             if (e.getSource() == musicTable.getTableHeader()) {
                 int columnIndex = musicTable.columnAtPoint(e.getPoint()); // Obtém o índice da coluna clicada
                 if (columnIndex == 0) { // Verifica se o clique foi na primeira coluna (Título)
-                    musics = gui.getDb().ordenarMusicasCrescente(CriteriosMusica.NAME, musics); // Ordena as músicas pelo título
+                    musics = gui.getDb().ordenarMusicasCrescente(CriteriosMusica.Nome, musics); // Ordena as músicas pelo título
                     atualizarTabelaMusicas(musics); // Atualiza a exibição da tabela com as músicas ordenadas
                 } else if (columnIndex == 2) { // Verifica se o clique foi na primeira coluna (Genero)
-                    musics = gui.getDb().ordenarMusicasCrescente(CriteriosMusica.GENRE, musics); // Ordena as músicas pelo título
+                    musics = gui.getDb().ordenarMusicasCrescente(CriteriosMusica.Genero, musics); // Ordena as músicas pelo título
                     atualizarTabelaMusicas(musics); // Atualiza a exibição da tabela com as músicas ordenadas
                 }
             }
@@ -241,10 +249,10 @@ public class MyMusic extends JPanel implements ActionListener, MouseListener {
             if (e.getSource() == musicTable.getTableHeader()) {
                 int columnIndex = musicTable.columnAtPoint(e.getPoint()); // Obtém o índice da coluna clicada
                 if (columnIndex == 0) { // Verifica se o clique foi na primeira coluna (Título)
-                    musics = gui.getDb().ordenarMusicasDecrescente(CriteriosMusica.NAME, musics); // Ordena as músicas pelo título
+                    musics = gui.getDb().ordenarMusicasDecrescente(CriteriosMusica.Nome, musics); // Ordena as músicas pelo título
                     atualizarTabelaMusicas(musics); // Atualiza a exibição da tabela com as músicas ordenadas
                 } else if (columnIndex == 2) { // Verifica se o clique foi na primeira coluna (Genero)
-                    musics = gui.getDb().ordenarMusicasDecrescente(CriteriosMusica.GENRE, musics); // Ordena as músicas pelo título
+                    musics = gui.getDb().ordenarMusicasDecrescente(CriteriosMusica.Genero, musics); // Ordena as músicas pelo título
                     atualizarTabelaMusicas(musics); // Atualiza a exibição da tabela com as músicas ordenadas
                 }
             }

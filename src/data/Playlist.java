@@ -70,6 +70,10 @@ public class Playlist implements Serializable {
         return nome;
     }
 
+    public boolean getVisibilidade() {
+        return visibilidade;
+    }
+
     @Override
     public String toString() {
         return nome;

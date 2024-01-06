@@ -77,7 +77,6 @@ public class ClientRootFrame extends JFrame implements ActionListener {
     public void start() {
         RockstarDB db = gui.getDb();
 
-        /// TODO: double check there is a current user
 
         ImageIcon logoRockStar = new ImageIcon("logo_2.png");
 
@@ -88,7 +87,7 @@ public class ClientRootFrame extends JFrame implements ActionListener {
         setIconImage(logoRockStar.getImage());
         setLocationRelativeTo(null);
         setResizable(false);
-        setVisible(true);
+
 
 
         // Criação de card layout para implementar os vários paineis
@@ -176,6 +175,7 @@ public class ClientRootFrame extends JFrame implements ActionListener {
 
 
         revalidate();
+        setVisible(true);
     }
 
     public void setCurrentPanel(JPanel currentPanel) {

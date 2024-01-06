@@ -56,7 +56,7 @@ public class MusicoPesquisa extends JPanel implements ActionListener {
         painelCentralSuperior.setBackground(new Color(77, 24, 28));
 
         //1º criar um vetor com os valores possiveis no dropdown.
-        CriteriosMusica[] itemsToShow = {CriteriosMusica.NAME, CriteriosMusica.GENRE};
+        CriteriosMusica[] itemsToShow = {CriteriosMusica.Nome, CriteriosMusica.Genero};
         //criar o dropdown com os escolhidos.
         dropdown = new JComboBox<>(itemsToShow);
 

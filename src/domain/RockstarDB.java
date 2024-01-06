@@ -471,6 +471,18 @@ public class RockstarDB {
         return RockStarDBStatus.DB_MUSIC_CANT_BE_ADDED_TO_PLAYLISTS;
     }
 
+    public RockStarDBStatus changePlaylistVisibility(boolean newVis, Playlist playlist) {
+        boolean visibilityBeforeChange = playlist.getVisibilidade();
+        playlist.setVisibilidade(newVis);
+
+        if (playlist.getVisibilidade() != visibilityBeforeChange) {
+            saveDB();
+            return RockStarDBStatus.DB_PLAYLIST_VISIB_CHANGED;
+        }
+        return RockStarDBStatus.DB_PLAYLIST_VISIB_UNCHANGED;
+    }
+
+
 
     //////////////////Adicionar histórico preços à JDialog\\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -780,11 +792,11 @@ public class RockstarDB {
         }
 
         for(Music m : songs){
-            if(cm == CriteriosMusica.NAME){
+            if(cm == CriteriosMusica.Nome){
                 if(m.getTitle().toLowerCase().contains(nome.toLowerCase())){
                     musics.add(m);
                 }
-            }else if(cm == CriteriosMusica.GENRE){
+            }else if(cm == CriteriosMusica.Genero){
                 if(m.getGenre().toLowerCase().contains(nome.toLowerCase())){
                     musics.add(m);
                 }
@@ -801,14 +813,14 @@ public class RockstarDB {
 
         for (int i = 0; i < musicasOrdenadas.size() - 1; i++) {
             for (int j = 0; j < musicasOrdenadas.size() - i - 1; j++) {
-                if(mo == CriteriosMusica.NAME) {
+                if(mo == CriteriosMusica.Nome) {
                     if (musicasOrdenadas.get(j).getTitle().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getTitle()) > 0) {
                         Music temp = musicasOrdenadas.get(j);
                         musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
                         musicasOrdenadas.set(j + 1, temp);
                     }
                 }
-                else if(mo == CriteriosMusica.GENRE){
+                else if(mo == CriteriosMusica.Genero){
                     if (musicasOrdenadas.get(j).getGenre().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getGenre()) > 0) {
                         Music temp = musicasOrdenadas.get(j);
                         musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
@@ -828,14 +840,14 @@ public class RockstarDB {
 
         for (int i = 0; i < musicasOrdenadas.size() - 1; i++) {
             for (int j = 0; j < musicasOrdenadas.size() - i - 1; j++) {
-                if(mo == CriteriosMusica.NAME) {
+                if(mo == CriteriosMusica.Nome) {
                     if (musicasOrdenadas.get(j).getTitle().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getTitle()) < 0) {
                         Music temp = musicasOrdenadas.get(j);
                         musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
                         musicasOrdenadas.set(j + 1, temp);
                     }
                 }
-                else if(mo == CriteriosMusica.GENRE){
+                else if(mo == CriteriosMusica.Genero){
                     if (musicasOrdenadas.get(j).getGenre().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getGenre()) < 0) {
                         Music temp = musicasOrdenadas.get(j);
                         musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
@@ -848,6 +860,24 @@ public class RockstarDB {
     }
 
 
+
+    public ArrayList<Music> procurarMinhasMusicasCliente(String pesquisa, CriteriosMusica cm) {
+        List<Music> clientSongs = getCurrentUserAsClient().getSongsOwned();
+        ArrayList<Music> searchResult = new ArrayList<>();
+
+        for (Music music : clientSongs) {
+            if(cm == CriteriosMusica.Nome){
+                if(music.getTitle().toLowerCase().contains(pesquisa.toLowerCase())){
+                    searchResult.add(music);
+                }
+            }else if(cm == CriteriosMusica.Genero){
+                if(music.getGenre().toLowerCase().contains(pesquisa.toLowerCase())){
+                    searchResult.add(music);
+                }
+            }
+        }
+        return searchResult;
+    }
 
 
     public boolean rateSong(Music music, double rating) {
