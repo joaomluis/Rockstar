@@ -165,7 +165,7 @@ public class MyPlaylists extends JPanel implements ActionListener {
                 Playlist playlistSelecionada = client.getPlaylists().get(modelRow);
 
                 gui.getClientFrame().getCurrentPlaylist().setPlaylist(playlistSelecionada);     //selecionar a playlist para a CurrentPlaylist
-                gui.getClientFrame().showPanelClient("CurrentPlaylist");             //abrir o painel
+                gui.showCurrentPlaylist();                                                      //abrir o painel
 
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma playlist para abrir.");

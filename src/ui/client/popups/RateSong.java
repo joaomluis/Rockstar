@@ -88,6 +88,7 @@ public class RateSong extends JDialog implements ActionListener {
             }else{
                 JOptionPane.showMessageDialog(null, "Foi adicionada a sua avaliação com sucesso. Obrigado.");
             }
+            dispose();
         }
     }
 }

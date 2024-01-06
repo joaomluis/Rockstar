@@ -51,7 +51,6 @@ public class AlterarDisponibilidade extends JDialog implements ActionListener{
         panelSouth.add(okButton);
         panelSouth.add(cancelButton);
         //Adicionar ao listener.
-        okButton.addActionListener(this);
         cancelButton.addActionListener(this);
 //(PAINEL PRINCIPAL) ADD AO PAINEL//////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

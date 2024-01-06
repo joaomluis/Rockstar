@@ -270,17 +270,15 @@ public class RockstarDB {
         return dropDown;
     }
     public Playlist[] getClientPlaylist(Cliente cliente) {
-        int aux = cliente.getPlaylists().size() + 1;
+        int aux = cliente.getPlaylists().size();
         Playlist[] dropDown = new Playlist[aux];
-        dropDown[0] = null;
-        int i = 1;
+        int i = 0;
         for (Playlist a : cliente.getPlaylists()) {
             dropDown[i] = a;
             i++;
         }
         return dropDown;
     }
-
 
 
     //devolve vetor com a quantidade de albuns de X genero

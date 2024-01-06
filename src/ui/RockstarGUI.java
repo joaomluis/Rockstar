@@ -236,6 +236,10 @@ public class RockstarGUI {
         clientFrame.setCurrentPanel(clientFrame.getPurchaseHistory());
         updatePurchaseTable(getPurchaseHistoryTableModel(), getPurchaseHistoryTable());
     }
+    public void showPurchaseDetails(){
+        clientFrame.showPanelClient(PurchaseDetails.TITLE);
+        clientFrame.setCurrentPanel(clientFrame.getPurchaseDetails());
+    }
 
     public void showShoppingCart() {
         //Não atualizar o painel atual. Retroceder sem nenhuma das outras opções volta ao current

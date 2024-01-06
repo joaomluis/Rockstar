@@ -116,7 +116,7 @@ public class PurchaseHistory extends JPanel implements ActionListener {
                 Purchase selectedPurchase = client.getPurchasesMade().get(modelRow);
 
                 gui.getClientFrame().getPurchaseDetails().setPurchase(selectedPurchase);
-                gui.getClientFrame().showPanelClient("PurchaseDetails");
+                gui.showPurchaseDetails();
 
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma compra para visualizar.");

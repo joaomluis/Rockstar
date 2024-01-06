@@ -11,13 +11,6 @@ import java.awt.event.ActionListener;
 
 public class FrameMusico extends JFrame implements ActionListener {
 
-// private MusicoEstatistica musicoEstatistica;
-// private MusicoPesquisa musicoPesquisa;
-// private MusicoAlbum musicoAlbum;
-// private MusicoMusicas musicoMusicas;
-// private MusicoMenuInicial musicoMenuInicial;
-// private MusicoMeusAlbuns musicoMeusAlbuns;
-
     public static String TITLE = "Musico";
 
     private RockstarGUI gui;

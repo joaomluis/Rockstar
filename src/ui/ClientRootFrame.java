@@ -200,8 +200,12 @@ public class ClientRootFrame extends JFrame implements ActionListener {
             ){
                 gui.showClientMainMenu();
             }
-            else if(currentPanel == menuInicial){
+            else if(currentPanel == menuInicial) {
                 gui.showClientMainMenu();
+            }else if(currentPanel == purchaseDetails){
+                gui.showPurchaseHistory();
+            }else if(currentPanel == currentPlaylist){
+                gui.showMyPlaylists();
             }else {
                 showCurrentPanel();
             }
