@@ -1,6 +1,5 @@
 package ui.client;
 
-import data.Cliente;
 import data.Music;
 import ui.RockstarGUI;
 import ui.client.popups.AddToPlaylist;
@@ -18,6 +17,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+/**
+ * Painel onde as músicas compradas pelo cliente são mostradas, com as várias funcionalidades
+ * que se podem fazer com as músicas
+ */
 public class MyMusic extends JPanel implements ActionListener, MouseListener {
 
     /**
@@ -222,6 +225,11 @@ public class MyMusic extends JPanel implements ActionListener, MouseListener {
             atualizarTabelaMusicas(musics);
         }
     }
+
+    /**
+     * Atualiza tabala onde são mostradas as músicas do cliente
+     * @param musicasEncontradas Lista com as musicas que vão ser mostradas
+     */
     public void atualizarTabelaMusicas(ArrayList<Music> musicasEncontradas) {
         // Limpar a tabela atual
         tableModel.setRowCount(0);

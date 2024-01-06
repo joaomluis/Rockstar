@@ -1,7 +1,6 @@
 package ui;
 
 import data.Cliente;
-import data.Playlist;
 import domain.RockstarDB;
 import ui.client.*;
 
@@ -10,6 +9,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Classe que representa o frame principal para a interface do cliente.
+ */
 public class ClientRootFrame extends JFrame implements ActionListener {
 
     public static String TITLE = "Cliente";

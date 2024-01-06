@@ -9,7 +9,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+/**
+ * Painel para realizar o registo de uma nova conta de músico.
+ */
 public class RegistarMusico extends JPanel implements ActionListener {
 
     public static String TITLE = "Registar Musico";
@@ -119,6 +121,11 @@ public class RegistarMusico extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Método que corre verificações sobre o input do utilizador e chama
+     * o método registarMusico para criar um novo objeto Cliente e adiciona-lo
+     * à Lista de Users da plataforma.
+     */
     private void registarMusician() {
         String inputUsername = usernameField.getText();
         char[] passwordChar = passwordField.getPassword();

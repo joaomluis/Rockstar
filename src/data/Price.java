@@ -16,8 +16,6 @@ public class Price implements Serializable {
         this.data = LocalDateTime.now();
     }
 
-    public Price() {
-    }
 
     public double getPreco(){
         return preco;

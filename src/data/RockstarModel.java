@@ -20,22 +20,25 @@ public class RockstarModel implements Serializable {
         this.albums = new ArrayList<>();
         this.allPurchases = new ArrayList<>();
     }
-    public RockstarModel(List<User> users, List<Music> musics, List<Album> albums, List<Purchase> allPurchases) {
-        this.users = users;
-        this.allSongsAvailable = musics != null ? musics : new ArrayList<>();
-        this.albums = albums;
-        this.allPurchases = allPurchases;
-    }
 
     public List<User> getUsers() {
         return users;
     }
 
-
+    /**
+     * Adiciona um user à Lista de Users da plataforma
+     * @param user User a adicionar
+     * @return true se sucesso, false se não
+     */
     public boolean addUser(User user) {
         return users.add(user);
     }
 
+    /**
+     * Percorre a Lista de Users e se encontrar um com o mesmo username que
+     * o do user que é passado no parâmetro substitui-os na Lista de de users
+     * @param user User a verificar
+     */
     public void updateUser(User user) {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getUsername().equals(user.getUsername())) {

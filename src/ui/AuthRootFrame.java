@@ -1,7 +1,5 @@
 package ui;
 
-import data.Cliente;
-import domain.RockstarDB;
 import ui.auth.*;
 
 import javax.swing.*;
@@ -9,6 +7,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Classe que representa o frame principal para a interface de autenticação da plataforma.
+ * Onde se pode fazer log in ou registar uma nova conta.
+ */
 public class AuthRootFrame extends JFrame implements ActionListener {
 
     RockstarGUI gui;

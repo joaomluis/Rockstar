@@ -37,6 +37,12 @@ public class MyPlaylists extends JPanel implements ActionListener {
     private JLabel panelTitle;
 
 
+    /**
+     * Painel onde vão estar todas as playlists do cliente e onde este vai
+     * poder criar playlists vazias, apagar, mudar a sua visibilidade ou
+     * abrir a playlist para ver as suas músicas.
+     * @param gui
+     */
     public MyPlaylists(RockstarGUI gui) {
 
         this.gui = gui;
@@ -166,26 +172,23 @@ public class MyPlaylists extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
-        int selectedRow = playlistTable.getSelectedRow();
-        int modelRow = playlistTable.convertRowIndexToModel(selectedRow);
-        Playlist playlistSelecionada = client.getPlaylists().get(modelRow);
 
         if (e.getSource() == seePlaylist) {
+            int selectedRow = playlistTable.getSelectedRow();
             if (selectedRow != -1) {
-                // Obtenha os detalhes da música selecionada
-
-                //int modelRow = playlistTable.convertRowIndexToModel(selectedRow);
-                //Playlist playlistSelecionada = client.getPlaylists().get(modelRow);
+                Playlist playlistSelecionada = client.getPlaylists().get(selectedRow);
 
                 gui.getClientFrame().getCurrentPlaylist().setPlaylist(playlistSelecionada);     //selecionar a playlist para a CurrentPlaylist
                 gui.showCurrentPlaylist();                                                      //abrir o painel
 
             } else {
-                JOptionPane.showMessageDialog(this, "Selecione uma playlist para abrir.");
+                JOptionPane.showMessageDialog(this, "Selecione uma playlist.");
             }
         } else if (e.getSource() == createPlaylist) {
             new MakePlaylist(gui, parent);
+
         } else if (e.getSource() == deletePlaylist) {
+            int selectedRow = playlistTable.getSelectedRow();
             if (selectedRow != -1) {
                 // Remove da tabela
                 tableModel.removeRow(selectedRow);
@@ -194,11 +197,17 @@ public class MyPlaylists extends JPanel implements ActionListener {
                 createPlaylist.setEnabled(true); // faz com que o botão de avaliar não fique disabled após remover uma música
                 deletePlaylist.setEnabled(true);
             } else {
-                JOptionPane.showMessageDialog(this, "Selecione uma playlist para remover.");
+                JOptionPane.showMessageDialog(this, "Selecione uma playlist.");
             }
         }
         if (e.getSource() == changeVisibility) {
-            new ChangeVisibilityPlaylist(gui, parent, playlistSelecionada);
+            int selectedRow = playlistTable.getSelectedRow();
+            if (selectedRow != -1) {
+                Playlist playlistSelecionada = client.getPlaylists().get(selectedRow);
+                new ChangeVisibilityPlaylist(gui, parent, playlistSelecionada);
+            } else {
+                JOptionPane.showMessageDialog(this, "Selecione uma playlist.");
+            }
         }
     }
 }

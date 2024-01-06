@@ -2,16 +2,16 @@ package ui.client;
 
 import data.Cliente;
 import data.Music;
-import data.Playlist;
 import data.Purchase;
 import ui.RockstarGUI;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
+/**
+ * Painel onde vão ser disponiblizados detalhes sobre a compra selecioanda
+ */
 public class PurchaseDetails extends JPanel {
 
     public static final String TITLE = "PurchaseDetails";

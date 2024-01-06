@@ -9,7 +9,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+/**
+ * Painel para realizar o registo de uma nova conta de cliente
+ */
 public class RegistarCliente extends JPanel implements ActionListener {
 
     public static String TITLE = "Registar Cliente";
@@ -103,6 +105,11 @@ public class RegistarCliente extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Método que corre verificações sobre o input do utilizador e chama
+     * o método registarCliente para criar um novo objeto Cliente e adiciona-lo
+     * à Lista de Users da plataforma.
+     */
     private void registarClient() {
         String inputUsername = usernameField.getText();
         char[] passwordChar = passwordField.getPassword();
@@ -113,8 +120,7 @@ public class RegistarCliente extends JPanel implements ActionListener {
             return;
         }
 
-        RockstarDB db = gui.getDb();
-        RockStarDBStatus status = db.registarCliente(inputUsername, inputPassword);
+        RockStarDBStatus status = gui.getDb().registarCliente(inputUsername, inputPassword);
 
         if (status == RockStarDBStatus.DB_USER_ADDED) {
             JOptionPane.showMessageDialog(this, "Conta criada com sucesso");

@@ -10,6 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
+/**
+ * Painel que recebe os dados do utilizador para que este possa
+ * ser autenticado na plataforma e aceder ao frame de cliente.
+ */
 public class LogInCliente extends JPanel implements ActionListener {
 
     public static String TITLE = "Login Cliente";
@@ -108,6 +112,10 @@ public class LogInCliente extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Metodo que faz verificações do input recebido do utilizador e depois
+     * chama o método do loginCliente() para autentitcar o usuário
+     */
     private void login() {
         String inputUsername = usernameField.getText();
         char[] passwordChar = passwordField.getPassword();
@@ -118,9 +126,7 @@ public class LogInCliente extends JPanel implements ActionListener {
             return;
         }
 
-        RockstarDB db = gui.getDb();
-
-        RockStarDBStatus status = db.loginCliente(inputUsername, inputPassword);
+        RockStarDBStatus status = gui.getDb().loginCliente(inputUsername, inputPassword);
 
         if (status == RockStarDBStatus.DB_USER_LOGIN_SUCCESS) {
             gui.showClientFrame();

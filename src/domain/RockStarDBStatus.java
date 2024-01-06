@@ -1,5 +1,10 @@
 package domain;
 
+/**
+ * Enum que serve para identificar as funcionalidades exectuadas pela
+ * classe RockstarDB. Métodos que retornam constantes deste enum são de
+ * mais fácil leitura o que permite uma melhor compreensão geral na plataforma.
+ */
 public enum RockStarDBStatus {
     DB_USER_ALREADY_EXISTS,
     DB_USER_ADDED,

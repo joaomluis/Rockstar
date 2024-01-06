@@ -10,7 +10,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+/**
+ * Painel que recebe os dados do utilizador para que este possa
+ * ser autenticado na plataforma e aceder ao frame de músico.
+ */
 public class LogInMusico extends JPanel implements ActionListener {
 
     public static String TITLE = "Login Musico";
@@ -127,6 +130,10 @@ public class LogInMusico extends JPanel implements ActionListener {
             gui.showMainMenu();
         }
     }
+    /**
+     * Metodo que faz verificações do input recebido do utilizador e depois
+     * chama o método do loginMusico() para autentitcar o usuário
+     */
     private void login() {
         String inputUsername = usernameField.getText();
         char[] passwordChar = passwordField.getPassword();
@@ -138,9 +145,8 @@ public class LogInMusico extends JPanel implements ActionListener {
             JOptionPane.showMessageDialog(this, "Introduza um user e password válidos");
             return;
         }
-        RockstarDB db = gui.getDb();
 
-        RockStarDBStatus status = db.loginMusico(inputUsername, inputPassword, inputPin);
+        RockStarDBStatus status = gui.getDb().loginMusico(inputUsername, inputPassword, inputPin);
 
         if (status == RockStarDBStatus.DB_USER_LOGIN_SUCCESS) {
             gui.showMusicianFrame();

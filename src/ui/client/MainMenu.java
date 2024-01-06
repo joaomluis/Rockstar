@@ -1,9 +1,6 @@
 package ui.client;
 
 import data.Cliente;
-import data.Music;
-import data.Playlist;
-import data.Purchase;
 import ui.RockstarGUI;
 import ui.client.popups.GeneratePlaylist;
 
@@ -12,6 +9,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Painel do menu principal do cliente
+ */
 public class MainMenu extends JPanel implements ActionListener {
 
     public static String TITLE = "Client MENU";

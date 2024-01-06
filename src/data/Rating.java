@@ -15,31 +15,14 @@ public class Rating implements Serializable {
         this.data = LocalDate.now();
     }
 
-    public Rating() {
-    }
-
-    //** Getters ***/
-    /**
-     * Geter para avaliação
-     *
-     * @return avaliacao
-     */
     public double getAvaliacao() {
         return avaliacao;
     }
-    /**
-     * Geter para data da avaliação
-     *
-     * @return data
-     */
+
     public LocalDate getData() {
         return data;
     }
-    /**
-     * Geter para cliente que a avaliou
-     *
-     * @return cliente
-     */
+
     public Cliente getCliente() {
         return cliente;
     }

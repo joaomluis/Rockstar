@@ -1,9 +1,7 @@
 package ui;
 
 import data.Cliente;
-import data.Music;
 import data.Playlist;
-import data.Price;
 import domain.RockstarDB;
 import ui.auth.*;
 import ui.client.*;
@@ -11,7 +9,6 @@ import ui.musician.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RockstarGUI {
@@ -21,13 +18,13 @@ public class RockstarGUI {
 
     private AuthRootFrame authenticationFrame;
     private ClientRootFrame clientFrame;
-    private FrameMusico musicianFrame;
+    private MusicianRootFrame musicianFrame;
 
     public RockstarGUI(RockstarDB db) {
         this.db = db;
         authenticationFrame = new AuthRootFrame(this);
         clientFrame = new ClientRootFrame(this);
-        musicianFrame = new FrameMusico(this);
+        musicianFrame = new MusicianRootFrame(this);
     }
 
 
@@ -304,7 +301,7 @@ public class RockstarGUI {
      * Obtém o frame do músico.
      * @return O frame do músico.
      */
-    public FrameMusico getMusicianFrame() {
+    public MusicianRootFrame getMusicianFrame() {
         return musicianFrame;
     }
     /**

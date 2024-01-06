@@ -29,7 +29,11 @@ public class Purchase implements Serializable {
     }
 
 
-
+    /**
+     * Método que gera um ID único para cada compra e é chamado quando se
+     * cria um objeto compra novo.
+     * @return String com parte de um código predefinido e 6 chars aleatórios
+     */
     public String generatePurchaseID() {
         String uuid = UUID.randomUUID().toString();
         return "RSPID-" + uuid.substring(0, Math.min(uuid.length(), 6));

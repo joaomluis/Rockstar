@@ -8,6 +8,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Painel o utilizador escolhe se quer fazer log in ou registar uma
+ * nova conta como cliente ou músico. O primeiro painel que o
+ * utilizador vê quando abre a aplicação
+ */
 public class MenuInicial extends JPanel implements ActionListener {
 
     public static String TITLE = "Menu Inicial";

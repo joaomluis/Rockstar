@@ -11,6 +11,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
+/**
+ * Painel com o carrinho de compras, onde as músicas selecionadas na loja ficam
+ * a aguardar confirmação para serem tornadas em objeto compra e passarem para
+ * as músicas do cliente
+ */
 public class ShoppingCart extends JPanel implements ActionListener {
 
     public static final String TITLE = "ShoppingCart";
@@ -130,7 +135,7 @@ public class ShoppingCart extends JPanel implements ActionListener {
         int selectedRow = purchaseTable.getSelectedRow();
         if (e.getSource() == confirmPurchase) {
 
-            RockStarDBStatus status = gui.getDb().buyAllSongsFromCart(selectedRow);
+            RockStarDBStatus status = gui.getDb().buyAllSongsFromCart();
 
             if (status == RockStarDBStatus.DB_INSUFFICIENT_BALANCE) {
                 JOptionPane.showMessageDialog(null, "Saldo insuficiente.");

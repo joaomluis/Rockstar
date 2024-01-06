@@ -17,6 +17,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+/**
+ * Painel onde estão todas as músicas com disponibilidade true e que com o cliente
+ * pode escolher para comprar. Aqui também é possível carregar o saldo do cliente.
+ */
 public class Store extends JPanel implements ActionListener, MouseListener {
 
     public static final String TITLE = "Store";
@@ -170,8 +174,6 @@ public class Store extends JPanel implements ActionListener, MouseListener {
                 if (status == RockStarDBStatus.DB_SONG_ALREADY_IN_CART) {
                     JOptionPane.showMessageDialog(null, "Já adicionou essa música ao carrinho");
                 } else if (status == RockStarDBStatus.DB_SONG_ADDED_TO_CART) {
-                    gui.getDb().getCurrentUserAsClient().getSongsInCart().add(musicaSelecionada);
-                    gui.getDb().saveCurrentUser();
                     JOptionPane.showMessageDialog(null, "Música adicionada ao carrinho com sucesso");
                 } else if (status == RockStarDBStatus.DB_SONG_ALREADY_BOUGHT){
                     JOptionPane.showMessageDialog(null, "Música já foi comprada");

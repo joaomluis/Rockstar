@@ -24,6 +24,11 @@ public class PurchaseHistory extends JPanel implements ActionListener {
     private JButton seePurchase;
     private JLabel panelTitle;
 
+    /**
+     * Painel com todas as compras realizadas pelo cliente, onde é
+     * possível escolher uma compra e ver os seus detalhes.
+     * @param gui
+     */
     public PurchaseHistory(RockstarGUI gui) {
 
         this.gui = gui;

@@ -6,7 +6,6 @@ import ui.musician.CriteriosMusica;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -14,7 +13,6 @@ import java.util.*;
 public class RockstarDB {
 
     static String dbPath = "baseDadosRockstar.ser";
-    private int commit;
 
     private RockstarModel dados;
     private User currentUser;
@@ -27,16 +25,23 @@ public class RockstarDB {
         return dados;
     }
 
+    /**
+     * Método que faz arrancar a classe RockstarDB mas primeiro verifica se o ficheiro
+     * que guarda os dados existe através do checkIfDBExists(), se existir lê o ficheiro
+     * através do loadDB(), se não existir cria o ficheiro como readDB().
+     */
     public void init() {
         if (checkIfDBExists()) {
-            System.out.println("DB exists");
             loadDB();
-            System.out.println("DB loaded");
         } else {
             saveDB();
         }
     }
 
+    /**
+     * Verifica se o ficheiro no endereço indicado existe ou não.
+     * @return true se existir, false se não.
+     */
     private boolean checkIfDBExists() {
         try {
             File f = new File(dbPath);
@@ -46,18 +51,28 @@ public class RockstarDB {
         }
     }
 
+    /**
+     * Método com dois própositos, consegue criar um ficheiro para guardar a serialização,
+     * quase já exista, quando chamado, o saveDB() escreve no ficheiro as alterações efetuadas
+     * tanto do como da plataforma em si.
+     */
     private void saveDB() {
         try (FileOutputStream fos = new FileOutputStream(dbPath);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(dados);
             oos.close();
             fos.close();
-            System.out.println(dbPath + " serialized");
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
 
+    /**
+     * Método que serve para ler o ficheiro onde estão guardados todos os dados 
+     * da plataforma, contem uma verificação que permite confirmar se o tipo de 
+     * dados é do tipo RockstarModel, o que faz com que esta aplicação só funcione 
+     * com ficheiros que contém esse tipo de dados.
+     */
     private void loadDB() {
         try (FileInputStream fis = new FileInputStream(dbPath);
              ObjectInputStream ois = new ObjectInputStream(fis)) {
@@ -69,40 +84,56 @@ public class RockstarDB {
             } else {
                 System.out.println("Failed to deserialize. Invalid data type.");
             }
-
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Failed to load file check stacktrace");
             e.printStackTrace();
         }
     }
 
-    public boolean hasLoggedUser() {
-        return currentUser != null;
-    }
-
+    
     public User getCurrentUser() {
         return currentUser;
     }
 
+    /**
+     * Método que serve para retornar o user atualamente autenticado na plataforma
+     * mas com um cast para tipo de user Cliente para se poder ter acesso a todos 
+     * os atributos e métodos dessa classe.
+     * @return Um objeto do tipo Cliente.
+     */
     public Cliente getCurrentUserAsClient() {
         return (Cliente) getCurrentUser();
     }
 
-    public void updateUser(User user) {
-        dados.updateUser(user);
-        currentUser = user;
-        saveDB();
-    }
-
+    /**
+     * Método que serve para guarda uma alteração no ficheiro de dados, especificamente
+     * para quando uma alteração é feita num User, chamando o updateUser() que substitui
+     * o objeto user guardado na base de dados pelo mesmo objeto mas com as alterações que
+     * foram feitas.
+     */
     public void saveCurrentUser() {
         dados.updateUser(currentUser);
         saveDB();
     }
 
+    /**
+     * Define o atributo currentUser como null ou seja um objeto de um User deixa de estar
+     * associado à plataforma enquanto está a correr. Fazendo assim log out da Rockstar.
+     */
     public void logOut() {
         currentUser = null;
     }
 
+    /**
+     * Método para registar cliente novo. Primeiro acede à lista de user da plataforma,
+     * após isso verifica se o username que está a ser tentado registar já existe nessa lista.
+     * Se exisitir dá return de um status a avisar isso mesmo, se não existir cria um novo objeto
+     * Cliente com os dados passodos nos pârametros e adiciona à lista da plataforma.
+     * @param inputUsername String com o username
+     * @param inputPassword String com a passaword
+     * @return DB_USER_ALREADY_EXISTS status que significa que já existe um user com esse username,
+     * DB_USER_ADDED significa que a operação de registo foi bem sucedida, por fim DB_USER_FAILED_TO_SAVE
+     * se existiu algum erro inesperado dá este return como "fail safe".
+     */
     public RockStarDBStatus registarCliente(String inputUsername, String inputPassword) {
 
         List<User> users = dados.getUsers();
@@ -122,6 +153,18 @@ public class RockstarDB {
         }
     }
 
+    /**
+     * Método para registar músico novo. Primeiro acede à lista de user da plataforma,
+     * após isso verifica se o username que está a ser tentado registar já existe nessa lista.
+     * Se exisitir dá return de um status a avisar isso mesmo, se não existir cria um novo objeto
+     * Musico com os dados passodos nos pârametros e adiciona à lista da plataforma.
+     * @param inputUsername String com o username
+     * @param inputPassword String com a passaword
+     * @param inputPin String com o pin
+     * @return DB_USER_ALREADY_EXISTS status que significa que já existe um user com esse username,
+     * DB_USER_ADDED significa que a operação de registo foi bem sucedida, por fim DB_USER_FAILED_TO_SAVE
+     * se existiu algum erro inesperado dá este return como "fail safe".
+     */
     public RockStarDBStatus registarMusico(String inputUsername, String inputPassword, String inputPin) {
         List<User> users = dados.getUsers();
         for (User user : users) {
@@ -138,6 +181,16 @@ public class RockstarDB {
         }
     }
 
+    /**
+     * Método que vai percorrer a lista de Users da plataforma e verificar se os
+     * dados do input para username e password já existem num Objeto Cliente, se exisitirem
+     * os dados desse objeto são atribuídos ao CurrentUser fazendo com que esse Cliente
+     * seja o que esteja autenticado na plataforma de momento.
+     * @param inputUsername String com input de username
+     * @param inputPassword String com input da password
+     * @return DB_USER_LOGIN_SUCCESS se o log in for bem sucedido, DB_USER_LOGIN_FAILED se
+     * falhar.
+     */
     public RockStarDBStatus loginCliente(String inputUsername, String inputPassword) {
         List<User> users = dados.getUsers();
         for (User user : users) {
@@ -156,6 +209,17 @@ public class RockstarDB {
         return RockStarDBStatus.DB_USER_LOGIN_FAILED;
     }
 
+    /**
+     * Método que vai percorrer a lista de Users da plataforma e verificar se os
+     * dados do input para username, password e pin já existem num objeto Musico, se exisitirem
+     * os dados desse objeto são atribuídos ao CurrentUser fazendo com que esse Cliente
+     * seja o que esteja autenticado na plataforma de momento.
+     * @param inputUsername String com input de username
+     * @param inputPassword String com input da password
+     * @param inputPin String com o input do pin
+     * @return DB_USER_LOGIN_SUCCESS se o log in for bem sucedido, DB_USER_LOGIN_FAILED se
+     * falhar.
+     */
     public RockStarDBStatus loginMusico(String inputUsername, String inputPassword, String inputPin) {
         List<User> users = dados.getUsers();
         for (User user : users) {
@@ -341,7 +405,7 @@ public class RockstarDB {
      * Método que verifica se a Playlist passada no parâmetro tem um nome igual a alguma que
      * já exista na conta do cliente através de checkPlaylistNameExists. Se não exisitir a
      * playlist é adicionada à coleção do cliente.
-     * @param playlist
+     * @param playlist Playlist que vai ser adicionada à lista de playlists do cliente.
      * @return true se o nome não estiver em uso e a playlist é adicionada à coleção de playlists
      * do cliente, false se o nome estiver em uso.
      */
@@ -365,12 +429,18 @@ public class RockstarDB {
      * se a playlist criada não tem músicas repetidas com checkIfSongAlreadyAdded.
      * O generatePlaylist vai adicionando músicas à nova playlist até chegar ao limite que o user
      * deu ou até não existirem mais músicas do género especificado pelo user.
-     * @param name
-     * @param size
-     * @param genre
+     * @param name String com o nome da playlist a ser gerada
+     * @param size int com o tamanho da playlist a ser gerada
+     * @param genre String com o género da playlist a ser gerada
      * @return São vários tipos do Enum RockStarDBStatus que conforme as condições são respeitadas,
      * ou não, o return varia. Por exemplo, se já existir uma playlist com o nome dado na coleção do user,
      * o return será DB_PLAYLIST_NAME_ALREADY_EXISTS.
+     * DB_PLAYLIST_GENERATED_SUCCESSFULLY se a playlist for gerada e cumprir todos os requisitos
+     * DB_PLAYLIST_GENERATED_BUT_WITHOUT_WANTED_SIZE foi gerada uma playlist, mas sem o tamanho pretendido
+     * pelo user pois não foram encontradas mais músicas do género que o user pretendia.
+     * DB_NO_SONGS_ADDED_TO_PLAYLIST não foram encontradas músicas que respeitavam os requisitos
+     * logo não foi gerada a playlist
+     * DB_SOME_FIELD_IS_EMPTY algum campo ficou vazio logo não foi gerada uma playlist
      */
     public RockStarDBStatus generatePlaylist(String name, int size, String genre) {
         Cliente currentClient = getCurrentUserAsClient();
@@ -390,14 +460,14 @@ public class RockstarDB {
 
                         if (songsAdded == size) { //aqui ele vai adicionando dentro do loop e compara cada vez que adiciona se chegou ao size
                             currentClient.addPlaylistToClient(newPlaylist);
-                            saveCurrentUser();
+                            saveDB();
                             return RockStarDBStatus.DB_PLAYLIST_GENERATED_SUCCESSFULLY;
                         }
                     }
                 }
                 if (songsAdded > 0) {
                     currentClient.addPlaylistToClient(newPlaylist);
-                    saveCurrentUser();
+                    saveDB();
                     return RockStarDBStatus.DB_PLAYLIST_GENERATED_BUT_WITHOUT_WANTED_SIZE;
                 } else {
                     return RockStarDBStatus.DB_NO_SONGS_ADDED_TO_PLAYLIST;
@@ -415,8 +485,8 @@ public class RockstarDB {
      * Faz isto ao chamar o makeSongTempID criando um ID unico da musica. De seguida, no for loop, são percorridas as músicas
      * da playlist e para cada música é feito esse mesmo ID, se o ID for igual significa que a música passada no parâmetro
      * já faz parte da playlist verificada.
-     * @param playlist
-     * @param song
+     * @param playlist Playlist a verificar se já tem a música em questão
+     * @param song Música que se está a verificar se já pertence à playlist
      * @return true se a música verificada já se encontra na playlist a verificar, false se não.
      */
     private boolean checkIfSongAlreadyAdded (Playlist playlist, Music song) {
@@ -453,12 +523,23 @@ public class RockstarDB {
 
         for (Playlist playlist : currentUser.getPlaylists()) {
             if (playlist.getNome().equalsIgnoreCase(newPlaylistName)) {
-                return true; // Playlist name already exists
+                return true;
             }
         }
-        return false; // Playlist name doesn't exist
+        return false;
     }
 
+    /**
+     * Adiciona uma música a uma playlist, mas antes verifica se esse música já
+     * existe dentro da playlist que está a receber como parâmetro, se já existe
+     * não adiciona.
+     * @param music Musica a adicionar à playlist
+     * @param playlist Playlist que é verificada e pode receber a música que o método
+     *                 recebe
+     * @return DB_MUSIC_ALREADY_EXISTS_IN_THE_PLAYLIST se a playlist já exisitir na playlist
+     * DB_MUSIC_ADDED se a musica for adicionada com sucesso
+     * DB_MUSIC_CANT_BE_ADDED_TO_PLAYLISTS se ocorrer algum erro e a musica não for adicionada
+     */
     public RockStarDBStatus addMusicaPlaylist(Music music, Playlist playlist) {
         if (music.isVisibilidade()) {
             if (checkIfSongAlreadyAdded(playlist, music)) {
@@ -471,6 +552,15 @@ public class RockstarDB {
         return RockStarDBStatus.DB_MUSIC_CANT_BE_ADDED_TO_PLAYLISTS;
     }
 
+    /**
+     * Método que recebe uma playlist e verifica o estado da visibilidade dela
+     * e depois altera-o.
+     *
+     * @param newVis Boolean com o estado de visibilidade a ser atribuido à Playlist
+     * @param playlist Playlist que se pretende alterar o estado de visibilidade
+     * @return DB_PLAYLIST_VISIB_CHANGED se houver mudança no estado de visibilidade
+     * DB_PLAYLIST_VISIB_UNCHANGED se o estado ficar na mesma
+     */
     public RockStarDBStatus changePlaylistVisibility(boolean newVis, Playlist playlist) {
         boolean visibilityBeforeChange = playlist.getVisibilidade();
         playlist.setVisibilidade(newVis);
@@ -486,6 +576,12 @@ public class RockstarDB {
 
     //////////////////Adicionar histórico preços à JDialog\\\\\\\\\\\\\\\\\\\\\\\\
 
+    /**
+     * Percorre a ArrayList com os preços da musica e adiciona-os à JTable
+     * na interface depois dos atributos serem convertidos num objeto.
+     * @param song Musica que se pretende retirar o histórico de preços
+     * @param table Tabela a que se vai juntar os vários preços
+     */
     public void addPriceHistoryToTable(Music song, JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         List<Price> priceList = song.getHistoricoPreco();
@@ -495,17 +591,15 @@ public class RockstarDB {
                 model.addRow(row);
         }
     }
-    private boolean priceExistsOnTable(DefaultTableModel model, Price price) {
-        for (int row = 0; row < model.getRowCount(); row++) {
-            if (model.getValueAt(row, 0).equals(price.getData())) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     //////////////////////Histórico Compras\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+    /**
+     * Percorre a ArrayList com o histórico de compras do cliente e adiciona-os à JTable
+     * na interface depois dos atributos serem convertidos num objeto. Também verifica se
+     * essa compra já se encontra na tabela antes de adicionar.
+     * @param table Tabela a que se vai juntar as várias compras
+     */
     public void addAllPurchasesToTable(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         List<Purchase> purchasesMade = getCurrentUserAsClient().getPurchasesMade();
@@ -521,14 +615,21 @@ public class RockstarDB {
 
     /**
      * Formata uma variável LocalDateTime para o formato mais refinado yyyy-MM-dd HH:mm:ss
-     * @param dateTime
-     * @return
+     * @param dateTime Variavel LocalDateTime a ser formatada
+     * @return String com uma variável LocalDateTime formatada
      */
     private String formatLocalDateTime(LocalDateTime dateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return dateTime.format(formatter);
     }
 
+    /**
+     * Verifica na tabela já possui a compra que é passada no parâmetro, faz essa
+     * verificação através do ID da compra.
+     * @param model Modelo da tabela onde vai ser feita a verificação
+     * @param purchase Compra que vai ser verificada
+     * @return true se a compra já está na tabela, false se não
+     */
     private boolean purchaseExistsOnTable(DefaultTableModel model, Purchase purchase) {
         for (int row = 0; row < model.getRowCount(); row++) {
             if (model.getValueAt(row, 0).equals(purchase.getPurchaseId())) {
@@ -540,6 +641,15 @@ public class RockstarDB {
 
 
     ///////////////////////////LOJA\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    /**
+     * Método para adicionar todas as músicas da plataforma para a tabela da UI,
+     * formata os atributos da música para uma visualização mais fácil e verifica
+     * se a música já se encontra na tabela. De notar que a ArrayList passada no
+     * parâmetro só vai conter músicas com visibilidade true
+     * @param table Tabela onde as musicas vão ser adicionadas
+     * @param musics ArrayList das músicas a adicionar
+     */
     public void addAllRockstarSongsToTable(JTable table, ArrayList<Music> musics) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
 
@@ -571,6 +681,14 @@ public class RockstarDB {
         return musicasVisiveis;
     }
 
+    /**
+     * Método para verificar se determinada música já se encontra numa tabela
+     * que é referenciada nos parâmetros. É chamado noutros métodos que fazem
+     * a adição à tabela propriamente dita.
+     * @param model Modelo da tabela para se verificar
+     * @param song Musica que se pretende verificar se já está na tabela
+     * @return true se a musica já estiver na tabela, false se não
+     */
     private boolean songExistsOnTable(DefaultTableModel model, Music song) {
         for (int row = 0; row < model.getRowCount(); row++) {
             if (model.getValueAt(row, 0).equals(song.getTitle())) {
@@ -582,12 +700,24 @@ public class RockstarDB {
 
     //////////////////////////////////CARRINHO\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+    /**
+     * Adiciona a música passada no parâmetro à ArrayList do carrinho de compras,
+     * faz verificações ao chamar outros métodos para ver se a música já se encontra
+     * no carrinho para não se repetir e se o cliente já comprou a música antes,
+     * impedindo que compre algo que já comprou anteriormente.
+     * @param song Música que é verificada e adicionada ao carrinho se caso disso
+     * @return DB_SONG_ALREADY_IN_CART a música já está no carrinho
+     * DB_SONG_ALREADY_BOUGHT o cliente já comprou a música em questão
+     * DB_SONG_ADDED_TO_CART a música foi adicionada com sucesso ao carrinho
+     */
     public RockStarDBStatus addSongToCart(Music song) {
         if (isSongOnCart(song)) {
             return RockStarDBStatus.DB_SONG_ALREADY_IN_CART;
         } else if (isSongAlreadyOwned(song)) {
             return RockStarDBStatus.DB_SONG_ALREADY_BOUGHT;
         } else {
+            getCurrentUserAsClient().getSongsInCart().add(song);
+            saveCurrentUser();
             return RockStarDBStatus.DB_SONG_ADDED_TO_CART;
         }
     }
@@ -624,7 +754,12 @@ public class RockstarDB {
         return false;
     }
 
-
+    /**
+     * Adiciona todas as músicas na ArrayList do carrinho de compras para
+     * a JTable que as vai representar na interface. Chama um método para impedir
+     * que se repitam na tabela
+     * @param table Tabela onde se pretende adicionar as músicas
+     */
     public void addAllSongsInCartToTable(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         List<Music> songsInCart = getCurrentUserAsClient().getSongsInCart();
@@ -639,11 +774,18 @@ public class RockstarDB {
 
 
     /**
-     *
-     * @param rowIndex
-     * @return
+     *Método que vai passar todas as músicas no carrinho de compras para um
+     * objeto compra um depois as musicas são adicionadas à ArrayList de músicas
+     * que cada compra tem e adicionadas às músicas do cliente se a compra for bem
+     * sucedida. Faz uma série de verificações desde veriricar se o carrinho está
+     * vazio, se o user tem saldo suficiente para concluir a compra, deduz o custo
+     * total da compra do saldo do cliente e adiciona a compra ao histórico de
+     * compras do cliente.
+     * @return DB_SONGS_PURCHASED_SUCCESSFULLY se a compra foi executada com sucesso
+     * DB_INSUFFICIENT_BALANCE se o cliente não tem saldo suficiente
+     * DB_CART_EMPTY o carrinho está vazio
      */
-    public RockStarDBStatus buyAllSongsFromCart(int rowIndex) {
+    public RockStarDBStatus buyAllSongsFromCart() {
 
         Cliente currentUser = getCurrentUserAsClient();
         double currentBalance = getCurrentUserAsClient().getSaldo();
@@ -668,7 +810,7 @@ public class RockstarDB {
                 getCurrentUserAsClient().getSongsInCart().clear();
                 currentUser.getPurchasesMade().add(newPurchase); //adiciona compra à lista de compras do user
                 getDados().getAllPurchases().add(newPurchase);
-                saveCurrentUser();
+                saveDB();
 
                 return RockStarDBStatus.DB_SONGS_PURCHASED_SUCCESSFULLY;
             } else {
@@ -681,7 +823,7 @@ public class RockstarDB {
 
     /**
      * Adiciona a música à lista de músicas que o cliente possui.
-     * @param song
+     * @param song Musica a adicionar à lista de músicas
      */
     private void addSongToMyMusic(Music song) {
         getCurrentUserAsClient().getSongsOwned().add(song);
@@ -689,6 +831,11 @@ public class RockstarDB {
 
     ////////////////////////////////////MINHA MUSICA\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+    /**
+     * Método para adicionar todas as músicas que estão na Lista de musicas compradas
+     * do cliente à tabela na UI que as vai apresentar.
+     * @param table Tabela que vai receber objetos que contêm os dados das musicas a apresentar
+     */
     public void addAllOwnedSongsToTable(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         List<Music> musicasCompradas = getCurrentUserAsClient().getSongsOwned();
@@ -860,7 +1007,16 @@ public class RockstarDB {
     }
 
 
-
+    /**
+     * Método para pesquisar músicas que o Cliente já comprou pelo nome ou pelo género.
+     * É verificado se existe alguma música que contenha o que for colocado na string que
+     * recebe o input, se existir essa música é adicionada a uma ArrayList que depois é
+     * devolvida com todas as "matches" que foram encontradas com o input.
+     * @param pesquisa String com o input que vai ser pesquisado na lista de musicas
+     * @param cm Um Enum que contém os vários tipos filtros que podem ser aplicados, neste
+     * caso nome e genero
+     * @return ArrayList com todas as musicas que tiverem o input colocado na pesquisa.
+     */
     public ArrayList<Music> procurarMinhasMusicasCliente(String pesquisa, CriteriosMusica cm) {
         List<Music> clientSongs = getCurrentUserAsClient().getSongsOwned();
         ArrayList<Music> searchResult = new ArrayList<>();

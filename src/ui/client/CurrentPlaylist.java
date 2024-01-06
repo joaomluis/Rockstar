@@ -34,6 +34,11 @@ public class CurrentPlaylist extends JPanel implements ActionListener {
     private JLabel panelTitle;
     private Playlist playlist;
 
+    /**
+     * Painel onde vai ser apresentado as músicas de uma Playlist
+     * @param gui Para ter acesso à classe que gere a UI e que entra em contacto com
+     *            a classe DB que gere o acesso aos dados.
+     */
     public CurrentPlaylist(RockstarGUI gui) {
 
         this.gui = gui;
@@ -143,25 +148,26 @@ public class CurrentPlaylist extends JPanel implements ActionListener {
                 // Remove da tabela
                 tableModel.removeRow(selectedRow);
                 // Remove da lista de músicas
-                //
                 rateMusic.setEnabled(true); // faz com que o botão de avaliar não fique disabled após remover uma música
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma música para remover.");
             }
         }
     }
+
+    /**
+     * Método que defini a playlist do qual estamos a ver os dados no painel
+     * @param playlistSelecionada Playlist a ser visualizada
+     */
     public void setPlaylist(Playlist playlistSelecionada) {
         if (playlistSelecionada != null) {
 
-            DefaultTableModel myPlaylistsTableModel = gui.getMyPlaylistsTableModel();
-            JTable myPlaylistsTable = gui.getMyPlaylistsTable();
 
             this.playlist = playlistSelecionada;
             panelTitle.setText(playlist.getNome());
 
             // Limpa a tabela
             tableModel.setRowCount(0);
-            
 
             // Adiciona as músicas da playlist à tabela
             for (Music music : playlistSelecionada.getMusic()) {

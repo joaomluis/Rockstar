@@ -4,7 +4,6 @@ package ui.client.popups;
 import data.Music;
 import data.Playlist;
 import domain.RockStarDBStatus;
-import domain.RockstarDB;
 import ui.RockstarGUI;
 
 import javax.swing.*;

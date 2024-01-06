@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 /**
  * Classe que representa o frame principal para a interface do músico.
  */
-public class FrameMusico extends JFrame implements ActionListener {
+public class MusicianRootFrame extends JFrame implements ActionListener {
     /**
      * Título da classe FrameMusico.
      */
@@ -33,7 +33,7 @@ public class FrameMusico extends JFrame implements ActionListener {
      * Construtor da classe FrameMusico.
      * @param gui Instância da classe RockstarGUI.
      */
-    public FrameMusico(RockstarGUI gui){
+    public MusicianRootFrame(RockstarGUI gui){
         this.gui = gui;
         currentPanel = new JPanel();
     }

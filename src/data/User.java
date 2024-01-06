@@ -30,15 +30,9 @@ public abstract class User implements Serializable {
     public String getPassword() {
         return password;
     }
+
     public String getPin() {
         return "";
     }
-    public void listarMusicas(){
-
-    }
-
-
-    public boolean criaPlaylist() {
-        return false;
-    }
 }
+
