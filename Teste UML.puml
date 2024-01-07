@@ -1,0 +1,910 @@
+@startuml
+class ui.client.popups.GeneratePlaylist {
+- JPanel panelCenter
+- JPanel panelSouth
+- JLabel playlistName
+- JLabel playlistGenre
+- JLabel playlistSize
+- JTextField nameField
+- JTextField sizeField
+- JComboBox<String> dropdown
+- JButton okButton
+- JButton cancelButton
+- RockstarGUI gui
++ void actionPerformed(ActionEvent)
+}
+class ui.client.popups.MakePlaylist {
+- JPanel panelCenter
+- JPanel panelSouth
+- JLabel playlistName
+- JTextField nameField
+- JCheckBox visibilidadePlaylist
+- JButton okButton
+- JButton cancelButton
++ void actionPerformed(ActionEvent)
+}
+class ui.client.popups.AddBalance {
+- JPanel panelCenter
+- JPanel panelSouth
+- JLabel addBalanceLabel
+- JTextField balanceField
+- JButton okButton
+- JButton cancelButton
+}
+class ui.client.MyPlaylists {
++ {static} String TITLE
+- RockstarGUI gui
+- Cliente client
+- JPanel topPanel
+- JPanel eastPanel
+- JTable playlistTable
+- DefaultTableModel tableModel
+- JButton seePlaylist
+- JButton createPlaylist
+- JButton deletePlaylist
+- JButton changeVisibility
+- JLabel panelTitle
++ JTable getPlaylistTable()
++ DefaultTableModel getTableModel()
++ JButton getCreatePlaylist()
++ JButton getDeletePlaylist()
++ void actionPerformed(ActionEvent)
+}
+class ui.musician.MusicoMenuInicial {
++ {static} String TITLE
+~ RockstarGUI gui
+- JButton logOut
+- JLabel tittle
+- JButton musicas
+- JButton meusAlbuns
+- JButton pesquisa
+- JButton estatistica
++ void actionPerformed(ActionEvent)
+}
+class ui.musician.popups.CriarAlbum {
+- JPanel panelCenter
+- JPanel panelSouth
+- JLabel genero
+- JLabel nome
+- JComboBox<String> dropdown
+- JTextField textField
+- JButton okButton
+- JButton cancelButton
+- int width
+- int height
+- RockstarGUI gui
++ void actionPerformed(ActionEvent)
+}
+class ui.auth.LogInCliente {
++ {static} String TITLE
+- RockstarGUI gui
+- JLabel title
+- JLabel subtitle
+- JLabel usernameLabel
+- JLabel passwordLabel
+- JTextField usernameField
+- JPasswordField passwordField
+- JButton logInButton
+- JButton cancelButton
++ void actionPerformed(ActionEvent)
+- void login()
+}
+abstract class data.User {
+- {static} long serialVersionUID
+- String username
+- String password
++ String getUsername()
++ String getPassword()
++ String getPin()
+}
+class data.Cliente {
+- {static} long serialVersionUID
+- double saldo
+- List<Playlist> playlists
+- List<Music> songsInCart
+- List<Music> songsOwned
+- List<Purchase> purchasesMade
++ double getSaldo()
++ void setSaldo(double)
++ List<Music> getSongsInCart()
++ List<Playlist> getPlaylists()
++ List<Music> getSongsOwned()
++ List<Purchase> getPurchasesMade()
++ boolean adicionaSaldo(double)
++ void addPlaylistToClient(Playlist)
++ boolean hasRatedMusic(Music)
+}
+class ui.auth.RegistarCliente {
++ {static} String TITLE
+- RockstarGUI gui
+- JLabel titleLabel
+- JLabel usernameLabel
+- JLabel passwordLabel
+- JButton cancelButton
+- JButton createButton
+- JTextField usernameField
+- JPasswordField passwordField
+- void createUI()
++ void actionPerformed(ActionEvent)
+- void registarClient()
+}
+class data.Musico {
+- {static} long serialVersionUID
+- String pin
+- ArrayList<Music> musics
+- ArrayList<Album> albuns
++ ArrayList<Music> getMusicas()
++ ArrayList<Album> getAlbuns()
++ String getPin()
++ void addMusic(Music)
++ void addAlbum(Album)
++ String toString()
+}
+class ui.musician.popups.AlterarNome {
+- JPanel panelCenter
+- JPanel panelSouth
+- JLabel nome
+- JTextField textField
+- JButton okButton
+- JButton cancelButton
+- int width
+- int height
+- Music music
+- RockstarGUI gui
++ void actionPerformed(ActionEvent)
+}
+class ui.client.Store {
++ {static} String TITLE
+- RockstarGUI gui
+- Cliente client
+- JPanel topPanel
+- JPanel eastPanel
+- JTable storeTable
+- DefaultTableModel tableModel
+- JButton buySong
+- JButton addBalance
+- JButton seePriceHistory
+- JLabel panelTitle
+- JTextField barraPesquisa
+- JComboBox<CriteriosMusica> dropdown
+- JButton pesquisar
+- ArrayList<Music> musics
++ void actionPerformed(ActionEvent)
++ void atualizarTabelaMusicas(ArrayList<Music>)
++ JTable getStoreTable()
++ DefaultTableModel getTableModel()
++ void setMusics(ArrayList<Music>)
++ void mouseClicked(MouseEvent)
++ void mousePressed(MouseEvent)
++ void mouseReleased(MouseEvent)
++ void mouseEntered(MouseEvent)
++ void mouseExited(MouseEvent)
+}
+class ui.musician.MusicoMusicas {
++ {static} String TITLE
+- RockstarGUI gui
+- Musico musician
+- JScrollPane scrollPane
+- JTable tabela
+- DefaultTableModel tabelaDefault
+- JLabel titulo
+- JPanel painelEast
+- JPanel painelSuperior
+- JButton editarDisponibilidade
+- JButton editarPreco
+- JButton editarNome
+- JButton adicionar
+- ArrayList<Music> musics
+- void atualizarTabelaMusicas()
++ void carregarMusicasDoMusico()
++ void actionPerformed(ActionEvent)
++ void mouseClicked(MouseEvent)
++ void mousePressed(MouseEvent)
++ void mouseReleased(MouseEvent)
++ void mouseEntered(MouseEvent)
++ void mouseExited(MouseEvent)
+}
+class data.Playlist {
+- {static} long serialVersionUID
+- String nome
+- ArrayList<Music> music
+- boolean visibilidade
++ boolean isVisibilidade()
++ void setVisibilidade(boolean)
++ ArrayList<Music> getMusic()
++ String getNome()
++ boolean getVisibilidade()
++ String toString()
+}
+class data.Price {
+- {static} long serialVersionUID
+- double preco
+- LocalDateTime data
++ double getPreco()
++ LocalDateTime getData()
+}
+class ui.auth.LogInMusico {
++ {static} String TITLE
+- RockstarGUI gui
+- JLabel title
+- JLabel subtitle
+- JLabel usernameLabel
+- JLabel passwordLabel
+- JLabel pinLabel
+- JTextField usernameField
+- JPasswordField passwordField
+- JPasswordField pinField
+- JButton logInButton
+- JButton cancelButton
++ void actionPerformed(ActionEvent)
+- void login()
+}
+class ui.AuthRootFrame {
+~ RockstarGUI gui
+- JPanel currentPanel
+- JPanel panelContainer
+- CardLayout cardLayout
+- RegistarCliente registarCliente
+- LogInCliente loginCliente
+- MenuInicial menuInicial
+- LogInMusico logInMusico
+- RegistarMusico registarMusico
++ void start()
++ void actionPerformed(ActionEvent)
++ void showPanel(String)
+}
+class ui.ClientRootFrame {
++ {static} String TITLE
+~ RockstarGUI gui
+- Cliente client
+- JButton homeButton
+- JButton backButton
+- JButton cartButton
+- JLabel username
+- JLabel balance
+- JPanel homeButtonPanel
+- JPanel panelContainer
+- CardLayout cardLayout
+- MainMenu menuInicial
+- Store store
+- MyMusic myMusic
+- MyPlaylists myPlaylists
+- CurrentPlaylist currentPlaylist
+- PurchaseHistory purchaseHistory
+- PurchaseDetails purchaseDetails
+- ShoppingCart shoppingCart
+- JPanel currentPanel
+- boolean inicialized
++ MyPlaylists getMyPlaylists()
++ ShoppingCart getShoppingCart()
++ MyMusic getMyMusic()
++ PurchaseHistory getPurchaseHistory()
++ PurchaseDetails getPurchaseDetails()
++ CurrentPlaylist getCurrentPlaylist()
++ MainMenu getMenuInicial()
++ Store getStore()
++ void start()
++ boolean isInitialized()
++ void setCurrentPanel(JPanel)
++ void actionPerformed(ActionEvent)
++ void showPanelClient(String)
++ void showCurrentPanel()
++ void updateBalanceLabel()
+}
+class data.Rating {
+- {static} long serialVersionUID
+- double avaliacao
+- LocalDate data
+- Cliente cliente
++ double getAvaliacao()
++ LocalDate getData()
++ Cliente getCliente()
++ String toString()
+}
+enum domain.RockStarDBStatus {
++  DB_USER_ALREADY_EXISTS
++  DB_USER_ADDED
++  DB_USER_FAILED_TO_SAVE
++  DB_USER_LOGIN_SUCCESS
++  DB_USER_LOGIN_FAILED
++  DB_INCORRET_FORMAT_NUMBER
++  DB_MUSIC_ADDED
++  DB_MUSIC_NAME_EMPTY
++  DB_MUSIC_NAME_FAILED
++  DB_MUSIC_NAME_HAS_CHANGED
++  DB_MUSIC_PRICE_HAS_CHANGED
++  DB_MUSIC_VISIBILITY_CHANGED
++  DB_MUSIC_VISIBILITY_FAIL
++  DB_MUSIC_ALREADY_EXISTS_IN_THE_PLAYLIST
++  DB_ALBUM_NAME_FAILED
++  DB_ALBUM_NAME_HAS_CHANGED
++  DB_CART_EMPTY
++  DB_SONG_ALREADY_IN_CART
++  DB_SONG_ADDED_TO_CART
++  DB_SONG_ALREADY_BOUGHT
++  DB_SONGS_PURCHASED_SUCCESSFULLY
++  DB_INSUFFICIENT_BALANCE
++  DB_SOME_FIELD_IS_EMPTY
++  DB_PLAYLIST_NAME_ALREADY_EXISTS
++  DB_PLAYLIST_GENERATED_SUCCESSFULLY
++  DB_MUSIC_CANT_BE_ADDED_TO_PLAYLISTS
++  DB_NO_SONGS_ADDED_TO_PLAYLIST
++  DB_PLAYLIST_GENERATED_BUT_WITHOUT_WANTED_SIZE
++  DB_PLAYLIST_VISIB_CHANGED
++  DB_PLAYLIST_VISIB_UNCHANGED
+}
+class ui.client.popups.RateSong {
+- JPanel panelCenter
+- JPanel panelSouth
+- JLabel avaliacao
+- JComboBox<String> dropdown
+- JButton okButton
+- JButton cancelButton
+- Music music
+- RockstarGUI gui
++ void actionPerformed(ActionEvent)
+}
+class ui.musician.MusicoPesquisa {
++ {static} String TITLE
+- RockstarGUI gui
+- JTextField barraPesquisa
+- JComboBox<CriteriosMusica> dropdown
+- JPanel painelCentralSuperior
+- JPanel painelCentral
+- JPanel painelEast
+- JScrollPane scrollPane
+- JPanel painelSuperior
+- DefaultTableModel tabelaDefault
+- JTable tabela
+- JButton pesquisar
+- void atualizarTabelaMusicas(ArrayList<Music>)
++ void actionPerformed(ActionEvent)
+}
+class ui.client.popups.ChangeVisibilityPlaylist {
+- JLabel estado
+- JComboBox<String> disponibilidade
+- JPanel panelCenter
+- JPanel panelSouth
+- JButton okButton
+- JButton cancelButton
+- int width
+- int height
+- Playlist playlist
+- RockstarGUI gui
++ void actionPerformed(ActionEvent)
+}
+class data.Album {
+- {static} long serialVersionUID
+- String title
+- Musico artist
+- String genre
+- ArrayList<Music> music
++ ArrayList<Music> getMusicas()
++ String getTitle()
++ String getGenre()
++ Musico getArtist()
++ String toString()
+}
+class data.RockstarModel {
+- {static} long serialVersionUID
+- List<User> users
+- List<Music> allSongsAvailable
+- List<Album> albums
+- List<Purchase> allPurchases
++ List<User> getUsers()
++ boolean addUser(User)
++ void updateUser(User)
++ List<Music> getAllSongsAvailable()
++ List<Album> getAlbums()
++ List<Purchase> getAllPurchases()
+}
+class ui.client.CurrentPlaylist {
++ {static} String TITLE
+- RockstarGUI gui
+- Cliente client
+- JPanel topPanel
+- JPanel eastPanel
+- JTable musicTable
+- DefaultTableModel tableModel
+- JButton removeMusic
+- JButton rateMusic
+- JLabel panelTitle
+- Playlist playlist
++ void actionPerformed(ActionEvent)
++ void setPlaylist(Playlist)
+}
+class Main {
++ {static} void main(String[])
+}
+class ui.client.popups.AddToPlaylist {
+- JPanel panelCenter
+- JPanel panelSouth
+- JLabel playlistName
+- JComboBox<Playlist> dropdown
+- JButton okButton
+- JButton cancelButton
+- RockstarGUI gui
+- Music music
++ void actionPerformed(ActionEvent)
+}
+class ui.client.popups.PriceHistory {
+- JTable priceTable
+~ DefaultTableModel tableModel
+- Music selectedMusic
+- RockstarGUI gui
+}
+class ui.client.PurchaseDetails {
++ {static} String TITLE
+- RockstarGUI gui
+- Cliente client
+- JPanel topPanel
+- JTable purchaseTable
+- DefaultTableModel tableModel
+- JLabel panelTitle
+- Purchase purchase
++ void setPurchase(Purchase)
+}
+class ui.musician.MusicoEstatistica {
++ {static} String TITLE
+- RockstarGUI gui
+- JLabel totalAlbunsGeneroCont
+- JComboBox<String> genero
+- double valorTotalMusicasVendidasInt
+- String valorTotalMusicasVendidasString
+- JLabel valorTotalMusicasVendidas
+- double valorTotalMusicasInt
+- String valorTotalMusicasString
+- JLabel valorTotalMusicas
+- JLabel totalAlbunsGenero
+- int totalAlbunsInt
+- String numeroAlbunsString
+- JLabel totalAlbuns
+- String numeroMusicosString
+- int totalMusicosInt
+- JLabel totalMusicos
+- JLabel totalMusicas
+- String numeroMusicasString
+- int totalMusicasInt
+- String numeroUserString
+- int totalUserInt
+- JLabel totalUser
++ void actionPerformed(ActionEvent)
++ void updateStats()
+}
+class ui.auth.MenuInicial {
++ {static} String TITLE
+- JLabel labelWelcomeText
+- JButton logInButton
+- JButton createAccButton
+- JRadioButton radioButtonClient
+- JRadioButton radioButtonMusician
+- RockstarGUI gui
++ void actionPerformed(ActionEvent)
+}
+class ui.RockstarGUI {
+- RockstarDB db
+- int var
+- int var2
+- AuthRootFrame authenticationFrame
+- ClientRootFrame clientFrame
+- MusicianRootFrame musicianFrame
++ void start()
++ RockstarDB getDb()
++ MyPlaylists getMyPlaylists()
++ ShoppingCart getShoppingCartPanel()
++ JTable getCartTable()
++ DefaultTableModel getCartTableModel()
++ void updateCartTable(DefaultTableModel,JTable)
+- MyMusic getMyMusicPanel()
+- JTable getMyMusicTable()
+- DefaultTableModel getMyMusicTableModel()
++ void updateMyMusicTable(DefaultTableModel,JTable)
+- PurchaseHistory getPurchaseHistoryPanel()
+- JTable getPurchaseHistoryTable()
+- DefaultTableModel getPurchaseHistoryTableModel()
+- void updatePurchaseTable(DefaultTableModel,JTable)
+- Store getStorePanel()
+- DefaultTableModel getStoreTableModel()
+- JTable getStoreTable()
+- void updateStoreTable(DefaultTableModel,JTable)
++ boolean adicionarElementosTabela(JTable)
+- boolean existePlaylistNaTabela(DefaultTableModel,Playlist)
++ void atualizarTabelaPlaylists(DefaultTableModel,JTable)
++ JTable getMyPlaylistsTable()
++ DefaultTableModel getMyPlaylistsTableModel()
++ void getMyPlaylistsButtonsToEnable()
++ void showMainMenu()
++ void showMusicianRegister()
++ void showClientRegister()
++ void showClientLogin()
++ void showMusicianLogin()
++ void showMusicianFrame()
++ void showClientFrame()
++ void showAutenticationFrame()
++ void showStore()
++ void showMyMusic()
++ void showMyPlaylists()
++ void showPurchaseHistory()
++ void showPurchaseDetails()
++ void showShoppingCart()
++ void showCurrentPlaylist()
++ void showClientMainMenu()
++ void showMusicianSongs()
++ void showMusicianAlbuns()
++ void showMusicianStats()
++ void showMusicianSearch()
++ void showMusicianMainMenu()
++ void updateBalance()
++ MusicianRootFrame getMusicianFrame()
++ ClientRootFrame getClientFrame()
+}
+class ui.client.PurchaseHistory {
++ {static} String TITLE
+- RockstarGUI gui
+- Cliente client
+- JPanel topPanel
+- JPanel eastPanel
+- JTable purchaseTable
+- DefaultTableModel tableModel
+- JButton seePurchase
+- JLabel panelTitle
++ JTable getPurchaseTable()
++ DefaultTableModel getTableModel()
++ void actionPerformed(ActionEvent)
+}
+class domain.RockstarDB {
+~ {static} String dbPath
+- RockstarModel dados
+- User currentUser
++ RockstarModel getDados()
++ void init()
+- boolean checkIfDBExists()
+- void saveDB()
+- void loadDB()
++ User getCurrentUser()
++ Cliente getCurrentUserAsClient()
++ Musico getCurrentUserAsMusician()
++ void saveCurrentUser()
++ void logOut()
++ RockStarDBStatus registarCliente(String,String)
++ RockStarDBStatus registarMusico(String,String,String)
++ RockStarDBStatus loginCliente(String,String)
++ RockStarDBStatus loginMusico(String,String,String)
++ boolean addMusica(Music)
++ boolean addAlbum(Album)
++ RockStarDBStatus criarAlbum(String,String)
++ int getTotalUsers()
++ int getTotalMusician()
++ int getTotalSongs()
++ int getTotaAlbums()
++ double getTotalValueSongs()
++ int albumByGenre(String)
++ double getTotalValueSongsSold()
++ Album[] getMusicianAlbums(Musico)
++ Playlist[] getClientPlaylist(Cliente)
++ String[] getMusicGenrs()
++ boolean validSongName(String)
++ boolean validAlbumName(String)
++ boolean addPlaylist(Playlist)
++ RockStarDBStatus generatePlaylist(String,int,String)
+- boolean checkIfSongAlreadyAdded(Playlist,Music)
+- String makeSongTempID(Music)
+- boolean checkPlaylistNameExists(Playlist)
++ RockStarDBStatus addMusicaPlaylist(Music,Playlist)
++ RockStarDBStatus changePlaylistVisibility(boolean,Playlist)
++ void addPriceHistoryToTable(Music,JTable)
++ void addAllPurchasesToTable(JTable)
+- String formatLocalDateTime(LocalDateTime)
+- boolean purchaseExistsOnTable(DefaultTableModel,Purchase)
++ void addAllRockstarSongsToTable(JTable,ArrayList<Music>)
++ ArrayList<Music> addAllRockstarSongsVisible()
+- boolean songExistsOnTable(DefaultTableModel,Music)
++ RockStarDBStatus addSongToCart(Music)
+- boolean isSongOnCart(Music)
+- boolean isSongAlreadyOwned(Music)
++ void addAllSongsInCartToTable(JTable)
++ RockStarDBStatus buyAllSongsFromCart()
+- void addSongToMyMusic(Music)
++ void addAllOwnedSongsToTable(JTable)
++ RockStarDBStatus alterarPreco(String,Music)
++ RockStarDBStatus adicionarMusica(String,String,String,Album)
++ RockStarDBStatus alterarNome(String,Music)
++ RockStarDBStatus alterarDisponibilidade(Music,boolean)
++ boolean rateSong(Music,double)
++ ArrayList<Music> procurarMusicas(String,CriteriosMusica)
++ ArrayList<Music> procurarMinhasMusicasCliente(String,CriteriosMusica)
++ ArrayList<Music> ordenarMusicasCrescente(CriteriosMusica,ArrayList<Music>)
++ ArrayList<Music> ordenarMusicasDecrescente(CriteriosMusica,ArrayList<Music>)
+}
+class ui.musician.MusicoMeusAlbuns {
++ {static} String TITLE
+- RockstarGUI gui
+- Musico musician
+- JPanel painelEast
+- JScrollPane scrollPane
+- JLabel titulo
+- JPanel painelSuperior
+- DefaultTableModel tabelaDefault
+- JTable tabela
+- JButton criar
+- ArrayList<Album> albuns
+- void atualizarTabelaAlbuns()
++ void carregarAlbunsDoMusico()
++ void actionPerformed(ActionEvent)
+}
+class ui.musician.popups.AlterarDisponibilidade {
+- JLabel estado
+- JComboBox<String> disponibilidade
+- JPanel panelCenter
+- JPanel panelSouth
+- JButton okButton
+- JButton cancelButton
+- int width
+- int height
+- Music music
+- RockstarGUI gui
++ void actionPerformed(ActionEvent)
+}
+enum data.Genre {
++  Pop
++  Rock
++  Hip_hop
++  Eletronica
++  Jazz
++  Reggae
++  Country
++  RnB
++  Funk
++  Metal
+}
+class ui.musician.popups.AdicionarMusica {
+- JComboBox albumDropdown
+- JLabel album
+- RockstarGUI gui
+- JLabel preco
+- JTextField precoText
+- JPanel panelCenter
+- JPanel panelSouth
+- JLabel genero
+- JLabel nome
+- JComboBox<String> dropdown
+- JTextField nomeText
+- JButton okButton
+- JButton cancelButton
+- int width
+- int height
++ void actionPerformed(ActionEvent)
+}
+class data.Music {
+- {static} long serialVersionUID
+- String title
+- Musico artist
+- String genre
+- double preco
+- List<Price> priceHistory
+- ArrayList<Rating> avaliacoes
+- boolean visibilidade
+- Album album
++ Album getAlbum()
++ String getTitle()
++ String getGenre()
++ Musico getArtist()
++ double getPreco()
++ List<Price> getHistoricoPreco()
++ boolean alterarPreco(Double,User)
++ boolean isVisibilidade()
++ void setVisibilidade(boolean)
++ boolean alterarTitulo(String)
++ ArrayList<Rating> getAvaliacoes()
++ double avaliacaoMedia()
++ String toString()
+}
+class data.Purchase {
+- {static} long serialVersionUID
+- String purchaseId
+- Cliente cliente
+- LocalDateTime dataCompra
+- List<Music> songList
+- double price
++ String generatePurchaseID()
++ List<Music> getSongList()
++ String getPurchaseId()
++ LocalDateTime getDataCompra()
++ double getPrice()
+}
+class ui.client.MainMenu {
++ {static} String TITLE
+~ RockstarGUI gui
+- Cliente client
+- JButton myMusic
+- JButton myPlaylists
+- JButton createPlaylist
+- JButton purchaseHistory
+- JButton logOut
+- JButton store
+- JLabel title
++ void actionPerformed(ActionEvent)
+}
+class ui.client.MyMusic {
++ {static} String TITLE
+- RockstarGUI gui
+- JPanel topPanel
+- JPanel eastPanel
+- JTable musicTable
+- DefaultTableModel tableModel
+- JButton removeMusic
+- JButton rateMusic
+- JButton addToPlaylist
+- JLabel panelTitle
+- JComboBox<CriteriosMusica> dropdown
+- JTextField searchField
+- JButton searchButton
+- ArrayList<Music> musics
++ JTable getMusicTable()
++ DefaultTableModel getTableModel()
++ void actionPerformed(ActionEvent)
++ void atualizarTabelaMusicas(ArrayList<Music>)
++ void mouseClicked(MouseEvent)
++ void mousePressed(MouseEvent)
++ void mouseReleased(MouseEvent)
++ void mouseEntered(MouseEvent)
++ void mouseExited(MouseEvent)
+}
+class ui.musician.popups.AlterarPreco {
+- JPanel panelCenter
+- JPanel panelSouth
+- JLabel preco
+- JTextField textField
+- JButton okButton
+- JButton cancelButton
+- int width
+- int height
+- Music music
+- RockstarGUI gui
++ void actionPerformed(ActionEvent)
+}
+class ui.client.ShoppingCart {
++ {static} String TITLE
+- RockstarGUI gui
+- Cliente client
+- JPanel topPanel
+- JPanel eastPanel
+- JTable purchaseTable
+- DefaultTableModel tableModel
+- JButton confirmPurchase
+- JButton removePurchase
+- JLabel panelTitle
++ JTable getPurchaseTable()
++ DefaultTableModel getTableModel()
++ void actionPerformed(ActionEvent)
+}
+class ui.auth.RegistarMusico {
++ {static} String TITLE
+- RockstarGUI gui
+- JButton cancelButton
+- JButton createButton
+- JLabel tittleLabel
+- JLabel usernameLabel
+- JLabel passwordLabel
+- JLabel pinLabel
+- JTextField usernameField
+- JPasswordField passwordField
+- JPasswordField pinField
++ void actionPerformed(ActionEvent)
+- void registarMusician()
+}
+class ui.MusicianRootFrame {
++ {static} String TITLE
+- RockstarGUI gui
+- JPanel northPanel
+- JLabel username
+- JButton back
+- JButton home
+- CardLayout cardLayout
+- JPanel panelContainer
+- MusicoMenuInicial musicoMenuInicial
+- MusicoMusicas musicoMusicas
+- MusicoMeusAlbuns musicoMeusAlbuns
+- MusicoEstatistica musicoEstatistica
+- MusicoPesquisa musicoPesquisa
+- JPanel currentPanel
+- boolean initialized
++ void start()
++ boolean isInitialized()
++ void setCurrentPanel(JPanel)
++ {static} String getTITLE()
++ MusicoMenuInicial getMusicoMenuInicial()
++ MusicoMusicas getMusicoMusicas()
++ MusicoMeusAlbuns getMusicoMeusAlbuns()
++ MusicoEstatistica getMusicoEstatistica()
++ MusicoPesquisa getMusicoPesquisa()
++ void actionPerformed(ActionEvent)
++ void showPanelMusician(String)
+}
+enum ui.musician.CriteriosMusica {
++  Nome
++  Genero
++  Visibilidade
++  Preco
+}
+
+
+java.awt.event.ActionListener <|.. ui.client.popups.GeneratePlaylist
+ui.client.popups.JDialog <|-- ui.client.popups.GeneratePlaylist
+java.awt.event.ActionListener <|.. ui.client.popups.MakePlaylist
+ui.client.popups.JDialog <|-- ui.client.popups.MakePlaylist
+ui.client.popups.JDialog <|-- ui.client.popups.AddBalance
+java.awt.event.ActionListener <|.. ui.client.MyPlaylists
+ui.client.JPanel <|-- ui.client.MyPlaylists
+java.awt.event.ActionListener <|.. ui.musician.MusicoMenuInicial
+ui.musician.JPanel <|-- ui.musician.MusicoMenuInicial
+java.awt.event.ActionListener <|.. ui.musician.popups.CriarAlbum
+ui.musician.popups.JDialog <|-- ui.musician.popups.CriarAlbum
+java.awt.event.ActionListener <|.. ui.auth.LogInCliente
+ui.auth.JPanel <|-- ui.auth.LogInCliente
+java.io.Serializable <|.. data.User
+java.io.Serializable <|.. data.Cliente
+data.User <|-- data.Cliente
+java.awt.event.ActionListener <|.. ui.auth.RegistarCliente
+ui.auth.JPanel <|-- ui.auth.RegistarCliente
+java.io.Serializable <|.. data.Musico
+data.User <|-- data.Musico
+java.awt.event.ActionListener <|.. ui.musician.popups.AlterarNome
+ui.musician.popups.JDialog <|-- ui.musician.popups.AlterarNome
+java.awt.event.ActionListener <|.. ui.client.Store
+java.awt.event.MouseListener <|.. ui.client.Store
+ui.client.JPanel <|-- ui.client.Store
+java.awt.event.ActionListener <|.. ui.musician.MusicoMusicas
+java.awt.event.MouseListener <|.. ui.musician.MusicoMusicas
+ui.musician.JPanel <|-- ui.musician.MusicoMusicas
+java.io.Serializable <|.. data.Playlist
+java.io.Serializable <|.. data.Price
+java.awt.event.ActionListener <|.. ui.auth.LogInMusico
+ui.auth.JPanel <|-- ui.auth.LogInMusico
+java.awt.event.ActionListener <|.. ui.AuthRootFrame
+ui.JFrame <|-- ui.AuthRootFrame
+java.awt.event.ActionListener <|.. ui.ClientRootFrame
+ui.JFrame <|-- ui.ClientRootFrame
+java.io.Serializable <|.. data.Rating
+java.awt.event.ActionListener <|.. ui.client.popups.RateSong
+ui.client.popups.JDialog <|-- ui.client.popups.RateSong
+java.awt.event.ActionListener <|.. ui.musician.MusicoPesquisa
+ui.musician.JPanel <|-- ui.musician.MusicoPesquisa
+java.awt.event.ActionListener <|.. ui.client.popups.ChangeVisibilityPlaylist
+ui.client.popups.JDialog <|-- ui.client.popups.ChangeVisibilityPlaylist
+java.io.Serializable <|.. data.Album
+java.io.Serializable <|.. data.RockstarModel
+java.awt.event.ActionListener <|.. ui.client.CurrentPlaylist
+ui.client.JPanel <|-- ui.client.CurrentPlaylist
+java.awt.event.ActionListener <|.. ui.client.popups.AddToPlaylist
+ui.client.popups.JDialog <|-- ui.client.popups.AddToPlaylist
+ui.client.popups.JDialog <|-- ui.client.popups.PriceHistory
+ui.client.JPanel <|-- ui.client.PurchaseDetails
+java.awt.event.ActionListener <|.. ui.musician.MusicoEstatistica
+ui.musician.JPanel <|-- ui.musician.MusicoEstatistica
+java.awt.event.ActionListener <|.. ui.auth.MenuInicial
+ui.auth.JPanel <|-- ui.auth.MenuInicial
+java.awt.event.ActionListener <|.. ui.client.PurchaseHistory
+ui.client.JPanel <|-- ui.client.PurchaseHistory
+java.awt.event.ActionListener <|.. ui.musician.MusicoMeusAlbuns
+ui.musician.JPanel <|-- ui.musician.MusicoMeusAlbuns
+java.awt.event.ActionListener <|.. ui.musician.popups.AlterarDisponibilidade
+ui.musician.popups.JDialog <|-- ui.musician.popups.AlterarDisponibilidade
+java.awt.event.ActionListener <|.. ui.musician.popups.AdicionarMusica
+ui.musician.popups.JDialog <|-- ui.musician.popups.AdicionarMusica
+java.io.Serializable <|.. data.Music
+java.io.Serializable <|.. data.Purchase
+java.awt.event.ActionListener <|.. ui.client.MainMenu
+ui.client.JPanel <|-- ui.client.MainMenu
+java.awt.event.ActionListener <|.. ui.client.MyMusic
+java.awt.event.MouseListener <|.. ui.client.MyMusic
+ui.client.JPanel <|-- ui.client.MyMusic
+java.awt.event.ActionListener <|.. ui.musician.popups.AlterarPreco
+ui.musician.popups.JDialog <|-- ui.musician.popups.AlterarPreco
+java.awt.event.ActionListener <|.. ui.client.ShoppingCart
+ui.client.JPanel <|-- ui.client.ShoppingCart
+java.awt.event.ActionListener <|.. ui.auth.RegistarMusico
+ui.auth.JPanel <|-- ui.auth.RegistarMusico
+java.awt.event.ActionListener <|.. ui.MusicianRootFrame
+ui.JFrame <|-- ui.MusicianRootFrame
+@enduml

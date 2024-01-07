@@ -18,7 +18,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+/**
+ * Painel que exibe as playlists do cliente e permite criar, remover e alterar a visibilidade das playlists.
+ */
 
 public class MyPlaylists extends JPanel implements ActionListener {
 

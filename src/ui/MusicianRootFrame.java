@@ -29,6 +29,7 @@ public class MusicianRootFrame extends JFrame implements ActionListener {
     private MusicoEstatistica musicoEstatistica;
     private MusicoPesquisa musicoPesquisa;
     private JPanel currentPanel;
+    private boolean initialized; //boolean para
     /**
      * Construtor da classe FrameMusico.
      * @param gui Instância da classe RockstarGUI.
@@ -36,6 +37,7 @@ public class MusicianRootFrame extends JFrame implements ActionListener {
     public MusicianRootFrame(RockstarGUI gui){
         this.gui = gui;
         currentPanel = new JPanel();
+        initialized = false;
     }
     /**
      * Inicializa o frame e define os componentes gráficos.
@@ -108,6 +110,10 @@ public class MusicianRootFrame extends JFrame implements ActionListener {
         add(northPanel, BorderLayout.NORTH);
         northPanel.setBackground(fundo);
         setVisible(true);
+        initialized = true; //alterar a variavel para true, uma vez que foi iniciada a frame.
+    }
+    public boolean isInitialized() {
+        return initialized;
     }
     /**
      * Define o painel atual exibido no frame.

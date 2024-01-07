@@ -7,7 +7,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+/**
+ * Representa uma compra feita por um cliente.
+ * É serializável para permitir serem gravados em arquivos.
+ */
 public class Purchase implements Serializable {
 
     @Serial

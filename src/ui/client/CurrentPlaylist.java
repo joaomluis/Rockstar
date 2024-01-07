@@ -18,7 +18,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.util.ArrayList;
-
+/**
+ * Painel de visualização e interação com a playlist atual para um cliente.
+ */
 public class CurrentPlaylist extends JPanel implements ActionListener {
 
     public static final String TITLE = "CurrentPlaylist";

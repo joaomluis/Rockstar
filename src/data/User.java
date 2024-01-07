@@ -2,7 +2,10 @@ package data;
 
 import java.io.Serial;
 import java.io.Serializable;
-
+/**
+ * Representa um usuário genérico no sistema.
+ * Fornece métodos para acessar o nome de usuário e senha.
+ */
 public abstract class User implements Serializable {
     @Serial
     private static final long serialVersionUID = 1325672347L;
@@ -13,13 +16,6 @@ public abstract class User implements Serializable {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-    }
-
-
-    public User() {
-        this.username = "";
-        this.password = "";
-
     }
 
     // Getters para username e password

@@ -10,7 +10,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * Painel exibindo o histórico de compras realizadas pelo cliente, permitindo visualizar detalhes das compras.
+ */
 public class PurchaseHistory extends JPanel implements ActionListener {
 
     public static final String TITLE = "PurchaseHistory";

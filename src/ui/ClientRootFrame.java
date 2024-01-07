@@ -36,12 +36,14 @@ public class ClientRootFrame extends JFrame implements ActionListener {
     private PurchaseDetails purchaseDetails;
     private ShoppingCart shoppingCart;
     private JPanel currentPanel;
+    private boolean inicialized;
 
 
     public ClientRootFrame(RockstarGUI rockstarGUI) {
         this.gui = rockstarGUI;
         client = (Cliente) gui.getDb().getCurrentUser();
         this.currentPanel = new JPanel();
+        inicialized = false;
     }
 
     public MyPlaylists getMyPlaylists() {
@@ -178,8 +180,11 @@ public class ClientRootFrame extends JFrame implements ActionListener {
 
         revalidate();
         setVisible(true);
+        inicialized = true; //alterar a variavel para true, uma vez que foi iniciada a frame.
     }
-
+    public boolean isInitialized() {
+        return inicialized;
+    }
     public void setCurrentPanel(JPanel currentPanel) {
         this.currentPanel = currentPanel;
     }
@@ -226,4 +231,6 @@ public class ClientRootFrame extends JFrame implements ActionListener {
         Cliente cliente = (Cliente) gui.getDb().getCurrentUser();
         balance.setText(String.format("%1$,.2f€", cliente.getSaldo()));
     }
+
+
 }

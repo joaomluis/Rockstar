@@ -4,7 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 /**
- * Classe que representa um músico, que é herdada da classe User e implementando Serializable.
+ * Representa um músico, que é herdada da classe User e implementando Serializable.
  */
 public class Musico extends User implements Serializable {
     /**

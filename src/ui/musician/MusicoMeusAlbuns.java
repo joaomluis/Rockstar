@@ -2,6 +2,7 @@ package ui.musician;
 
 
 import data.Album;
+import data.Music;
 import data.Musico;
 import ui.RockstarGUI;
 import ui.musician.popups.CriarAlbum;
@@ -67,13 +68,12 @@ public class MusicoMeusAlbuns extends JPanel implements ActionListener {
         // Define as colunas da tabela
         tabelaDefault.addColumn("Nome");
         tabelaDefault.addColumn("Género");
-        tabelaDefault.addColumn("Produtor");
+
 
         // Cria a tabela com o modelo
         tabela = new JTable(tabelaDefault);
         tabela.getColumnModel().getColumn(0).setPreferredWidth(200);
         tabela.getColumnModel().getColumn(1).setPreferredWidth(200);
-        tabela.getColumnModel().getColumn(2).setPreferredWidth(200);
         // Impede a movimentação das colunas.
         tabela.getTableHeader().setReorderingAllowed(false);
         // SCROLL
@@ -104,6 +104,7 @@ public class MusicoMeusAlbuns extends JPanel implements ActionListener {
         setVisible(true);
 
         carregarAlbunsDoMusico();
+        atualizarTabelaAlbuns();
     }
 
     private void atualizarTabelaAlbuns() {

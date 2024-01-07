@@ -5,6 +5,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Representa o modelo principal da plataforma Rockstar.
+ * Armazena listas de usuários, músicas disponíveis, álbuns e compras.
+ */
 public class RockstarModel implements Serializable {
 
     @Serial

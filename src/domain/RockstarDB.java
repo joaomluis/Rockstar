@@ -9,7 +9,9 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-
+/**
+ * Responsável pela gestão e manipulação da base de dados da Rockstar.
+ */
 public class RockstarDB {
 
     static String dbPath = "baseDadosRockstar.ser";
@@ -1007,6 +1009,7 @@ public class RockstarDB {
         else if(!validSongName(escolhaNome)) return RockStarDBStatus.DB_MUSIC_NAME_FAILED;
 
         Music newMusic = new Music(escolhaNome,getCurrentUserAsMusician(),escolhaGenero,valor,album);
+
         addMusica(newMusic);
         return RockStarDBStatus.DB_MUSIC_ADDED;
     }

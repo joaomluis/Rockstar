@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 /**
- * Representa um cliente na aplicação, herdando a classe User.
+ * Representa um cliente na aplicação, herdando a classe User e implementando Serializable.
  */
 public class Cliente extends User implements Serializable {
     /**

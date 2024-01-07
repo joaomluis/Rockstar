@@ -114,6 +114,7 @@ public class MusicoEstatistica extends JPanel implements ActionListener {
         ////JANELA//////////////////////////////////////////////////////////////////////////////////////////////////////////
         setBackground(new Color(77, 24, 28));
         setVisible(true);
+        updateStats();
     }
 
     @Override
@@ -123,6 +124,35 @@ public class MusicoEstatistica extends JPanel implements ActionListener {
         int total = gui.getDb().albumByGenre(generoSelecionado);
 
         totalAlbunsGeneroCont.setText(String.valueOf(total) + " albuns");
+    }
+    /**
+     * Atualiza as estatísticas exibidas no painel.
+     * Obtém os valores atualizados do banco de dados e atualiza os respectivos JLabels.
+     */
+    public void updateStats() {
+        totalUserInt = gui.getDb().getTotalUsers();
+        numeroUserString = String.valueOf(totalUserInt);
+        totalUser.setText("Total de utilizadores: " + numeroUserString);
+
+        totalMusicosInt = gui.getDb().getTotalMusician();
+        numeroMusicosString = String.valueOf(totalMusicosInt);
+        totalMusicos.setText("Total de músicos: " + numeroMusicosString);
+
+        totalMusicasInt = gui.getDb().getTotalSongs();
+        numeroMusicasString = String.valueOf(totalMusicasInt);
+        totalMusicas.setText("Total de músicas: " + numeroMusicasString);
+
+        totalAlbunsInt = gui.getDb().getTotaAlbums();
+        numeroAlbunsString = String.valueOf(totalAlbunsInt);
+        totalAlbuns.setText("Total de álbuns: " + numeroAlbunsString);
+
+        valorTotalMusicasInt = gui.getDb().getTotalValueSongs();
+        valorTotalMusicasString = String.valueOf(valorTotalMusicasInt);
+        valorTotalMusicas.setText("Valor total de músicas: "+valorTotalMusicasString);
+
+        valorTotalMusicasVendidasInt = gui.getDb().getTotalValueSongsSold();
+        valorTotalMusicasVendidasString = String.valueOf(valorTotalMusicasVendidasInt);
+        valorTotalMusicasVendidas.setText("Valor total de músicas vendidas: "+valorTotalMusicasVendidasString);
     }
 }
 

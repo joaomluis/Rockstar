@@ -81,7 +81,7 @@ public class MusicoPesquisa extends JPanel implements ActionListener {
         // Define as colunas da tabela
         tabelaDefault.addColumn("Titulo");
         tabelaDefault.addColumn("Género");
-        tabelaDefault.addColumn("Produtor");
+        tabelaDefault.addColumn("Preço");
 
         // Cria a tabela com o modelo
         tabela = new JTable(tabelaDefault);
@@ -113,6 +113,7 @@ public class MusicoPesquisa extends JPanel implements ActionListener {
         add(painelEast, BorderLayout.EAST);
 
         setVisible(true);
+        atualizarTabelaMusicas(gui.getDb().getCurrentUserAsMusician().getMusicas());
     }
     /**
      * Atualiza a tabela de músicas com a lista fornecida.
