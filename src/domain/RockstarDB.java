@@ -100,8 +100,19 @@ public class RockstarDB {
      * os atributos e métodos dessa classe.
      * @return Um objeto do tipo Cliente.
      */
+
     public Cliente getCurrentUserAsClient() {
         return (Cliente) getCurrentUser();
+    }
+
+    /**
+     * Método que serve para retornar o user atualamente autenticado na plataforma
+     * mas com um cast para tipo de user Musico para se poder ter acesso a todos
+     * os atributos e métodos dessa classe.
+     * @return Um objeto do tipo Musico.
+     */
+    public Musico getCurrentUserAsMusician() {
+        return (Musico) currentUser;
     }
 
     /**
@@ -238,7 +249,16 @@ public class RockstarDB {
         return RockStarDBStatus.DB_USER_LOGIN_FAILED;
     }
 
-
+    /**
+     * Método que adiciona uma música às músicas do músico atual e à lista de músicas disponíveis
+     * no sistema.
+     * Antes de adicionar, verifica se o nome da música é válido usando o método validSongName.
+     * Se o nome não for válido, a música não é adicionada.
+     *
+     * @param music A instância da música a ser adicionada.
+     * @return  true se a música for adicionada com sucesso às músicas do músico e à lista de músicas disponíveis;
+     *          false se o nome da música não for válido ou a operação falhar.
+     */
     public boolean addMusica(Music music) {
         //Este if é irrelevante
         if (!validSongName(music.getTitle())) {
@@ -251,7 +271,17 @@ public class RockstarDB {
         System.out.println("gravado");
         return true;
     }
-
+    /**
+     * Método que adiciona o álbum à lista de álbuns do músico atual e à lista de todos os álbuns no sistema.
+     * Verifica se o usuário atual é um músico antes de adicionar o álbum e se
+     * o título do álbum é válido usando o método validAlbumName.
+     * Se o título não for válido ou o usuário atual não for um músico, o álbum não é adicionado.
+     *
+     * @param album O álbum a ser adicionado.
+     * @return  true se o álbum for adicionado com sucesso à lista de álbuns do músico e à lista de álbuns no sistema;
+     *          false se o título do álbum não for válido, já existir um álbum com o mesmo título na lista de álbuns do músico
+     *          ou o usuário atual não for um músico.
+     */
     public boolean addAlbum(Album album) {
         if (currentUser instanceof Musico) {
             Musico musico = getCurrentUserAsMusician();
@@ -268,18 +298,46 @@ public class RockstarDB {
         }
         return false; // O usuário atual não é um músico ou a lista de dados é nula
     }
+    /**
+     * Método que cria um novo álbum no banco de dados.
+     * Este método tenta criar um novo álbum com base nos parâmetros fornecidos.
+     * Verifica se o nome do álbum é válido utilizando o método 'validAlbumName'.
+     * Se o nome do álbum for válido, cria um novo álbum associado ao músico autenticado e adiciona-o ao banco de dados.
+     * @param escolhaNome O nome desejado para o novo álbum.
+     * @param escolhaGenero O género do novo álbum.
+     * @return RockStarDBStatus.DB_ALBUM_NAME_FAILED se o nome do álbum não for válido;
+     *         RockStarDBStatus.DB_ALBUM_NAME_HAS_CHANGED se o álbum foi criado e adicionado ao banco de dados.
+     */
+    public RockStarDBStatus criarAlbum(String escolhaNome, String escolhaGenero) {
+        Musico musico = getCurrentUserAsMusician();
+        if(!validAlbumName(escolhaNome)){
+            return RockStarDBStatus.DB_ALBUM_NAME_FAILED;
+        }
+        Album novoAlbum = new Album(escolhaNome,getCurrentUserAsMusician(),escolhaGenero);
+        addAlbum(novoAlbum);
+
+        return RockStarDBStatus.DB_ALBUM_NAME_HAS_CHANGED;
+    }
 
 
     //devolve vetor com os generos das musicas
     ////////////////////////////ESTATISTICAS\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
+    /**
+     * Método que retorna o número total de utilizadores no sistema.
+     * @return  O número total de utilizadores se a lista de utilizadores não for nula;
+     *          -1 caso contrário.
+     */
     public int getTotalUsers() {
         if (dados.getUsers() != null) {
             return dados.getUsers().size();
         }
         return -1;
     }
-
+    /**
+     * Método que retorna o número total de músicos registados no sistema.
+     * @return  O número total de músicos se a lista de utilizadores não for nula;
+     *          -1 caso contrário.
+     */
     public int getTotalMusician() {
         int totalMusicos = 0;
         if (dados.getUsers() != null) {
@@ -292,7 +350,11 @@ public class RockstarDB {
         }
         return -1;
     }
-
+    /**
+     * Método que retorna o número total de músicas disponíveis no sistema.
+     * @return  O número total de músicas disponíveis se a lista de músicas não for nula;
+     *          -1 caso contrário.
+     */
     public int getTotalSongs() {
         List<Music> musics = dados.getAllSongsAvailable();
         if (musics != null) {
@@ -301,7 +363,11 @@ public class RockstarDB {
             return -1;
         }
     }
-
+    /**
+     * Método que retorna o número total de álbuns disponíveis no sistema.
+     * @return  O número total de álbuns disponíveis se a lista de álbuns não for nula;
+     *          -1 caso contrário.
+     */
     public int getTotaAlbums() {
         List<Album> albums = dados.getAlbums();
         if (albums != null) {
@@ -310,7 +376,11 @@ public class RockstarDB {
             return -1;
         }
     }
-
+    /**
+     * Método que retorna o valor total das músicas disponíveis no sistema.
+     * @return  O valor total das músicas se a lista de músicas não for nula;
+     *          -1 caso contrário.
+     */
     public double getTotalValueSongs() {
         double valorTotalMusicas = 0;
         if (dados.getAllSongsAvailable() != null) {
@@ -321,31 +391,13 @@ public class RockstarDB {
         }
         return -1;
     }
-
-    public Album[] getMusicianAlbums(Musico musico) {
-        int aux = musico.getAlbuns().size() + 1;
-        Album[] dropDown = new Album[aux];
-        dropDown[0] = null;
-        int i = 1;
-        for (Album a : musico.getAlbuns()) {
-            dropDown[i] = a;
-            i++;
-        }
-        return dropDown;
-    }
-    public Playlist[] getClientPlaylist(Cliente cliente) {
-        int aux = cliente.getPlaylists().size();
-        Playlist[] dropDown = new Playlist[aux];
-        int i = 0;
-        for (Playlist a : cliente.getPlaylists()) {
-            dropDown[i] = a;
-            i++;
-        }
-        return dropDown;
-    }
-
-
-    //devolve vetor com a quantidade de albuns de X genero
+    /**
+     * Método que conta a quantidade de álbuns de um determinado género.
+     * @param genero O género no qual se deseja fazer a contagem.
+     * @return O número de álbuns do género especificado;
+     *         retorna 0 se não existirem álbuns desse género
+     *         ou se os dados ou a lista de álbuns forem nulos.
+     */
     public int albumByGenre(String genero) {
         int albumByGenre = 0;
         //verifica se dados é null ou os albums são null antes de percorrer os albums
@@ -358,8 +410,60 @@ public class RockstarDB {
         }
         return albumByGenre;
     }
-
-    //lê os generos de musicas que há disponiveis
+    /**
+     * Método que calcula o valor total das músicas vendidas através das compras registadas.
+     * Percorre a lista de todas as compras registadas para calcular o valor total das músicas
+     * vendidas, somando os preços de todas as compras na variável sum.
+     * @return O valor total das músicas vendidas através das compras registadas;
+     *         retorna 0 se não houver compras registadas ou se a lista de compras for nula.
+     */
+    public double getTotalValueSongsSold(){
+        List<Purchase> allPurchases = dados.getAllPurchases();
+        double sum = 0;
+        for (Purchase allPurchase : allPurchases) {
+            sum += allPurchase.getPrice();
+        }
+        return sum;
+    }
+    /**
+     * Método que obtém os álbuns de um músico específico e armazena-os num array de álbuns.
+     * Inclui um espaço nulo no início do array para representar a ausência de álbuns, caso não haja nenhum álbum associado ao músico.
+     *
+     * @param musico O músico do qual se desejam obter os álbuns.
+     * @return Um array de álbuns do músico, incluindo um espaço nulo no início se não houverem álbuns
+     *         associados a este músico.
+     */
+    public Album[] getMusicianAlbums(Musico musico) {
+        int aux = musico.getAlbuns().size() + 1;
+        Album[] dropDown = new Album[aux];
+        dropDown[0] = null;
+        int i = 1;
+        for (Album a : musico.getAlbuns()) {
+            dropDown[i] = a;
+            i++;
+        }
+        return dropDown;
+    }
+    /**
+     * Método obtem um array contendo as playlists associadas a um cliente em particular.
+     * @param cliente O cliente do qual se desejam obter as playlists.
+     * @return Um array de playlists do cliente;
+     *         retorna um array vazio se não houver playlists associada a este cliente.
+     */
+    public Playlist[] getClientPlaylist(Cliente cliente) {
+        int aux = cliente.getPlaylists().size();
+        Playlist[] dropDown = new Playlist[aux];
+        int i = 0;
+        for (Playlist a : cliente.getPlaylists()) {
+            dropDown[i] = a;
+            i++;
+        }
+        return dropDown;
+    }
+    /**
+     * Método que retorna um vetor contendo os géneros musicais disponíveis no sistema.
+     * @return Um vetor de strings representando os géneros musicais disponíveis.
+     */
     public String[] getMusicGenrs() {
         Genre[] generos = Genre.values();
         String[] generosMusicais = new String[generos.length];
@@ -369,9 +473,12 @@ public class RockstarDB {
         }
         return generosMusicais;
     }
-
-
-    //verifica se existe um nome igual na lista de músicas
+    /**
+     * Método que verifica se o nome de uma música é único para o músico atualmente autenticado.
+     * @param nome O nome da música a ser validado.
+     * @return true se o nome da música for único para o músico atual e não for nulo nem vazio;
+     *         false se o nome da música já existir na lista de músicas do músico ou se for nulo/vazio.
+     */
     public boolean validSongName(String nome) {
         if (currentUser instanceof Musico && getCurrentUserAsMusician().getMusicas() != null && nome != null && !nome.isEmpty()) {
             for (Music m : ((Musico) currentUser).getMusicas()) {
@@ -382,7 +489,12 @@ public class RockstarDB {
         }
         return true;
     }
-
+    /**
+     * Método que verifica se o nome de um álbum é único para o músico atualmente autenticado.
+     * @param nome O nome do álbum a ser validado.
+     * @return true se o nome do álbum for único para o músico atual e não for nulo nem vazio;
+     *         false se o nome do álbum já existir na lista de álbuns do músico ou se for nulo/vazio.
+     */
     public boolean validAlbumName(String nome) {
         if (currentUser instanceof Musico && getCurrentUserAsMusician().getMusicas() != null && nome != null && !nome.isEmpty()) {
             for (Album a : ((Musico) currentUser).getAlbuns()) {
@@ -393,11 +505,6 @@ public class RockstarDB {
         }
         return true;
     }
-    //!= null para não dar null exception quando é um musico s/ musicas na sua lista.
-
-
-    //falta método para calcular o valor total de músicas vendidas.
-
 
     ///////////////////////////PLAYLISTS\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -587,7 +694,7 @@ public class RockstarDB {
         List<Price> priceList = song.getHistoricoPreco();
 
         for (Price price: priceList) {
-            Object[] row = {formatLocalDateTime(price.getData()), String.format("%1$,.2f€", song.getPreco())};
+            Object[] row = {formatLocalDateTime(price.getData()), String.format("%1$,.2f€", price.getPreco())};
                 model.addRow(row);
         }
     }
@@ -847,21 +954,19 @@ public class RockstarDB {
             }
         }
     }
-    public ArrayList<Music> addAllOwnedSongsToTable() {
-        ArrayList<Music> musics = new ArrayList<>();
-        ArrayList<Music> ownedSongs = (ArrayList<Music>) getCurrentUserAsClient().getSongsOwned();
-        for(Music m : ownedSongs){
-            if(m.isVisibilidade()) musics.add(m);
-        }
-        return musics;
-    }
 
-
-    ////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-    public Musico getCurrentUserAsMusician() {
-        return (Musico) currentUser;
-    }
-
+    ////////////////////////////////////ALTERAÇÕES MÚSICAS\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    /**
+     * Método que altera o preço de uma música no banco de dados.
+     * Este método tenta alterar o preço de uma música para o valor fornecido como string.
+     * O try/catch serve para evitar que o programa tente converter uma string que não tenha correspondência a um número.
+     * Converte a string para um valor double e utiliza o método 'alterarPreco' da música para atualizar o preço.
+     * Em caso de sucesso na alteração, salva as mudanças no banco de dados.
+     * @param novoPreco A nova string de preço a ser atribuída à música.
+     * @param music A música à qual se deseja alterar o preço.
+     * @return RockStarDBStatus.DB_MUSIC_PRICE_HAS_CHANGED se o preço da música foi alterado com sucesso;
+     *         RockStarDBStatus.DB_INCORRET_FORMAT_NUMBER se a string de preço não pôde ser convertida para um número.
+     */
     public RockStarDBStatus alterarPreco(String novoPreco, Music music) {
         try{
             double preco = Double.parseDouble(novoPreco);
@@ -872,7 +977,21 @@ public class RockstarDB {
             return RockStarDBStatus.DB_INCORRET_FORMAT_NUMBER;
         }
     }
-
+    /**
+     * Método que adiciona uma nova música ao banco de dados.
+     * Este método tenta adicionar uma nova música ao banco de dados com base nos parâmetros fornecidos.
+     * Verifica se o nome da música não está vazio, se o nome retornar true usando o método 'validSongName'
+     * Verifica se é possivel fazer corresponder essa string a um número, alterando se o for.
+     *
+     * @param escolhaGenero O género da música a ser adicionada.
+     * @param escolhaNome O nome da música a ser adicionada.
+     * @param escolhaPreco O preço da música a ser adicionada.
+     * @param album O álbum ao qual a música será associada.
+     * @return RockStarDBStatus.DB_MUSIC_NAME_EMPTY se o nome da música estiver vazio;
+     *         RockStarDBStatus.DB_INCORRET_FORMAT_NUMBER se o formato do preço não for válido;
+     *         RockStarDBStatus.DB_MUSIC_NAME_FAILED se o nome da música não for válido;
+     *         RockStarDBStatus.DB_MUSIC_ADDED se a música for adicionada com sucesso ao banco de dados.
+     */
     public RockStarDBStatus adicionarMusica(String escolhaGenero, String escolhaNome, String escolhaPreco, Album album) {
         double valor = 0;
         if(escolhaNome.isEmpty()){
@@ -891,7 +1010,17 @@ public class RockstarDB {
         addMusica(newMusic);
         return RockStarDBStatus.DB_MUSIC_ADDED;
     }
-
+    /**
+     * Método que altera o nome de uma música no banco de dados.
+     * Este método tenta alterar o nome de uma música para o nome fornecido, verificando se o novo nome é válido utilizando o método 'validSongName'.
+     * Se o novo nome for válido, o método 'alterarTitulo' da música é invocado para realizar a alteração.
+     * Em seguida, as mudanças são salvas no banco de dados.
+     *
+     * @param escolhaNome O novo nome desejado para a música.
+     * @param music A música à qual se deseja alterar o nome.
+     * @return RockStarDBStatus.DB_MUSIC_NAME_FAILED se o novo nome não for válido;
+     *         RockStarDBStatus.DB_MUSIC_NAME_HAS_CHANGED se o nome da música foi alterado com sucesso.
+     */
     public RockStarDBStatus alterarNome(String escolhaNome, Music music) {
         if(!validSongName(escolhaNome)){
             return RockStarDBStatus.DB_MUSIC_NAME_FAILED;
@@ -902,18 +1031,18 @@ public class RockstarDB {
             return RockStarDBStatus.DB_MUSIC_NAME_HAS_CHANGED;
         }
     }
-
-    public RockStarDBStatus criarAlbum(String escolhaNome, String escolhaGenero) {
-        Musico musico = getCurrentUserAsMusician();
-        if(!validAlbumName(escolhaNome)){
-            return RockStarDBStatus.DB_ALBUM_NAME_FAILED;
-        }
-        Album novoAlbum = new Album(escolhaNome,getCurrentUserAsMusician(),escolhaGenero);
-        addAlbum(novoAlbum);
-
-        return RockStarDBStatus.DB_ALBUM_NAME_HAS_CHANGED;
-    }
-
+    /**
+     * Método que altera a disponibilidade de uma música no banco de dados.
+     * Este método tenta alterar a disponibilidade de uma música, definindo sua visibilidade com base no parâmetro fornecido.
+     * Verifica se o músico autenticado é o mesmo que o músico associado à música que está sendo alterada.
+     * Se for, atualiza a visibilidade da música
+     * e salva as mudanças no banco de dados.
+     *
+     * @param music A música cuja visibilidade será alterada.
+     * @param visibilidade O valor booleano que define a visibilidade da música.
+     * @return RockStarDBStatus.DB_MUSIC_VISIBILITY_CHANGED se a visibilidade da música foi alterada com sucesso;
+     *         RockStarDBStatus.DB_MUSIC_VISIBILITY_FAIL se o músico autenticado não é o mesmo que o músico da música.
+     */
     public RockStarDBStatus alterarDisponibilidade(Music music, boolean visibilidade) {
         //Verificação do nome de Musico é o mesmo que o do artista da música.
         if(music.getArtist().getUsername().equals(getCurrentUserAsMusician().getUsername())){
@@ -925,9 +1054,42 @@ public class RockstarDB {
         }
     }
 
+    /**
+     * Método avalia uma música com uma classificação (rating) fornecida pelo cliente autenticado.
+     * Verifica se o cliente já avaliou a música anteriormente.
+     * Se não, cria um objeto 'Rating' com a classificação e o cliente associado, e adiciona essa avaliação à lista de avaliações da música.
+     * Em seguida, salva as alterações no banco de dados.
+     *
+     * @param music A música a ser avaliada.
+     * @param rating A classificação (rating) a ser atribuída à música.
+     * @return true se a música foi avaliada com sucesso e a avaliação foi adicionada;
+     *         false se o cliente já tiver avaliado a música anteriormente.
+     */
+    public boolean rateSong(Music music, double rating) {
+        if(getCurrentUserAsClient().hasRatedMusic(music)){ //verifica se já foi avaliada a música
+            return false;
+        }
+        Rating rate = new Rating(rating,getCurrentUserAsClient());
+
+        music.getAvaliacoes().add(rate);
+
+        saveDB();
+        return true;
+    }
 
     //////////////////////////// PESQUISA DE MÚSICAS   \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
+    /**
+     * Método que procura músicas com base em critérios específicos.
+     * Este método procura músicas com base no nome ou género fornecido, utilizando os critérios definidos no Enum.
+     * Usando o instance of distingue-se o tipo de user.
+     * Se o utilizador autenticado for um músico, procura nas suas músicas.
+     * Se for um cliente, procura em todas as músicas visíveis na plataforma RockStar.
+     * Percorre a lista de músicas de acordo com o tipo de user e adiciona-as à lista que vai ser retornada.
+     * Este método apenas serve para as músicas do músico e as da loja do cliente.
+     * @param nome O nome ou parte do nome da música a ser procurada.
+     * @param cm O critério de pesquisa a ser aplicado (CriteriosMusica.Nome ou CriteriosMusica.Genero).
+     * @return Uma lista de músicas que correspondem aos critérios de pesquisa definidos.
+     */
     public ArrayList<Music> procurarMusicas(String nome, CriteriosMusica cm){
         ArrayList<Music> musics = new ArrayList<>();
         ArrayList<Music> songs = new ArrayList<>();
@@ -951,62 +1113,6 @@ public class RockstarDB {
         }
         return musics;
     }
-    ////////////////////////////////////////////////////////// ARRAYS DE ORDENAÇÃO DE TABELAS \\\\\\\\\\\\\\\\\\\\\\\\\
-    public ArrayList<Music> ordenarMusicasCrescente(CriteriosMusica mo, ArrayList<Music> musics) {
-        if (musics.isEmpty()) {
-            return new ArrayList<>(); // Não há nada para ordenar ou exibir na tabela
-        }
-        ArrayList<Music> musicasOrdenadas = new ArrayList<>(musics); //O array será do mesmo tamanho do original (musicas)
-
-        for (int i = 0; i < musicasOrdenadas.size() - 1; i++) {
-            for (int j = 0; j < musicasOrdenadas.size() - i - 1; j++) {
-                if(mo == CriteriosMusica.Nome) {
-                    if (musicasOrdenadas.get(j).getTitle().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getTitle()) > 0) {
-                        Music temp = musicasOrdenadas.get(j);
-                        musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
-                        musicasOrdenadas.set(j + 1, temp);
-                    }
-                }
-                else if(mo == CriteriosMusica.Genero){
-                    if (musicasOrdenadas.get(j).getGenre().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getGenre()) > 0) {
-                        Music temp = musicasOrdenadas.get(j);
-                        musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
-                        musicasOrdenadas.set(j + 1, temp);
-                    }
-                }
-            }
-        }
-        return musicasOrdenadas;
-    }
-
-    public ArrayList<Music> ordenarMusicasDecrescente(CriteriosMusica mo, ArrayList<Music> musics) {
-        if (musics.isEmpty()) {
-            return new ArrayList<>(); // Não há nada para ordenar ou exibir na tabela
-        }
-        ArrayList<Music> musicasOrdenadas = new ArrayList<>(musics); //O array será do mesmo tamanho do original (musicas)
-
-        for (int i = 0; i < musicasOrdenadas.size() - 1; i++) {
-            for (int j = 0; j < musicasOrdenadas.size() - i - 1; j++) {
-                if(mo == CriteriosMusica.Nome) {
-                    if (musicasOrdenadas.get(j).getTitle().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getTitle()) < 0) {
-                        Music temp = musicasOrdenadas.get(j);
-                        musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
-                        musicasOrdenadas.set(j + 1, temp);
-                    }
-                }
-                else if(mo == CriteriosMusica.Genero){
-                    if (musicasOrdenadas.get(j).getGenre().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getGenre()) < 0) {
-                        Music temp = musicasOrdenadas.get(j);
-                        musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
-                        musicasOrdenadas.set(j + 1, temp);
-                    }
-                }
-            }
-        }
-        return musicasOrdenadas;
-    }
-
-
     /**
      * Método para pesquisar músicas que o Cliente já comprou pelo nome ou pelo género.
      * É verificado se existe alguma música que contenha o que for colocado na string que
@@ -1035,17 +1141,81 @@ public class RockstarDB {
         return searchResult;
     }
 
-
-    public boolean rateSong(Music music, double rating) {
-        if(getCurrentUserAsClient().hasRatedMusic(music)){ //verifica se já foi avaliada a música
-           return false;
+    //////////////////////////// ORDENAÇÕES CRESCENTE / DECRESCENTE   \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    /**
+     * Método que ordena uma lista de músicas em ordem crescente com base em critérios específicos.
+     * Este método ordena uma lista de músicas em ordem alfabética crescente, com base nos critérios definido (por nome ou género).
+     * Se a lista de músicas estiver vazia, retorna uma lista vazia.
+     * Caso contrário, realiza a ordenação das músicas e retorna a lista ordenada.
+     *
+     * @param mo O critério de ordenação a ser aplicado (CriteriosMusica.Nome ou CriteriosMusica.Genero).
+     * @param musics A lista de músicas a ser ordenada.
+     * @return Uma lista de músicas ordenada em ordem crescente com base nos critérios fornecidos;
+     *         retorna uma lista vazia se não houver músicas para ordenar.
+     */
+    public ArrayList<Music> ordenarMusicasCrescente(CriteriosMusica mo, ArrayList<Music> musics) {
+        if (musics.isEmpty()) {
+            return new ArrayList<>(); // Não há nada para ordenar ou exibir na tabela
         }
-        Rating rate = new Rating(rating,getCurrentUserAsClient());
+        ArrayList<Music> musicasOrdenadas = new ArrayList<>(musics); //O array será do mesmo tamanho do original (musicas)
 
-        music.getAvaliacoes().add(rate);
-
-        saveDB();
-        return true;
+        for (int i = 0; i < musicasOrdenadas.size() - 1; i++) {
+            for (int j = 0; j < musicasOrdenadas.size() - i - 1; j++) {
+                if(mo == CriteriosMusica.Nome) {
+                    if (musicasOrdenadas.get(j).getTitle().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getTitle()) > 0) {
+                        Music temp = musicasOrdenadas.get(j);
+                        musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
+                        musicasOrdenadas.set(j + 1, temp);
+                    }
+                }
+                else if(mo == CriteriosMusica.Genero){
+                    if (musicasOrdenadas.get(j).getGenre().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getGenre()) > 0) {
+                        Music temp = musicasOrdenadas.get(j);
+                        musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
+                        musicasOrdenadas.set(j + 1, temp);
+                    }
+                }
+            }
+        }
+        return musicasOrdenadas;
     }
+    /**
+     * Método que ordena uma lista de músicas em ordem decrescente com base em critérios específicos.
+     * Este método ordena uma lista de músicas em ordem alfabética decrescente, com base nos critérios definido (por nome ou género).
+     * Se a lista de músicas estiver vazia, retorna uma lista vazia.
+     * Caso contrário, realiza a ordenação das músicas e retorna a lista ordenada.
+     *
+     * @param mo O critério de ordenação a ser aplicado (CriteriosMusica.Nome ou CriteriosMusica.Genero).
+     * @param musics A lista de músicas a ser ordenada.
+     * @return Uma lista de músicas ordenada em ordem crescente com base nos critérios fornecidos;
+     *         retorna uma lista vazia se não houver músicas para ordenar.
+     */
+    public ArrayList<Music> ordenarMusicasDecrescente(CriteriosMusica mo, ArrayList<Music> musics) {
+        if (musics.isEmpty()) {
+            return new ArrayList<>(); // Não há nada para ordenar ou exibir na tabela
+        }
+        ArrayList<Music> musicasOrdenadas = new ArrayList<>(musics); //O array será do mesmo tamanho do original (musicas)
+
+        for (int i = 0; i < musicasOrdenadas.size() - 1; i++) {
+            for (int j = 0; j < musicasOrdenadas.size() - i - 1; j++) {
+                if(mo == CriteriosMusica.Nome) {
+                    if (musicasOrdenadas.get(j).getTitle().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getTitle()) < 0) {
+                        Music temp = musicasOrdenadas.get(j);
+                        musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
+                        musicasOrdenadas.set(j + 1, temp);
+                    }
+                }
+                else if(mo == CriteriosMusica.Genero){
+                    if (musicasOrdenadas.get(j).getGenre().compareToIgnoreCase(musicasOrdenadas.get(j + 1).getGenre()) < 0) {
+                        Music temp = musicasOrdenadas.get(j);
+                        musicasOrdenadas.set(j, musicasOrdenadas.get(j + 1));
+                        musicasOrdenadas.set(j + 1, temp);
+                    }
+                }
+            }
+        }
+        return musicasOrdenadas;
+    }
+
 }
 

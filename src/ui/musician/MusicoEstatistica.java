@@ -104,7 +104,7 @@ public class MusicoEstatistica extends JPanel implements ActionListener {
         add(valorTotalMusicas).setBounds(totalUser.getX(),totalAlbunsGenero.getY()+20,500,35);
 
         ////VALOR TOTAL DE MÚSICAS VENDIDAS/////////////////////////////////////////////////////////////////////////////////
-        valorTotalMusicasVendidasInt = gui.getDb().getTotalValueSongs(); //igualar ao valor total de musicas vendidas
+        valorTotalMusicasVendidasInt = gui.getDb().getTotalValueSongsSold(); //igualar ao valor total de musicas vendidas
         valorTotalMusicasVendidasString = String.valueOf(valorTotalMusicasVendidasInt);
         valorTotalMusicasVendidas = new JLabel("Valor total de músicas vendidas: "+valorTotalMusicasVendidasString);
         valorTotalMusicasVendidas.setForeground(new Color(255,255,255));
