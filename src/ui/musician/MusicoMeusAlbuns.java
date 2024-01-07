@@ -68,12 +68,14 @@ public class MusicoMeusAlbuns extends JPanel implements ActionListener {
         // Define as colunas da tabela
         tabelaDefault.addColumn("Nome");
         tabelaDefault.addColumn("Género");
+        tabelaDefault.addColumn("Músicas");
 
 
         // Cria a tabela com o modelo
         tabela = new JTable(tabelaDefault);
         tabela.getColumnModel().getColumn(0).setPreferredWidth(200);
         tabela.getColumnModel().getColumn(1).setPreferredWidth(200);
+        tabela.getColumnModel().getColumn(2).setPreferredWidth(200);
         // Impede a movimentação das colunas.
         tabela.getTableHeader().setReorderingAllowed(false);
         // SCROLL
@@ -112,7 +114,7 @@ public class MusicoMeusAlbuns extends JPanel implements ActionListener {
         tabelaDefault.setRowCount(0);
         // Adicionar as músicas do músico à tabela
         for (Album album : albuns) {
-            Object[] rowData = {album.getTitle(), album.getGenre()};
+            Object[] rowData = {album.getTitle(), album.getGenre(), album.getMusicas().size()};
             tabelaDefault.addRow(rowData);
         }
         // Atualizar a exibição da tabela

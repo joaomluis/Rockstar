@@ -109,8 +109,8 @@ public class AdicionarMusica extends JDialog implements ActionListener{
                 JOptionPane.showMessageDialog(null, "O nome da música já existe.");
             }else if(db==RockStarDBStatus.DB_MUSIC_ADDED){
                 JOptionPane.showMessageDialog(null, "A sua música "+escolhaNome+" foi adicionada com sucesso.");
+                dispose();
             }
-            dispose();// Fecha o pop-up.
         }
     }
 }

@@ -81,7 +81,6 @@ public class MakePlaylist extends JDialog implements ActionListener {
                     } else {
                         gui.getDb().addPlaylist(novaPlaylist);
                         gui.getDb().saveCurrentUser(); // outra vez ir buscar GUI para a DB e guarda a operação
-                        System.out.println("Playlist criada");
                         if(gui.getMyPlaylists() != null) {
                             gui.atualizarTabelaPlaylists(myPlaylistsTableModel, myPlaylistsTable);
                         }

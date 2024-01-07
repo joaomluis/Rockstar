@@ -81,9 +81,10 @@ public class AlterarNome extends JDialog implements ActionListener{
                 JOptionPane.showMessageDialog(null, "Não foi possivel alterar o nome da música. Já existe uma música com esse nome. Por favor, escolha outro nome.");
             } else if (db == RockStarDBStatus.DB_MUSIC_NAME_HAS_CHANGED) {
                 JOptionPane.showMessageDialog(null, "O nome foi atualizado para "+escolhaNome+ " com sucesso.");
+                dispose();
             }
         }
-        dispose(); // Fecha o pop-up.
+         // Fecha o pop-up.
 
     }
 }

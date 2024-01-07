@@ -411,6 +411,7 @@ public class RockstarGUI {
      * Exibe os painéis dos álbuns do músico. e atualiza o painel.
      */
     public void showMusicianAlbuns() {
+        musicianFrame.getMusicoMeusAlbuns().carregarAlbunsDoMusico();
         musicianFrame.showPanelMusician(MusicoMeusAlbuns.TITLE);
         musicianFrame.setCurrentPanel(musicianFrame.getMusicoMeusAlbuns());
     }

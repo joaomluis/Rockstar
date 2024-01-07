@@ -81,12 +81,12 @@ public class AlterarPreco extends JDialog implements ActionListener{
             if (music != null) {
                 RockStarDBStatus test = gui.getDb().alterarPreco(escolhaPreco, music);
                 if (test == DB_MUSIC_PRICE_HAS_CHANGED) { // O preço da música foi atualizado com sucesso
-                    JOptionPane.showMessageDialog(null, "O nome da música foi atualizado para: " + escolhaPreco);
+                    JOptionPane.showMessageDialog(null, "O valor da música foi atualizado para: " + escolhaPreco);
+                    dispose();
                 } else {// A alteração do preço falhou
-                    JOptionPane.showMessageDialog(null, "Operação incálida. Deverá inserir apenas o novo valor da Música.");
+                    JOptionPane.showMessageDialog(null, "Operação inválida. Deverá inserir apenas o novo valor da Música.");
                 }
             }
         }
-        dispose(); // Fecha o pop-up.
     }
 }
