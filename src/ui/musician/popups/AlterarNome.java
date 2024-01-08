@@ -72,7 +72,7 @@ public class AlterarNome extends JDialog implements ActionListener{
         if (e.getSource() == cancelButton) {
             dispose();// Fecha o pop-up.
         } else if (e.getSource() == okButton) {
-            String escolhaNome = textField.getText();
+            String escolhaNome = textField.getText().trim();
 
             RockStarDBStatus db = gui.getDb().alterarNome(escolhaNome,music);
 

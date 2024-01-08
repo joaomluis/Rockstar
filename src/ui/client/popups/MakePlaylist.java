@@ -63,7 +63,7 @@ public class MakePlaylist extends JDialog implements ActionListener {
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String input = nameField.getText();
+                String input = nameField.getText().trim();
 
                 DefaultTableModel myPlaylistsTableModel = gui.getMyPlaylistsTableModel();
                 JTable myPlaylistsTable = gui.getMyPlaylistsTable();
@@ -84,10 +84,8 @@ public class MakePlaylist extends JDialog implements ActionListener {
                         if(gui.getMyPlaylists() != null) {
                             gui.atualizarTabelaPlaylists(myPlaylistsTableModel, myPlaylistsTable);
                         }
-
+                        dispose();
                     }
-
-                    dispose();
 
                 } else {
                     JOptionPane.showMessageDialog(parent, "O campo está vazio, insira um valor.");

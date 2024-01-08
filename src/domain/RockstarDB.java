@@ -82,10 +82,9 @@ public class RockstarDB {
             Object obj = ois.readObject();
             if (obj instanceof RockstarModel) {
                 dados = (RockstarModel) obj;
-                System.out.println("RockStar deserialized");
-            } else {
-                System.out.println("Failed to deserialize. Invalid data type.");
+                //System.out.println("RockStar deserialized");
             }
+            //else {System.out.println("Failed to deserialize. Invalid data type.");}
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -262,15 +261,14 @@ public class RockstarDB {
      *          false se o nome da música não for válido ou a operação falhar.
      */
     public boolean addMusica(Music music) {
-        //Este if é irrelevante
         if (!validSongName(music.getTitle())) {
             return false;
+        }else if(music.getAlbum() != null){
+            music.getAlbum().getMusicas().add(music);
         }
         getCurrentUserAsMusician().addMusic(music);
         dados.getAllSongsAvailable().add(music);
-        System.out.println("adicionada nova musica");
         saveDB();
-        System.out.println("gravado");
         return true;
     }
     /**
@@ -292,9 +290,7 @@ public class RockstarDB {
             }
             musico.addAlbum(album);
             dados.getAlbums().add(album);
-            System.out.println("adicionado novo album");
             saveDB();
-            System.out.println("gravado");
 
             return true;
         }
@@ -311,9 +307,12 @@ public class RockstarDB {
      *         RockStarDBStatus.DB_ALBUM_NAME_HAS_CHANGED se o álbum foi criado e adicionado ao banco de dados.
      */
     public RockStarDBStatus criarAlbum(String escolhaNome, String escolhaGenero) {
-        Musico musico = getCurrentUserAsMusician();
+        escolhaNome = escolhaNome.trim();
         if(!validAlbumName(escolhaNome)){
             return RockStarDBStatus.DB_ALBUM_NAME_FAILED;
+        }
+        else if(escolhaNome == null || escolhaNome.trim().isEmpty()){
+           return RockStarDBStatus.DB_ALBUM_NAME_EMPTY;
         }
         Album novoAlbum = new Album(escolhaNome,getCurrentUserAsMusician(),escolhaGenero);
         addAlbum(novoAlbum);
@@ -872,6 +871,17 @@ public class RockstarDB {
     public void addAllSongsInCartToTable(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         List<Music> songsInCart = getCurrentUserAsClient().getSongsInCart();
+
+        for (Music song : songsInCart) {
+            Object[] row = {song.getTitle(), song.getArtist(),String.format("%1$,.2f€", song.getPreco())};
+            if(!songExistsOnTable(model, song)) {
+                model.addRow(row);
+            }
+        }
+    }
+    public void addAllSongsToMusicMusics(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        List<Music> songsInCart = getCurrentUserAsMusician().getMusicas();
 
         for (Music song : songsInCart) {
             Object[] row = {song.getTitle(), song.getArtist(),String.format("%1$,.2f€", song.getPreco())};

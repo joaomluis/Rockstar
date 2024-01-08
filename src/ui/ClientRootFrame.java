@@ -16,8 +16,7 @@ public class ClientRootFrame extends JFrame implements ActionListener {
 
     public static String TITLE = "Cliente";
 
-    RockstarGUI gui;
-    private final Cliente client;
+    private RockstarGUI gui;
 
     private JButton homeButton;
     private JButton backButton;
@@ -41,7 +40,6 @@ public class ClientRootFrame extends JFrame implements ActionListener {
 
     public ClientRootFrame(RockstarGUI rockstarGUI) {
         this.gui = rockstarGUI;
-        client = (Cliente) gui.getDb().getCurrentUser();
         this.currentPanel = new JPanel();
         inicialized = false;
     }
@@ -95,20 +93,24 @@ public class ClientRootFrame extends JFrame implements ActionListener {
 
 
         // Criação de card layout para implementar os vários paineis
-        panelContainer = new JPanel();
-        cardLayout = new CardLayout();
+        if(!inicialized){
+            panelContainer = new JPanel();
+            cardLayout = new CardLayout();
+        }
+
         panelContainer.setLayout(cardLayout);
 
-        //Inicialização dos vários paineis
-        menuInicial = new MainMenu(gui);
-        store = new Store(gui);
-        myMusic = new MyMusic(gui);
-        myPlaylists = new MyPlaylists(gui);
-        purchaseHistory = new PurchaseHistory(gui);
-        shoppingCart = new ShoppingCart(gui);
-        currentPlaylist = new CurrentPlaylist(gui);
-        purchaseDetails = new PurchaseDetails(gui);
-
+        if(!inicialized) {
+            //Inicialização dos vários paineis
+            menuInicial = new MainMenu(gui);
+            store = new Store(gui);
+            myMusic = new MyMusic(gui);
+            myPlaylists = new MyPlaylists(gui);
+            purchaseHistory = new PurchaseHistory(gui);
+            shoppingCart = new ShoppingCart(gui);
+            currentPlaylist = new CurrentPlaylist(gui);
+            purchaseDetails = new PurchaseDetails(gui);
+        }
 
         //Junção dos paines ao card layout
         panelContainer.add(menuInicial, MainMenu.TITLE);
@@ -120,15 +122,19 @@ public class ClientRootFrame extends JFrame implements ActionListener {
         panelContainer.add(currentPlaylist, CurrentPlaylist.TITLE);
         panelContainer.add(purchaseDetails, PurchaseDetails.TITLE);
 
-
-        //Painel que fica no topo com os botões
-        homeButtonPanel = new JPanel();
+        if(!inicialized){
+            //Painel que fica no topo com os botões
+            homeButtonPanel = new JPanel();
+        }
         homeButtonPanel.setLayout(null);
         homeButtonPanel.setPreferredSize(new Dimension(0, 40));
         homeButtonPanel.setBackground(new Color(20, 64, 88));
 
+        if(!inicialized){
+            //Botão retroceder
+            backButton = new JButton();
+        }
         //Botão retroceder
-        backButton = new JButton();
         backButton.setBounds(10, 5, 60, 25);
         backButton.setText("←");
         backButton.setFont(new Font("Arial", Font.BOLD, 26));
@@ -136,29 +142,38 @@ public class ClientRootFrame extends JFrame implements ActionListener {
         backButton.addActionListener(this);
 
         //Botão home
-        homeButton = new JButton();
+        if(!inicialized){
+            homeButton = new JButton();
+        }
         homeButton.setBounds(backButton.getX() + 70, backButton.getY(), 60, 25);
         homeButton.setText("⌂");
         homeButton.setFont(new Font("Arial", Font.BOLD, 26));
         homeButton.setFocusable(false);
         homeButton.addActionListener(this);
 
-        //Botão carrinho de compras
-        cartButton = new JButton();
+        if(!inicialized){
+            //Botão carrinho de compras
+            cartButton = new JButton();
+        }
         cartButton.setBounds(620, 5, 60, 25);
         cartButton.setText("\uD83D\uDED2");
         cartButton.setFocusable(false);
         cartButton.addActionListener(this);
 
         //Label saldo
-        balance = new JLabel();
+        if(!inicialized){
+            balance = new JLabel();
+        }
+
         balance.setBounds(570, 5, 60, 25);
         balance.setText(String.format("%1$,.2f€", db.getCurrentUserAsClient().getSaldo()));
         balance.setFont(new Font("Arial", Font.BOLD, 12));
         balance.setForeground(new Color(198, 107, 61));
 
         //label do username
-        username = new JLabel();
+        if(!inicialized){
+            username = new JLabel();
+        }
         username.setBounds(150, 5, 200, 25);
         username.setText("Bem vindo, " + db.getCurrentUser().getUsername());
         username.setFont(new Font("Arial", Font.BOLD, 12));
@@ -182,9 +197,7 @@ public class ClientRootFrame extends JFrame implements ActionListener {
         setVisible(true);
         inicialized = true; //alterar a variavel para true, uma vez que foi iniciada a frame.
     }
-    public boolean isInitialized() {
-        return inicialized;
-    }
+
     public void setCurrentPanel(JPanel currentPanel) {
         this.currentPanel = currentPanel;
     }

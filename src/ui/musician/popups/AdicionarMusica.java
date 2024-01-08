@@ -94,8 +94,9 @@ public class AdicionarMusica extends JDialog implements ActionListener{
         }
         else if(e.getSource() == okButton){
             String escolhaGenero = (String) dropdown.getSelectedItem();
-            String escolhaNome = nomeText.getText();
+            String escolhaNome = nomeText.getText().trim();
             String escolhaPreco = precoText.getText();
+
             Album album = (Album) albumDropdown.getSelectedItem();
 
             //Verificar se há erros e distinguir.

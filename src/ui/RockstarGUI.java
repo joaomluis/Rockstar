@@ -76,6 +76,10 @@ public class RockstarGUI {
         tableModel.setRowCount(0); // Limpa a tabela
         getDb().addAllSongsInCartToTable(jTable); // Atualiza a tabela com as songs atualizadas
     }
+    public void updateMusicSong(DefaultTableModel tableModel, JTable jTable) {
+        tableModel.setRowCount(0); // Limpa a tabela
+        getDb().addAllSongsInCartToTable(jTable); // Atualiza a tabela com as songs atualizadas
+    }
 
     ///////////////////////////////////Atualizar tabela painel My Music\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -141,6 +145,7 @@ public class RockstarGUI {
         tableModel.setRowCount(0);
         getDb().addAllPurchasesToTable(table);
     }
+
 
     //////////////////Atualizar painel Loja\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -258,7 +263,7 @@ public class RockstarGUI {
      * Exibe o painel do menu principal na interface de autenticação.
      */
     public void showMainMenu() {
-        authenticationFrame.showPanel(MenuInicial.TITLE);
+          authenticationFrame.showPanel(MenuInicial.TITLE);
     }
     /**
      * Exibe o painel de registo de músico na interface de autenticação.
@@ -292,12 +297,8 @@ public class RockstarGUI {
      * Esconde a frame de autenticação.
      */
     public void showMusicianFrame() {
-        if(!musicianFrame.isInitialized()){
-            musicianFrame.start();
-        }
-        else{
-            musicianFrame.setVisible(true);
-        }
+        musicianFrame.start();
+        musicianFrame.setVisible(true);
         authenticationFrame.setVisible(false);
     }
     /**
@@ -305,13 +306,8 @@ public class RockstarGUI {
      * ou torna-o visível se já estiver ativo. Esconde a frame de autenticação.
      */
     public void showClientFrame() {
-        if(!clientFrame.isInitialized()){
-            clientFrame.start();
-        }
-        else{
-            clientFrame.setVisible(true);
-        }
-
+        clientFrame.start();
+        clientFrame.setVisible(true);
         authenticationFrame.setVisible(false);
     }
     /**
@@ -360,6 +356,9 @@ public class RockstarGUI {
     public void showMyPlaylists() {
         clientFrame.showPanelClient(MyPlaylists.TITLE);
         clientFrame.setCurrentPanel(clientFrame.getMyPlaylists());
+        atualizarTabelaPlaylists(getMyPlaylistsTableModel(), getMyPlaylistsTable());
+        updatePurchaseTable(getPurchaseHistoryTableModel(), getPurchaseHistoryTable());
+
     }
     /**
      * Exibe o histórico de compras no frame do cliente, atualizando a tabela de histórico de compras.

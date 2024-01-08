@@ -46,7 +46,6 @@ public class MusicianRootFrame extends JFrame implements ActionListener {
         RockstarDB db= gui.getDb();
 
         Color fundo = new Color(77, 24, 28);
-        Color letras = new Color(255,255,255);
         ImageIcon logoRockStar = new ImageIcon("logo_2.png");
 
         //especificações básicas do frame
@@ -58,17 +57,19 @@ public class MusicianRootFrame extends JFrame implements ActionListener {
         setResizable(false);
 
         // Criação de card layout para implementar os vários paineis
+        if(!initialized){
         panelContainer = new JPanel();
         cardLayout = new CardLayout();
+        }
         panelContainer.setLayout(cardLayout);
-
-        // Cria os painéis que serão exibidos no cardLayout (todos os paineis serão criados aqui)
-        musicoMenuInicial = new MusicoMenuInicial(gui);
-        musicoMusicas = new MusicoMusicas(gui);
-        musicoMeusAlbuns = new MusicoMeusAlbuns(gui);
-        musicoEstatistica = new MusicoEstatistica(gui);
-        musicoPesquisa = new MusicoPesquisa(gui);
-
+        if(!initialized) {
+            // Cria os painéis que serão exibidos no cardLayout (todos os paineis serão criados aqui)
+            musicoMenuInicial = new MusicoMenuInicial(gui);
+            musicoMusicas = new MusicoMusicas(gui);
+            musicoMeusAlbuns = new MusicoMeusAlbuns(gui);
+            musicoEstatistica = new MusicoEstatistica(gui);
+            musicoPesquisa = new MusicoPesquisa(gui);
+        }
 
         // Adicione os painéis ao painel de conteúdo (todos os paineis serão adicionados aqui)
         panelContainer.add(musicoMenuInicial, MusicoMenuInicial.TITLE);
@@ -82,13 +83,19 @@ public class MusicianRootFrame extends JFrame implements ActionListener {
 
         //NESTA FRAME //////////////////////////////////////////////////////////////////////////////////////////////////
         // Cria botões sempre visiveis nesta frame
-        home = new JButton("⌂");
+        if(!initialized) {
+            home = new JButton("⌂");
+        }
         home.setFont(new Font("Arial", Font.BOLD, 26));
         home.setFocusable(false);
-        back = new JButton("←");
+        if(!initialized) {
+            back = new JButton("←");
+        }
         back.setFont(new Font("Arial", Font.BOLD, 26));
         back.setFocusable(false);
-        username = new JLabel("username");
+        if(!initialized) {
+            username = new JLabel("username");
+        }
         username.setFont(new Font("Arial", Font.BOLD, 12));
         username.setText(db.getCurrentUser().getUsername());
         username.setForeground(new Color(255,255,255));
@@ -96,7 +103,9 @@ public class MusicianRootFrame extends JFrame implements ActionListener {
         back.addActionListener(this);
 
         // Crie um painel para os botões e adicione-os ao frame
-        northPanel = new JPanel();
+        if(!initialized) {
+            northPanel = new JPanel();
+        }
         northPanel.setLayout(null);
         northPanel.setPreferredSize(new Dimension(0, 40));
 
@@ -111,9 +120,6 @@ public class MusicianRootFrame extends JFrame implements ActionListener {
         northPanel.setBackground(fundo);
         setVisible(true);
         initialized = true; //alterar a variavel para true, uma vez que foi iniciada a frame.
-    }
-    public boolean isInitialized() {
-        return initialized;
     }
     /**
      * Define o painel atual exibido no frame.

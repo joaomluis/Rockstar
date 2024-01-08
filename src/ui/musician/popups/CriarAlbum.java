@@ -91,7 +91,7 @@ public class CriarAlbum extends JDialog implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Não é permitido esse nome sem carácteres.");
             }
             else if(db == RockStarDBStatus.DB_ALBUM_NAME_HAS_CHANGED){
-                JOptionPane.showMessageDialog(null, "O album "+escolhaNome+ " foi criado com sucesso.");
+                JOptionPane.showMessageDialog(null, "O album "+escolhaNome.trim()+ " foi criado com sucesso.");
                 dispose();
             }
 
