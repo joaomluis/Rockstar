@@ -32,9 +32,6 @@ public class Album implements Serializable {
         this.music = new ArrayList<>();
     }
 
-    public Album() {
-    }
-
     public ArrayList<Music> getMusicas(){
         return music;
     }

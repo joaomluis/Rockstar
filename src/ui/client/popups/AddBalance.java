@@ -61,13 +61,19 @@ public class AddBalance extends JDialog {
                     if (!input.isEmpty()) {
                         try {
                             double valor = Double.parseDouble(input);
-                            Cliente cliente = gui.getDb().getCurrentUserAsClient(); // vai buscar a GUI que vai buscar a DB que tem acesso aos dados
+                            if (valor < 0) {
+                                JOptionPane.showMessageDialog(parent, "Por favor adicione um valor positivo,");
+                            } else {
 
-                            cliente.adicionaSaldo(valor);
-                            gui.getDb().saveCurrentUser(); // outra vez ir buscar GUI para a DB e guarda a operação
-                            gui.updateBalance(); // só atualiza a label
 
-                            dispose();
+                                Cliente cliente = gui.getDb().getCurrentUserAsClient(); // vai buscar a GUI que vai buscar a DB que tem acesso aos dados
+
+                                cliente.adicionaSaldo(valor);
+                                gui.getDb().saveCurrentUser(); // outra vez ir buscar GUI para a DB e guarda a operação
+                                gui.updateBalance(); // só atualiza a label
+
+                                dispose();
+                            }
                         } catch (NumberFormatException ex) {
                             JOptionPane.showMessageDialog(parent, "Por favor, insira um valor numérico válido.");
                         }
