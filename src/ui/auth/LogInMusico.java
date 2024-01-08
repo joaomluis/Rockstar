@@ -150,6 +150,8 @@ public class LogInMusico extends JPanel implements ActionListener {
 
         if (status == RockStarDBStatus.DB_USER_LOGIN_SUCCESS) {
             gui.showMusicianFrame();
+            usernameField.setText("");
+            passwordField.setText("");
         } else {
             JOptionPane.showMessageDialog(this, "Login falhou verifique as credenciais");
         }

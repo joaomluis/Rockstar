@@ -145,7 +145,7 @@ public class MusicoMusicas extends JPanel implements ActionListener, MouseListen
                 visibilidade = "Indisponivel";
             }
             String albumTitle = musica.getAlbum() != null ? musica.getAlbum().getTitle() : "Sem álbum";
-            Object[] rowData = {musica.getTitle(), musica.getGenre(), musica.getPreco(), visibilidade, albumTitle};
+            Object[] rowData = {musica.getTitle(), musica.getGenre(), String.format("%1$,.2f€", musica.getPreco()), visibilidade, albumTitle};
             tabelaDefault.addRow(rowData);
         }
         // Atualizar a exibição da tabela

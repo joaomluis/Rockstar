@@ -130,6 +130,8 @@ public class LogInCliente extends JPanel implements ActionListener {
 
         if (status == RockStarDBStatus.DB_USER_LOGIN_SUCCESS) {
             gui.showClientFrame();
+            usernameField.setText("");
+            passwordField.setText("");
         } else {
             JOptionPane.showMessageDialog(this, "Login falhou verifique as credenciais");
         }

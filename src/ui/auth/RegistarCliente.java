@@ -124,6 +124,8 @@ public class RegistarCliente extends JPanel implements ActionListener {
 
         if (status == RockStarDBStatus.DB_USER_ADDED) {
             JOptionPane.showMessageDialog(this, "Conta criada com sucesso");
+            usernameField.setText("");
+            passwordField.setText("");
         } else if (status == RockStarDBStatus.DB_USER_ALREADY_EXISTS) {
             JOptionPane.showMessageDialog(this, "Username já existe");
         } else {
