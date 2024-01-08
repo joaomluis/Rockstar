@@ -149,7 +149,7 @@ public class MyMusic extends JPanel implements ActionListener, MouseListener {
 
         //botão para adicionar música a uma playlist;
         addToPlaylist = new JButton();
-        addToPlaylist.setText("<html><div style='display: table-cell; vertical-align: middle; text-align: center;'>Adicionar<br/>Playlist</html>");
+        addToPlaylist.setText("<html><div style='display: table-cell; vertical-align: middle; text-align: center;'>Adicionar<br/>a Playlist</html>");
         addToPlaylist.setBounds(0, removeMusic.getY() + 50, 120, 45);
         addToPlaylist.setFocusable(false);
         addToPlaylist.addActionListener(this);
