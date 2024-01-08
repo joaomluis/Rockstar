@@ -1,5 +1,6 @@
 package ui;
 
+import data.Cliente;
 import ui.auth.*;
 
 import javax.swing.*;

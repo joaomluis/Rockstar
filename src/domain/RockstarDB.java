@@ -481,7 +481,10 @@ public class RockstarDB {
      *         false se o nome da música já existir na lista de músicas do músico ou se for nulo/vazio.
      */
     public boolean validSongName(String nome) {
-        if (currentUser instanceof Musico && getCurrentUserAsMusician().getMusicas() != null && nome != null && !nome.isEmpty()) {
+        if(nome.isBlank()){
+            return false;
+        }
+        else if (currentUser instanceof Musico && getCurrentUserAsMusician().getMusicas() != null && !nome.isEmpty()) {
             for (Music m : ((Musico) currentUser).getMusicas()) {
                 if (m.getTitle().equalsIgnoreCase(nome)) {
                     return false;
@@ -871,17 +874,6 @@ public class RockstarDB {
     public void addAllSongsInCartToTable(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         List<Music> songsInCart = getCurrentUserAsClient().getSongsInCart();
-
-        for (Music song : songsInCart) {
-            Object[] row = {song.getTitle(), song.getArtist(),String.format("%1$,.2f€", song.getPreco())};
-            if(!songExistsOnTable(model, song)) {
-                model.addRow(row);
-            }
-        }
-    }
-    public void addAllSongsToMusicMusics(JTable table) {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        List<Music> songsInCart = getCurrentUserAsMusician().getMusicas();
 
         for (Music song : songsInCart) {
             Object[] row = {song.getTitle(), song.getArtist(),String.format("%1$,.2f€", song.getPreco())};

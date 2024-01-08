@@ -88,7 +88,7 @@ public class MakePlaylist extends JDialog implements ActionListener {
                     }
 
                 } else {
-                    JOptionPane.showMessageDialog(parent, "O campo está vazio, insira um valor.");
+                    JOptionPane.showMessageDialog(parent, "O campo está vazio, insira um nome válido.");
                 }
             }
         });

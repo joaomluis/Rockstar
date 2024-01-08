@@ -127,7 +127,7 @@ public class RegistarMusico extends JPanel implements ActionListener {
      * à Lista de Users da plataforma.
      */
     private void registarMusician() {
-        String inputUsername = usernameField.getText();
+        String inputUsername = usernameField.getText().trim();
         char[] passwordChar = passwordField.getPassword();
         String inputPassword = new String(passwordChar);
         char[] pinChar = pinField.getPassword();
@@ -144,6 +144,10 @@ public class RegistarMusico extends JPanel implements ActionListener {
 
             if (status == RockStarDBStatus.DB_USER_ADDED) {
                 JOptionPane.showMessageDialog(this, "Conta criada com sucesso");
+                usernameField.setText("");
+                passwordField.setText("");
+                pinField.setText("");
+                gui.showMusicianLogin();
             } else if (status == RockStarDBStatus.DB_USER_ALREADY_EXISTS) {
                 JOptionPane.showMessageDialog(this, "Username já existe");
             } else {

@@ -132,6 +132,7 @@ public class LogInCliente extends JPanel implements ActionListener {
             gui.showClientFrame();
             usernameField.setText("");
             passwordField.setText("");
+            gui.showClientLogin();
         } else {
             JOptionPane.showMessageDialog(this, "Login falhou verifique as credenciais");
         }

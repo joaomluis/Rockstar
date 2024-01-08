@@ -119,7 +119,7 @@ public class MusicoPesquisa extends JPanel implements ActionListener {
      * Atualiza a tabela de músicas com a lista fornecida.
      * @param musics Lista de músicas a ser exibida na tabela.
      */
-    private void atualizarTabelaMusicas(ArrayList<Music> musics) {
+    public void atualizarTabelaMusicas(ArrayList<Music> musics) {
         // Limpar os dados existentes na tabela
         tabelaDefault.setRowCount(0);
 

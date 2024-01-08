@@ -426,6 +426,7 @@ public class RockstarGUI {
      * Exibe os painéis da pesquisa do músico e atualiza o painel.
      */
     public void showMusicianSearch() {
+        musicianFrame.getMusicoPesquisa().atualizarTabelaMusicas(getDb().getCurrentUserAsMusician().getMusicas());
         musicianFrame.showPanelMusician(MusicoPesquisa.TITLE);
         musicianFrame.setCurrentPanel(musicianFrame.getMusicoPesquisa());
     }

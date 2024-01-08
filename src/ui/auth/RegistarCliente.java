@@ -111,7 +111,7 @@ public class RegistarCliente extends JPanel implements ActionListener {
      * à Lista de Users da plataforma.
      */
     private void registarClient() {
-        String inputUsername = usernameField.getText();
+        String inputUsername = usernameField.getText().trim();
         char[] passwordChar = passwordField.getPassword();
         String inputPassword = new String(passwordChar);
 
@@ -126,6 +126,7 @@ public class RegistarCliente extends JPanel implements ActionListener {
             JOptionPane.showMessageDialog(this, "Conta criada com sucesso");
             usernameField.setText("");
             passwordField.setText("");
+            gui.showClientLogin();
         } else if (status == RockStarDBStatus.DB_USER_ALREADY_EXISTS) {
             JOptionPane.showMessageDialog(this, "Username já existe");
         } else {

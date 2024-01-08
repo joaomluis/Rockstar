@@ -102,7 +102,7 @@ public class GeneratePlaylist extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String escolhaGenero = (String) dropdown.getSelectedItem();
-        String escolhaNome = nameField.getText();
+        String escolhaNome = nameField.getText().trim();
         String quantidade = sizeField.getText();
         if(e.getSource() == cancelButton){
             dispose();

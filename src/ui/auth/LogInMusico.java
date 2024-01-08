@@ -152,6 +152,7 @@ public class LogInMusico extends JPanel implements ActionListener {
             gui.showMusicianFrame();
             usernameField.setText("");
             passwordField.setText("");
+            pinField.setText("");
         } else {
             JOptionPane.showMessageDialog(this, "Login falhou verifique as credenciais");
         }
