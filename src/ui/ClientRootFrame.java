@@ -197,7 +197,6 @@ public class ClientRootFrame extends JFrame implements ActionListener {
         setVisible(true);
         inicialized = true; //alterar a variavel para true, uma vez que foi iniciada a frame.
     }
-
     public void setCurrentPanel(JPanel currentPanel) {
         this.currentPanel = currentPanel;
     }

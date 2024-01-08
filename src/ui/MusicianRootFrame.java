@@ -58,18 +58,15 @@ public class MusicianRootFrame extends JFrame implements ActionListener {
 
         // Criação de card layout para implementar os vários paineis
         if(!initialized){
-        panelContainer = new JPanel();
-        cardLayout = new CardLayout();
+            panelContainer = new JPanel();
+            cardLayout = new CardLayout();
         }
         panelContainer.setLayout(cardLayout);
-        if(!initialized) {
-            // Cria os painéis que serão exibidos no cardLayout (todos os paineis serão criados aqui)
-            musicoMenuInicial = new MusicoMenuInicial(gui);
-            musicoMusicas = new MusicoMusicas(gui);
-            musicoMeusAlbuns = new MusicoMeusAlbuns(gui);
-            musicoEstatistica = new MusicoEstatistica(gui);
-            musicoPesquisa = new MusicoPesquisa(gui);
-        }
+        musicoMenuInicial = new MusicoMenuInicial(gui);
+        musicoMusicas = new MusicoMusicas(gui);
+        musicoMeusAlbuns = new MusicoMeusAlbuns(gui);
+        musicoEstatistica = new MusicoEstatistica(gui);
+        musicoPesquisa = new MusicoPesquisa(gui);
 
         // Adicione os painéis ao painel de conteúdo (todos os paineis serão adicionados aqui)
         panelContainer.add(musicoMenuInicial, MusicoMenuInicial.TITLE);
